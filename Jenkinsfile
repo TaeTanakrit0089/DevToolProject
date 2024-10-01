@@ -21,7 +21,7 @@ pipeline {
                 script {
                     // Run Python script with only os library
                     sh 'ls -l'
-                    sh 'python3 '
+                    sh 'python3 hello.py'
                 }
             }
         }
