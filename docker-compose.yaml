@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: ./frontend  # Path to the frontend Dockerfile (Node.js)
+    ports:
+      - "8083:3000"    # Exposing port for frontend
+    volumes:
+      - ./frontend:/app  # Mounting local code for development
+    depends_on:
+      - backend         # Ensure backend is running before frontend starts
+    networks:
+      - app-network
+
+  backend:
+    build: ./backend   # Path to the backend Dockerfile (PHP)
+    ports:
+      - "8000:8000"    # Exposing port for backend
+    environment:
+      - DATABASE_HOST=db
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=Ab123456*
+      - DATABASE_NAME=app_db
+      - NODEJS_HOST=frontend  # To allow PHP to communicate with Node.js
+      - NODEJS_PORT=3000
+    volumes:
+      - ./backend:/var/www/html  # Mounting PHP files
+    depends_on:
+      - db
+      - frontend       # Ensure frontend is running before backend starts
+    networks:
+      - app-network
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres_password
+      POSTGRES_DB: app_db
+    ports:
+      - "5432:5432"  # Exposing PostgreSQL port
+    volumes:
+      - db_data:/var/lib/postgresql/data  # Persistent data storage
+      - ./db:/docker-entrypoint-initdb.d/  # Mount your SQL dump
+    networks:
+      - app-network
+
+volumes:
+  db_data:
+
+networks:
+  app-network:
+    driver: bridge
