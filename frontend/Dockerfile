@@ -1,10 +1,11 @@
-FROM node:14
+FROM node:latest
 
 WORKDIR /app
 
 COPY package*.json ./
 RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y nodejs
+    apt-get install -y nodejs 
+    #npm                       # note this one
 RUN npm install
 
 COPY . .
