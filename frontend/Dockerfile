@@ -10,4 +10,4 @@ COPY . .
 
 EXPOSE 8083
 
-CMD ["npm", "run", 'dev']
+CMD ["bash", "-c", "npm run dev"]

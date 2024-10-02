@@ -8,7 +8,8 @@ import path from 'path';
 // https://vitejs.dev/config/
 export default defineConfig({
     server: {
-        port: 8083
+        port: 8083,
+        host: true
     },
     plugins: [
         VueDevTools(),
