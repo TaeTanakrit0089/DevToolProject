@@ -8,8 +8,12 @@ import path from 'path';
 // https://vitejs.dev/config/
 export default defineConfig({
     server: {
-        port: 8083,
-        host: true
+        port: 3000,
+        host: true,
+        strictPort: true,   // Fail if port 8083 is not available
+        watch: {
+            usePolling: true  // Useful if you're running in environments like Docker or cloud VMs
+        }
     },
     plugins: [
         VueDevTools(),
