@@ -9,10 +9,12 @@
       <p class="text-lg font-medium mb-6 text-gray-700 dark:text-gray-300">
         Light and dark modes with smooth transitions.
       </p>
-      <button
-          class="px-6 py-3 bg-gradient-to-r from-blue-500 to-teal-400 text-white font-semibold rounded-full shadow-lg hover:bg-gradient-to-l hover:from-teal-400 hover:to-blue-500 dark:bg-gradient-to-r dark:from-gray-700 dark:to-gray-900 dark:hover:from-gray-800 dark:hover:to-gray-700 transition-colors duration-300">
-        Get Started
-      </button>
+      <a href="https://youtu.be/Ap-gi3LrCoA?si=ovOmbbulqQJS50NF" target="_blank">
+        <button
+            class="px-6 py-3 bg-gradient-to-r from-blue-500 to-teal-400 text-white font-semibold rounded-full shadow-lg hover:bg-gradient-to-l hover:from-teal-400 hover:to-blue-500 dark:bg-gradient-to-r dark:from-gray-700 dark:to-gray-900 dark:hover:from-gray-800 dark:hover:to-gray-700 transition-colors duration-300">
+          Get Started
+        </button>
+      </a>
       <div class="mt-6">
         <img src="@/assets/img/emailspin.gif" height="66" width="50"
              class="inline-block shadow-lg animate-spin-slow" alt=""/>
