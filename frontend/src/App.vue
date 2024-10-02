@@ -16,8 +16,8 @@
         </button>
       </a>
       <div class="mt-6">
-        <img src="assets/img/emailspin.gif" height="66" width="50"
-             class="inline-block shadow-lg animate-spin-slow" alt=""/>
+        <img alt="" class="inline-block shadow-lg animate-spin-slow" height="66"
+             src="@/assets/img/emailspin.gif" width="50"/>
       </div>
     </div>
   </div>
