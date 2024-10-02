@@ -2,6 +2,6 @@
 import {createApp} from 'vue'
 import App from './App.vue'
 import './index.css'
-import '/src/css/font.css'
+import './css/font.css'
 
 createApp(App).mount('#app')

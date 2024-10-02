@@ -1,14 +1,14 @@
 /* Thin - 100 */
 @font-face {
     font-family: 'Sarabun';
-    src: url('src/assets/fonts/Sarabun-Thin.ttf') format('truetype');
+    src: url('..assets/fonts/Sarabun-Thin.ttf') format('truetype');
     font-weight: 100;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Sarabun';
-    src: url('src/assets/fonts/Sarabun-ThinItalic.ttf') format('truetype');
+    src: url('..assets/fonts/Sarabun-ThinItalic.ttf') format('truetype');
     font-weight: 100;
     font-style: italic;
 }
@@ -16,14 +16,14 @@
 /* ExtraLight - 200 */
 @font-face {
     font-family: 'Sarabun';
-    src: url('src/assets/fonts/Sarabun-ExtraLight.ttf') format('truetype');
+    src: url('..assets/fonts/Sarabun-ExtraLight.ttf') format('truetype');
     font-weight: 200;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Sarabun';
-    src: url('src/assets/fonts/Sarabun-ExtraLightItalic.ttf') format('truetype');
+    src: url('..assets/fonts/Sarabun-ExtraLightItalic.ttf') format('truetype');
     font-weight: 200;
     font-style: italic;
 }
@@ -31,14 +31,14 @@
 /* Light - 300 */
 @font-face {
     font-family: 'Sarabun';
-    src: url('src/assets/fonts/Sarabun-Light.ttf') format('truetype');
+    src: url('..assets/fonts/Sarabun-Light.ttf') format('truetype');
     font-weight: 300;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Sarabun';
-    src: url('src/assets/fonts/Sarabun-LightItalic.ttf') format('truetype');
+    src: url('..assets/fonts/Sarabun-LightItalic.ttf') format('truetype');
     font-weight: 300;
     font-style: italic;
 }
@@ -46,14 +46,14 @@
 /* Regular - 400 */
 @font-face {
     font-family: 'Sarabun';
-    src: url('src/assets/fonts/Sarabun-Regular.ttf') format('truetype');
+    src: url('..assets/fonts/Sarabun-Regular.ttf') format('truetype');
     font-weight: 400;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Sarabun';
-    src: url('src/assets/fonts/Sarabun-Italic.ttf') format('truetype');
+    src: url('..assets/fonts/Sarabun-Italic.ttf') format('truetype');
     font-weight: 400;
     font-style: italic;
 }
@@ -61,14 +61,14 @@
 /* Medium - 500 */
 @font-face {
     font-family: 'Sarabun';
-    src: url('src/assets/fonts/Sarabun-Medium.ttf') format('truetype');
+    src: url('..assets/fonts/Sarabun-Medium.ttf') format('truetype');
     font-weight: 500;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Sarabun';
-    src: url('src/assets/fonts/Sarabun-MediumItalic.ttf') format('truetype');
+    src: url('..assets/fonts/Sarabun-MediumItalic.ttf') format('truetype');
     font-weight: 500;
     font-style: italic;
 }
@@ -76,14 +76,14 @@
 /* SemiBold - 600 */
 @font-face {
     font-family: 'Sarabun';
-    src: url('src/assets/fonts/Sarabun-SemiBold.ttf') format('truetype');
+    src: url('..assets/fonts/Sarabun-SemiBold.ttf') format('truetype');
     font-weight: 600;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Sarabun';
-    src: url('src/assets/fonts/Sarabun-SemiBoldItalic.ttf') format('truetype');
+    src: url('..assets/fonts/Sarabun-SemiBoldItalic.ttf') format('truetype');
     font-weight: 600;
     font-style: italic;
 }
@@ -91,14 +91,14 @@
 /* Bold - 700 */
 @font-face {
     font-family: 'Sarabun';
-    src: url('src/assets/fonts/Sarabun-Bold.ttf') format('truetype');
+    src: url('..assets/fonts/Sarabun-Bold.ttf') format('truetype');
     font-weight: 700;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Sarabun';
-    src: url('src/assets/fonts/Sarabun-BoldItalic.ttf') format('truetype');
+    src: url('..assets/fonts/Sarabun-BoldItalic.ttf') format('truetype');
     font-weight: 700;
     font-style: italic;
 }
@@ -106,14 +106,14 @@
 /* ExtraBold - 800 */
 @font-face {
     font-family: 'Sarabun';
-    src: url('src/assets/fonts/Sarabun-ExtraBold.ttf') format('truetype');
+    src: url('..assets/fonts/Sarabun-ExtraBold.ttf') format('truetype');
     font-weight: 800;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Sarabun';
-    src: url('src/assets/fonts/Sarabun-ExtraBoldItalic.ttf') format('truetype');
+    src: url('..assets/fonts/Sarabun-ExtraBoldItalic.ttf') format('truetype');
     font-weight: 800;
     font-style: italic;
 }
