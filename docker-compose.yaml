@@ -11,7 +11,7 @@ services:
       - DATABASE_NAME=app_db
       - APACHE_SERVER_NAME=backend
     volumes:
-      - ./:/var/www/html
+      - ./:/usr/src/app
 
   db:
     image: postgres:latest
