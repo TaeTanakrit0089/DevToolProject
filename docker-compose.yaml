@@ -17,6 +17,7 @@ services:
       - DATABASE_NAME=app_db
       - NODEJS_HOST=frontend  # To allow PHP to communicate with Node.js
       - NODEJS_PORT=3000
+      - APACHE_SERVER_NAME=backend
     volumes:
       - ./backend:/var/www/html  # Mounting PHP files
 
