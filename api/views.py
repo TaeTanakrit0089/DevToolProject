@@ -21,7 +21,6 @@ from rest_framework.renderers import JSONRenderer
 from json import loads
 
 # Create your views here.
-
 class Register(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
@@ -34,18 +33,7 @@ class Register(APIView):
         return Response(loads(form.errors.as_json()), status=status.HTTP_400_BAD_REQUEST)
 
 class Login(APIView):
-    # authentication_classes = [SessionAuthentication, BasicAuthentication]
-    # permission_classes = [IsAuthenticated]
-
-    # def get(self, request, format=None):
-    #     print(request.user.is_staff)
-    #     content = {
-    #         'user': str(request.user),  # `django.contrib.auth.User` instance.
-    #         'auth': str(request.auth),  # None
-    #     }
-    #     return Response(content)
-    @csrf_exempt
-    def get(self, request, format=None):
+    def post(self, request, format=None):
         try:
             username = request.data.get('username')
             password = request.data.get('password')

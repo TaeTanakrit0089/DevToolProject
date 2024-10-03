@@ -1,15 +1,9 @@
 services:
-  frontend:
-    build: ./frontend  # Path to the frontend Dockerfile (Node.js)
-    ports:
-      - "8083:3000"    # Exposing port for frontend
-    volumes:
-      - ./frontend:/app  # Mounting local code for development
 
-  backend:
-    build: ./backend   # Path to the backend Dockerfile (PHP)
+  remindme:
+    build: ./   # Path to the backend Dockerfile (PHP)
     ports:
-      - "8000:8000"    # Exposing port for backend
+      - "8083:8000"    # Exposing port for backend
     environment:
       - DATABASE_HOST=db
       - DATABASE_USER=postgres
@@ -28,7 +22,7 @@ services:
       POSTGRES_PASSWORD: Ab123456*
       POSTGRES_DB: app_db
     ports:
-      - "5432:5432"  # Exposing PostgreSQL port
+      - "8081:5432"  # Exposing PostgreSQL port
     volumes:
       - db_data:/var/lib/postgresql/data  # Persistent data storage
       - ./db:/docker-entrypoint-initdb.d/  # Mount your SQL dump
