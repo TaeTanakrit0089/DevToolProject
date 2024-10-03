@@ -9,5 +9,6 @@
 // curl_close($ch);
 
 // echo $response;
-echo "eiei";
+$message = ["MESSAGE"=>"eiei"];
+echo json_encode($message);
 ?>
