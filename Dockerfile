@@ -4,7 +4,6 @@ FROM python:3.11-slim
 # Install system dependencies
 RUN apt-get update && apt-get install -y libpq-dev
 
-
 # 2. Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
@@ -22,8 +21,10 @@ RUN pip install -r requirements.txt
 # 6. Copy the rest of the Django project code into the container
 COPY . /app/
 
-# 7. Expose the port that Django will run on (default is 8000)
+# 9. Expose the port that Django will run on (default is 8000)
 EXPOSE 8000
 
-# 8. Define the command to run the Django development server (you can change this for production)
+RUN python manage.py migrate
+
+# 10. Use the entrypoint script to start the container
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
