@@ -1,14 +1,13 @@
 <?php
-// $frontend_host = getenv('NODEJS_HOST');
-// $frontend_port = getenv('NODEJS_PORT');
-// $url = "http://{$frontend_host}:{$frontend_port}/api/endpoint";
+include "./database.php";
+$sql = "SELECT * FROM users";
+$stmt = $pdo->prepare($sql);
 
-// $ch = curl_init($url);
-// curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-// $response = curl_exec($ch);
-// curl_close($ch);
+$stmt->execute();
 
-// echo $response;
-$message = ["MESSAGE"=>"eiei"];
+$message = $stmt->fetchObject();
+
 echo json_encode($message);
+
+$pdo = null
 ?>
