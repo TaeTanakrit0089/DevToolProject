@@ -1,7 +1,7 @@
 # Created by https://www.toptal.com/developers/gitignore/api/node,vuejs,vue,virtualenv
 # Edit at https://www.toptal.com/developers/gitignore?templates=node,vuejs,vue,virtualenv
 
-# Django
+### DJANGO ###
 __pycache__/
 
 ### Node ###
@@ -13,6 +13,7 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 .pnpm-debug.log*
+__pycache__/
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
