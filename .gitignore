@@ -169,8 +169,5 @@ test/
 ### Vuejs ###
 # Recommended template: Node.gitignore
 
-dist/
-npm-debug.log
-yarn-error.log
-
+node_modules/
 # End of https://www.toptal.com/developers/gitignore/api/node,vuejs,vue,virtualenv
