@@ -1,2 +1,2 @@
-FROM postgres:16
+FROM 
 

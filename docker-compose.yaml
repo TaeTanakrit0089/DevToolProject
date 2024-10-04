@@ -13,7 +13,7 @@ services:
       - postgres_db
 
   postgres_db:
-    build: ./db
+    build: postgres:16
     volumes:
       - postgres_data:/var/lib/postgresql/data  # Persistent data storage
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql  # Mount your SQL dump
