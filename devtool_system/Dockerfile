@@ -8,7 +8,13 @@ WORKDIR /devtool_system
 
 COPY . /devtool_system/
 
-RUN apt-get update && apt-get install -y libpq-dev
+RUN apt-get update && apt-get install -y libpq-dev && apt-get install -y nodejs && apt-get install -y npm
 
 COPY ./requirements.txt .
 RUN pip install -r requirements.txt
+
+RUN npm install
+
+EXPOSE 8000
+
+#CMD ["python", "manage.py", "8000"]
