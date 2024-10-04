@@ -17,4 +17,4 @@ RUN npm install
 
 EXPOSE 8000
 
-#CMD ["python", "manage.py", "8000"]
+CMD ["npm", "run", "start"]
