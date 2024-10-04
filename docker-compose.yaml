@@ -16,7 +16,7 @@ services:
     build: ./db
     volumes:
       - postgres_data:/var/lib/postgresql/data  # Persistent data storage
-      - ./db:/docker-entrypoint-initdb.d/  # Mount your SQL dump
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql  # Mount your SQL dump
     environment:
       - POSTGRES_DB=${DB_NAME}
       - POSTGRES_USER=${DB_USER}
