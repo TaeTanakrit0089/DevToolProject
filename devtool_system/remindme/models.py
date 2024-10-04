@@ -1,11 +1,15 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractUser
+
+# เพิ่ม Birthdate
+class Users(AbstractUser):
+    birth_date = models.DateTimeField()
 
 # Create your models here.
 class Family(models.Model):
     name = models.CharField(max_length=200)
     token = models.CharField(max_length=10) # TOKEN for Invite
-    user = models.ManyToManyField(User)
+    user = models.ManyToManyField(Users)
     
 class Events(models.Model):
     ROUTINE = {
@@ -15,7 +19,7 @@ class Events(models.Model):
         3: 'monthly',
         4: 'annually'
     }
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(Users, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True, null=True)
     noti_date = models.DateField()
