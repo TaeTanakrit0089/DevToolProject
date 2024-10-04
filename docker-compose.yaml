@@ -14,7 +14,7 @@ services:
   web:
     build: ./devtool_system
     volumes:
-      - ./devtool_system:/app
+      - ./devtool_system/:/app
     ports:
       - "8083:8000"
     environment:
