@@ -20,7 +20,6 @@ export default {
                     950: '#331e1f',
                 },
             }
-
         }
     },
     plugins: [],
