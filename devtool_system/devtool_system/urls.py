@@ -16,10 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from remindme.views import RegisterView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include("api.urls")),
     path('remindme/', include("remindme.urls")),
-    path('authentication', include("django.contrib.auth.urls"))
+    path('authentication/', include("django.contrib.auth.urls")),
+    path('register/', RegisterView.as_view(), name="register"),
+    
 ]
