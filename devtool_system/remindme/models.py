@@ -3,7 +3,7 @@ from django.contrib.auth.models import User, AbstractUser
 
 # เพิ่ม Birthdate
 class Users(AbstractUser):
-    birth_date = models.DateTimeField()
+    birth_date = models.DateField()
 
 # Create your models here.
 class Family(models.Model):
