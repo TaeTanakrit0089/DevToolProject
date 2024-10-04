@@ -6,7 +6,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 
 WORKDIR /devtool_system
 
-COPY . /devtool_system/
+COPY . .
 
 RUN apt-get update && apt-get install -y libpq-dev && apt-get install -y nodejs && apt-get install -y npm
 
