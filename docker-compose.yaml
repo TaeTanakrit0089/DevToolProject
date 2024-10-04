@@ -6,7 +6,7 @@ services:
       - "9090:8000"  # Exposing internal port 8000 for web container
     command: [ "sh", "./start.sh" ]
     volumes:
-      - .:/app
+      - ./devtool_system:/app
     env_file:
       - .env
     depends_on:
@@ -15,7 +15,8 @@ services:
   postgres_db:
     build: ./db
     volumes:
-      - postgres_data:/var/lib/postgres/data
+      - postgres_data:/var/lib/postgresql/data  # Persistent data storage
+      - ./db:/docker-entrypoint-initdb.d/  # Mount your SQL dump
     environment:
       - POSTGRES_DB=${DB_NAME}
       - POSTGRES_USER=${DB_USER}
