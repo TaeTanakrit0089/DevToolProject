@@ -6,8 +6,8 @@ from .serializers import *
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-from rest_framework.permissions import IsAuthenticated
+# from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+# from rest_framework.permissions import IsAuthenticated
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -20,11 +20,13 @@ from rest_framework.renderers import JSONRenderer
 
 from json import loads
 
+from remindme.forms import RegisterForm
+
 # Create your views here.
 class Register(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
-        form = UserCreationForm(request.data)
+        form = RegisterForm(request.data)
         if form.is_valid():
             if serializer.is_valid():
                 form.save()
