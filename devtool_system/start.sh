@@ -1,5 +1,4 @@
-\python manage.py makemigrations --no-input
-python manage.py migrate --no-input
-npm install
-
-python manage.py runserver 8000 & npm run start &
+npm run build
+python manage.py makemigrations
+python manage.py migrate
+python manage.py runserver web:8000
