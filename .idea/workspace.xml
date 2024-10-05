@@ -63,10 +63,10 @@
       <window_info id="Commit_Guest" show_stripe_button="false" />
       <window_info id="Pull Requests" />
       <window_info id="Learn" />
-      <window_info content_ui="combo" id="Project" order="0" weight="0.1653646" />
-      <window_info active="true" id="Commit" order="1" visible="true" weight="0.1653646" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1341146" />
+      <window_info id="Commit" order="1" weight="0.12057291" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
-      <window_info id="Django.Structure" order="2" side_tool="true" weight="0.1653646" />
+      <window_info id="Django.Structure" order="3" side_tool="true" weight="0.1653646" />
       <window_info anchor="bottom" id="Database Changes" />
       <window_info anchor="bottom" id="TypeScript" />
       <window_info anchor="bottom" id="TODO" />
@@ -76,10 +76,10 @@
       <window_info anchor="bottom" id="Version Control" order="0" weight="0.4077232" />
       <window_info anchor="bottom" id="Problems" order="1" />
       <window_info anchor="bottom" id="Problems View" order="2" />
-      <window_info anchor="bottom" id="Terminal" order="3" />
-      <window_info active="true" anchor="bottom" id="Services" order="4" visible="true" weight="0.36258775" />
+      <window_info anchor="bottom" id="Terminal" order="3" weight="0.39267802" />
+      <window_info active="true" anchor="bottom" id="Services" order="4" visible="true" weight="0.37763292" />
       <window_info anchor="bottom" id="Python Packages" order="5" weight="0.1" />
-      <window_info anchor="bottom" id="Python Console" order="6" weight="0.1" />
+      <window_info anchor="bottom" id="Python Console" order="6" weight="0.39267802" />
       <window_info anchor="bottom" id="Find" order="7" weight="0.33049148" />
       <window_info anchor="right" id="Endpoints" />
       <window_info anchor="right" id="Coverage" side_tool="true" />
@@ -162,6 +162,9 @@
       <workItem from="1728055428544" duration="2099000" />
       <workItem from="1728098495596" duration="114000" />
       <workItem from="1728115373763" duration="1871000" />
+      <workItem from="1728118135508" duration="367000" />
+      <workItem from="1728119554933" duration="586000" />
+      <workItem from="1728125853594" duration="547000" />
     </task>
     <task id="LOCAL-00001" summary="Added readme.md">
       <option name="closed" value="true" />
@@ -179,7 +182,15 @@
       <option name="project" value="LOCAL" />
       <updated>1728116103125</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Added ssl certificate and updated DockerFile">
+      <option name="closed" value="true" />
+      <created>1728118488436</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1728118488436</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
