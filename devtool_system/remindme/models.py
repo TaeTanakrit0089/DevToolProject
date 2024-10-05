@@ -10,6 +10,9 @@ class Family(models.Model):
     name = models.CharField(max_length=200)
     token = models.CharField(max_length=6) # TOKEN for Invite
     users = models.ManyToManyField(Users)
+
+    def __str__(self):
+        return self.name
     
 class Events(models.Model):
     ROUTINE = {

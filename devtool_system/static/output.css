@@ -760,6 +760,10 @@ video {
   margin-top: 7rem;
 }
 
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
+
 .block {
   display: block;
 }
@@ -770,6 +774,10 @@ video {
 
 .inline-flex {
   display: inline-flex;
+}
+
+.table {
+  display: table;
 }
 
 .grid {
@@ -832,6 +840,10 @@ video {
 
 .min-w-32 {
   min-width: 8rem;
+}
+
+.min-w-full {
+  min-width: 100%;
 }
 
 .max-w-lg {

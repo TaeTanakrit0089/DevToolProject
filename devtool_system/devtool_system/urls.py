@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from remindme.views import RegisterView, CalendarView
+from remindme.views import RegisterView, CalendarView, GetEventsByDateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,6 +24,5 @@ urlpatterns = [
     path('remindme/', include("remindme.urls")),
     path('authentication/', include("django.contrib.auth.urls")),
     path('register/', RegisterView.as_view(), name="register"),
-    path("calendar/", CalendarView.as_view(), name="calendar_page"),
     
 ]
