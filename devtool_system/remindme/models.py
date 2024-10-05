@@ -9,7 +9,7 @@ class Users(AbstractUser):
 class Family(models.Model):
     name = models.CharField(max_length=200)
     token = models.CharField(max_length=6) # TOKEN for Invite
-    user = models.ManyToManyField(Users)
+    users = models.ManyToManyField(Users)
 
     def __str__(self):
         return self.name
