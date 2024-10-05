@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block main %}
+  <form method="POST" id="theForm">
+    {% csrf_token %}
+    <input type="hidden" name="user" value="{{ user.id }}" />
+    <div>
+      <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+      <input type="text" name="name" id="{{ form.name.id_for_label }}" required />
+    </div>
+
+    <div>
+      <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
+      <textarea name="description" id="{{ form.description.id_for_label }}"></textarea>
+    </div>
+
+    <div>
+      <label for="{{ form.noti_date.id_for_label }}">{{ form.noti_date.label }}</label>
+      <input type="date" name="noti_date" id="{{ form.noti_date.id_for_label }}" required />
+    </div>
+
+    <div>
+      <label for="{{ form.noti_time.id_for_label }}">{{ form.noti_time.label }}</label>
+      <input type="time" name="noti_time" id="{{ form.noti_time.id_for_label }}" required />
+    </div>
+
+    <div>
+      <label for="{{ form.routine.id_for_label }}">{{ form.routine.label }}</label>
+      {{ form.routine }}
+    </div>
+
+    <div>
+      <label for="{{ form.family.id_for_label }}">{{ form.family.label }}</label>
+      {{ form.family }}
+    </div>
+
+    <button type="button" id="button" class="px-2 p-1 text-white bg-brown-500 hover:bg-brown-600 active:bg-brown-700">Submit</button>
+  </form>
+{% endblock %}
+
+{% block script %}
+  <script>
+    window.onload = function () {
+      var form = document.getElementById('theForm')
+      form.getElementsByTagName('button')
+      form.button.onclick = function () {
+        for (var i = 0; i < form.elements.length; i++) {
+          if (form.elements[i].value === '' && form.elements[i].hasAttribute('required')) {
+            alert('There are some required fields!')
+            return false
+          }
+        }
+        add_event()
+      }
+    }
+    
+    function add_event() {
+      let data = {
+        user: '{{ user.id }}',
+        name: document.getElementById('{{form.name.id_for_label}}').value,
+        noti_date: document.getElementById('{{form.noti_date.id_for_label}}').value,
+        noti_time: document.getElementById('{{form.noti_time.id_for_label}}').value,
+        description: document.getElementById('{{form.description.id_for_label}}').value,
+        family: document.getElementById('{{form.family.id_for_label}}').value
+      }
+      fetch("{{ base_url }}{% url 'event_list' %}", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify(data)
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Created:', data)
+        })
+        .catch((error) => {
+          console.log('Errors:', error)
+        })
+    }
+  </script>
+{% endblock %}

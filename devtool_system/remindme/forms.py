@@ -3,7 +3,7 @@ from django import forms
 
 from django.utils.timezone import now
 ## models
-from .models import Users, Events
+from .models import *
 from datetime import datetime
 from django.core.exceptions import ValidationError
 
@@ -54,3 +54,9 @@ class EventsForm(forms.ModelForm):
                 'class': 'w-full mb-4 p-2 border border-brown-700 rounded'
             }),
         }
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user')  # Extract 'user' from kwargs
+        super(EventsForm, self).__init__(*args, **kwargs)
+        
+        # Dynamically set the queryset for the select field based on the user
+        self.fields['family'].queryset = Family.objects.filter(users=user)

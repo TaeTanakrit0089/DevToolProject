@@ -1,5 +1,5 @@
 from django.contrib.auth import login
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, resolve_url
 from django.views import View
 from django.http import JsonResponse
 
@@ -11,12 +11,13 @@ from .forms import *
 
 from django.utils.timezone import now
 
-
 # Create your views here.
 
 class HomePage(View):
     def get(self, request):
         return render(request, 'index.html')
+    def post(self, request):
+        pass
     
 class RegisterView(View):
     def get(self, request):
@@ -70,3 +71,9 @@ class GetEventsByDateView(View):
             return JsonResponse([], safe=False)  # ส่งกลับเป็นลิสต์ว่าง
 
         return JsonResponse(events, safe=False)  # ส่งกลับข้อมูลกิจกรรม
+
+class TestView(View):
+    def get(self, request):
+        form = EventsForm(user=request.user)
+        base_url = request.build_absolute_uri('/')[:-1]
+        return render(request, "test.html", {"form": form, "base_url": base_url})
