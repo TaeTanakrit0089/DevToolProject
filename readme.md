@@ -2,6 +2,16 @@
 
 This repository contains the source code for a developer tool system.
 
+### Don't forget to add `.env` file
+
+```
+DB_NAME=app_db
+DB_USER=postgres
+DB_PASSWORD=Ab123456*
+DB_HOST=postgres_db
+DB_PORT=5432
+```
+
 ### Development Setup
 
 #### Prerequisites
