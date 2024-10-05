@@ -24,7 +24,7 @@ class RegisterForm(UserCreationForm):
 class EventsForm(forms.ModelForm):
     class Meta:
         model = Events
-        fields = ['name', 'description', 'noti_date', 'noti_time', 'routine', 'family']
+        fields = ['name', 'description', 'noti_time', 'routine', 'family']
         widgets = {
             'name': forms.TextInput(attrs={
                 'id': 'eventName',
@@ -33,6 +33,7 @@ class EventsForm(forms.ModelForm):
             }),
             'noti_time': forms.TimeInput(attrs={
                 'id': 'eventTime',
+                'type': 'time',
                 'placeholder': 'Event Time',
                 'class': 'w-full mb-4 p-2 border border-brown-700 rounded'
             }),

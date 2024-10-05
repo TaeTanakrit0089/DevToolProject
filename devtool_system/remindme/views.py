@@ -47,8 +47,14 @@ class CalendarView(View):
 
     def post(self, request):
         form = EventsForm(request.POST)
+        print(f"form is valid: {form.is_valid()}")
+        print(form.errors)  
+
         if form.is_valid():
-            form.save()
+            new_event = form.save(commit=False)
+            new_event.user = request.user
+            new_event.noti_date = request.POST.get('noti_date')
+            new_event.save()
             return redirect('calendar_page')
         return render(request, "calendar.html", {'form': form})
 

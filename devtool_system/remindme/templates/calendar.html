@@ -39,26 +39,25 @@
     </div>
 </div>
 
-<div id="eventContainer" class="container mx-auto p-4 bg-white shadow-lg rounded-lg mt-4 hidden">
+<div id="eventContainer" class="container mx-auto p-4 bg-white shadow-lg rounded-lg mt-4">
     <!-- ตารางข้อมูลกิจกรรม -->
-    <div id="eventDetails" class="hidden">
-        <h2 class="text-xl font-bold mb-4 text-brown-700 flex justify-between items-center">
+    <div id="eventDetails">
+        <h2 class="text-xl font-bold mb-4 text-[#6b4142] flex justify-between items-center">
             <div>Events for <span id="selectedDate"></span></div>
-            <button id="addEventModalBtn" class="bg-brown-700 hover:bg-brown-600 text-white px-4 py-2 rounded">Add Event</button>
+            <button id="addEventModalBtn" class="bg-[#6b4142] hover:bg-[#5a3535] text-white px-4 py-2 rounded">Add Event</button>
         </h2>
-        <table class="min-w-full bg-white border">
+        <table class="min-w-full bg-white border border-[#6b4142]">
             <thead>
-                <tr>
-                    <th class="px-4 py-2">Time</th>
-                    <th class="px-4 py-2">Event Name</th>
-                    <th class="px-4 py-2">Description</th>
+                <tr class="bg-[#6b4142] text-white">
+                    <th class="px-4 py-2 border border-[#6b4142]">Time</th>
+                    <th class="px-4 py-2 border border-[#6b4142]">Event Name</th>
+                    <th class="px-4 py-2 border border-[#6b4142]">Description</th>
                 </tr>
             </thead>
-            <tbody id="eventTableBody">
-                <!-- กิจกรรมจะถูกเพิ่มที่นี่โดย JavaScript -->
+            <tbody id="eventTableBody" class="text-[#6b4142] divide-y divide-[#6b4142]">
+                <!-- Generate By JavaScript -->
             </tbody>
         </table>
-
     </div>
 </div>
 
@@ -66,8 +65,11 @@
 <div id="eventModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center">
     <div class="bg-white p-6 rounded-lg">
         <h2 class="text-xl font-bold mb-4 text-brown-700">Add Event for <span id="selectedModalDate"></span></h2>
-        <form method="POST" id="eventForm">
+        <form method="POST" id="eventForm" action="{% url 'calendar_page' %}">
             {% csrf_token %}
+
+            <input type="hidden" name="noti_date" id="notiDateInput" value="">
+
             {{ form.non_field_errors }}
             <div class="mb-1">
                 {{ form.name.label_tag }}
@@ -97,10 +99,9 @@
                     <div class="text-red-500 text-sm">{{ form.routine.errors }}</div>
                 {% endif %}
             </div>
-            <!-- Add family selection -->
             <div class="mb-1">
                 {{ form.family.label_tag }}
-                {{ form.family }}  <!-- Add this line for the family selection -->
+                {{ form.family }}
                 {% if form.family.errors %}
                     <div class="text-red-500 text-sm">{{ form.family.errors }}</div>
                 {% endif %}
@@ -113,11 +114,8 @@
     </div>
 </div>
 
-{% endblock %}
-
-{% block script %}
 <script>
- document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
     const monthYearElement = document.getElementById("monthYear");
     const calendarDaysElement = document.getElementById("calendar-days");
     const prevMonthBtn = document.getElementById("prevMonthBtn");
@@ -127,12 +125,14 @@
     const selectedDateElement = document.getElementById("selectedDate");
     const eventTableBody = document.getElementById("eventTableBody");
     const addEventModalBtn = document.getElementById("addEventModalBtn");
+    const notiDateInput = document.getElementById('notiDateInput');
 
     // Open modal to add event
     addEventModalBtn.addEventListener("click", () => {
-        const selectedDate = selectedDateElement.innerText; // Get the selected date
-        document.getElementById("selectedModalDate").innerText = selectedDate; // Set the date in modal
-        document.getElementById("eventModal").classList.remove("hidden"); // Show the modal
+        const selectedDate = selectedDateElement.innerText;
+        document.getElementById("selectedModalDate").innerText = selectedDate;
+        notiDateInput.value = selectedDate;
+        document.getElementById("eventModal").classList.remove("hidden");
     });
 
     // Close modal
@@ -140,50 +140,27 @@
         document.getElementById("eventModal").classList.add("hidden"); // Hide the modal
     });
 
-    // INCASE HAVE ดัก
-    // function updateAddEventButtonVisibility(selectedDate) {
-    //     const today = new Date();
-    //     today.setHours(0, 0, 0, 0);
-    //     if (new Date(selectedDate) < today) {
-    //         addEventModalBtn.classList.add("hidden");
-    //     } else {
-    //         addEventModalBtn.classList.remove("hidden");
-    //     }
-    // }
-
     let currentDate = new Date();
 
     function renderCalendar() {
         calendarDaysElement.innerHTML = "";
-
         const year = currentDate.getFullYear();
         const month = currentDate.getMonth();
-
         const monthYearString = currentDate.toLocaleDateString("en-US", {
             year: "numeric",
             month: "long",
         });
         monthYearElement.innerText = monthYearString;
-
         const firstDayOfMonth = new Date(year, month, 1).getDay();
         const lastDateOfMonth = new Date(year, month + 1, 0).getDate();
         const today = new Date();
-
         const lastDatePrevMonth = new Date(year, month, 0).getDate();
 
         // Fill previous month's days
         for (let i = 0; i < firstDayOfMonth; i++) {
             const prevMonthDate = lastDatePrevMonth - firstDayOfMonth + i + 1;
             const dateDiv = document.createElement("div");
-            dateDiv.classList.add(
-                "bg-[#F2DEDB]",
-                "text-[#D1B1A1]",
-                "p-2",
-                "rounded",
-                "border",
-                "text-center",
-                "cursor-not-allowed"
-            );
+            dateDiv.classList.add("bg-[#F2DEDB]", "text-[#D1B1A1]", "p-2", "rounded", "border", "text-center", "cursor-not-allowed");
             dateDiv.innerText = prevMonthDate;
             calendarDaysElement.appendChild(dateDiv);
         }
@@ -191,110 +168,85 @@
         // Fill current month's days
         for (let date = 1; date <= lastDateOfMonth; date++) {
             const dateDiv = document.createElement("div");
-            dateDiv.classList.add(
-                "bg-white",
-                "p-2",
-                "rounded",
-                "border",
-                "text-center",
-                "cursor-pointer"
-            );
-
-            if (
-                date === today.getDate() &&
-                month === today.getMonth() &&
-                year === today.getFullYear()
-            ) {
-                dateDiv.classList.add("bg-brown-700", "text-white");
-            }
-
+            dateDiv.classList.add("bg-white", "p-2", "rounded", "border", "text-center", "cursor-pointer");
             dateDiv.innerText = date;
+
+            // Highlight today's date and fetch events
+            if (date === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+                dateDiv.classList.add("bg-brown-700", "text-white");
+                fetchAndDisplayEvents(today.toLocaleDateString("en-CA"));
+            }
 
             // Add click event to fetch and display events for the selected date
             dateDiv.addEventListener("click", () => {
-                const selectedDate = new Date(year, month, date).toLocaleDateString("en-CA"); // Format as YYYY-MM-DD
+                const selectedDate = new Date(year, month, date).toLocaleDateString("en-CA");
                 selectedDateElement.innerText = selectedDate;
-
-                // INCASE ดัก
-                // updateAddEventButtonVisibility(selectedDate);
-
-                // Fetch events for the selected date
-                fetch(`/remindme/calendar/events/${selectedDate}/`, {
-                    method: "GET"
-                })
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error("No events found");
-                    }
-                    return response.json();
-                })
-                .then((data) => {
-                    // Clear previous event data
-                    eventTableBody.innerHTML = "";
-
-                    if (data.length > 0) {
-                        // Populate table with new events
-                        data.forEach((event) => {
-                            const row = document.createElement("tr");
-                            row.innerHTML = `
-                                <td class="px-4 py-2">${event.noti_time}</td>
-                                <td class="px-4 py-2">${event.name}</td>
-                                <td class="px-4 py-2">${event.description}</td>
-                            `;
-                            eventTableBody.appendChild(row);
-                        });
-
-                        // Show the event details section and the container
-                        eventDetails.classList.remove("hidden");
-                        document.getElementById("eventContainer").classList.remove("hidden"); // Show the container
-                    } else {
-                        // If no events, display a message
-                        const noEventRow = document.createElement("tr");
-                        noEventRow.innerHTML = `
-                            <td colspan="3" class="px-4 py-2 text-center">No events scheduled for this day</td>
-                        `;
-                        eventTableBody.appendChild(noEventRow);
-
-                        // Show the event details section and the container
-                        eventDetails.classList.remove("hidden");
-                        document.getElementById("eventContainer").classList.remove("hidden"); // Show the container
-                    }
-                })
-                .catch((error) => {
-                    // Handle errors
-                    eventTableBody.innerHTML = ""; // Clear previous event data
-                    const noEventRow = document.createElement("tr");
-                    noEventRow.innerHTML = `
-                        <td colspan="3" class="px-4 py-2 text-center">Error: ${error.message}</td>
-                    `;
-                    eventTableBody.appendChild(noEventRow);
-
-                    // Show the event details section and the container
-                    eventDetails.classList.remove("hidden");
-                    document.getElementById("eventContainer").classList.remove("hidden"); // Show the container
-                });
+                fetchAndDisplayEvents(selectedDate);
             });
 
             calendarDaysElement.appendChild(dateDiv);
         }
 
         const remainingDays = 42 - firstDayOfMonth - lastDateOfMonth;
-
         // Fill remaining days
         for (let i = 1; i <= remainingDays; i++) {
             const dateDiv = document.createElement("div");
-            dateDiv.classList.add(
-                "bg-[#F2DEDB]",
-                "text-[#D1B1A1]",
-                "p-2",
-                "rounded",
-                "border",
-                "text-center",
-                "cursor-not-allowed"
-            );
+            dateDiv.classList.add("bg-[#F2DEDB]", "text-[#D1B1A1]", "p-2", "rounded", "border", "text-center", "cursor-not-allowed");
             dateDiv.innerText = i;
             calendarDaysElement.appendChild(dateDiv);
         }
+    }
+
+    function fetchAndDisplayEvents(selectedDate) {
+        selectedDateElement.innerText = selectedDate;
+
+        fetch(`/remindme/calendar/events/${selectedDate}/`, {
+            method: "GET"
+        })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("No events found");
+            }
+            return response.json();
+        })
+        .then((data) => {
+            eventTableBody.innerHTML = ""; // Clear previous event data
+
+            if (data.length > 0) {
+                // Populate table with new events
+                data.forEach((event) => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td class="px-4 py-2 border-l border-r border-[#6b4142]">${event.noti_time}</td>
+                        <td class="px-4 py-2 border-l border-r border-[#6b4142]">${event.name}</td>
+                        <td class="px-4 py-2 border-l border-r border-[#6b4142]">${event.description}</td>
+                    `;
+                    eventTableBody.appendChild(row);
+                });
+            } else {
+                // If no events, display a message
+                const noEventRow = document.createElement("tr");
+                noEventRow.innerHTML = `
+                    <td colspan="3" class="px-4 py-2 text-center">No events scheduled for this day</td>
+                `;
+                eventTableBody.appendChild(noEventRow);
+            }
+
+            // Show the event details section and the container
+            eventDetails.classList.remove("hidden");
+            document.getElementById("eventContainer").classList.remove("hidden");
+        })
+        .catch((error) => {
+            // Handle errors
+            eventTableBody.innerHTML = ""; // Clear previous event data
+            const noEventRow = document.createElement("tr");
+            noEventRow.innerHTML = `
+                <td colspan="3" class="px-4 py-2 text-center">Error: ${error.message}</td>
+            `;
+            eventTableBody.appendChild(noEventRow);
+            eventDetails.classList.remove("hidden");
+            document.getElementById("eventContainer").classList.remove("hidden");
+        });
     }
 
     prevMonthBtn.addEventListener("click", () => {
@@ -308,12 +260,13 @@
     });
 
     todayBtn.addEventListener("click", () => {
-        currentDate = new Date();
-        renderCalendar();
+        currentDate = new Date(); // Set current date
+        renderCalendar(); // Render the calendar for the current date
+        fetchAndDisplayEvents(currentDate.toLocaleDateString("en-CA")); // Fetch events for today's date
     });
 
     renderCalendar();
 });
-
 </script>
+
 {% endblock %}
