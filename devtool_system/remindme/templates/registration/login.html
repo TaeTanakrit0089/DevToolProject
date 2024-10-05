@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 {% block title %}Login{% endblock %}
-{% block navbar %}{% include 'navbar.html'%}{% endblock %}
-{% block main %}
-  <div class="min-w-1/2 m-auto">
+{% comment %} {% block navbar %}{% include 'navbar.html'%}{% endblock %} {% endcomment %}
+{% block content %}
+  <div class="min-w-1/2">
     <form class="m-3 bg-white/90 dark:bg-[#272c4f]/90 px-12 py-8 my-12 rounded-xl shadow-lg max-w-lg mx-auto" action="" method="post">
-      <h1 class="text-4xl font-bold mb-8 text-center text-[#4c569b] dark:text-white">Login</h1>
+      <h1 class="text-4xl font-bold mb-8 text-center text-brown-950 dark:text-white">Login</h1>
       {% csrf_token %}
       <div class="flex flex-col gap-6">
         <!-- Email(username) -->
@@ -22,7 +22,7 @@
           </div>
       </div>
       {{ form.errors|cut:"__all__" }}
-      <button class="w-full mt-6 bg-[#4e5ea9] hover:bg-[#3c488d] active:bg-[#313a73] text-white font-semibold py-3 px-4 rounded-lg shadow-md transition-all duration-300">Sign in</button>
+      <button class="w-full mt-6 bg-brown-800 hover:bg-brown-500 active:bg-brown-950 text-white font-semibold py-3 px-4 rounded-lg shadow-md transition-all duration-300">Sign in</button>
     </form>
   </div>
 {% endblock %}

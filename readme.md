@@ -43,7 +43,7 @@ This repository contains the source code for a developer tool system.
     - Create a database named `app_db`.
     - Create a user named `postgres` with password `password` and grant access to the `app_db` database.
 
-6. **Create a `.env` file:**
+6. **Create a `.env` file and copy to root folder:**
 
    ```bash
    vim .env

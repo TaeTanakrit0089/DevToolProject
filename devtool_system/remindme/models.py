@@ -8,8 +8,8 @@ class Users(AbstractUser):
 # Create your models here.
 class Family(models.Model):
     name = models.CharField(max_length=200)
-    token = models.CharField(max_length=10) # TOKEN for Invite
-    user = models.ManyToManyField(Users)
+    token = models.CharField(max_length=6) # TOKEN for Invite
+    users = models.ManyToManyField(Users)
     
 class Events(models.Model):
     ROUTINE = {

@@ -38,3 +38,7 @@ class RegisterView(View):
             "form": form,
             "now": now().date() # ถ้า form ผิดส่ง now date มาด้วย
         })
+    
+class CalendarView(View):
+    def get(self, request):
+        return render(request, "calendar.html")
