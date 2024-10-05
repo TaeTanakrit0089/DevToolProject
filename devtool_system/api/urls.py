@@ -1,9 +1,10 @@
 from django.urls import path
-from rest_framework.authtoken import views
 from .views import *
 
 urlpatterns = [
-    path('token-auth/', views.obtain_auth_token),
-    path("signin/", Register.as_view()),
-    path("credential/", Login.as_view()),
+    path("family/", FamilyList.as_view(), name="family_list"),
+    path("family/<int:pk>/", FamilyAction.as_view(), name="family_action"),
+    path("join/<str:token>/", JoinFamily.as_view(), name="join_family"),
+    path("events/", EventList.as_view(), name="event_list"),
+    path("events/<int:pk>/", EventAction.as_view(), name="events_action"),
 ]

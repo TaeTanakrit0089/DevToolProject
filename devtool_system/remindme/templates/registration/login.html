@@ -1,4 +1,4 @@
-{% extends 'layout.html' %}
+{% extends 'base.html' %}
 {% block title %}Login{% endblock %}
 {% block main %}
   <div class="min-w-1/2 m-auto">
@@ -9,7 +9,7 @@
         <!-- Email(username) -->
         <div class="flex flex-col">
           <label for="{{ form.username.id_for_label }}" class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ form.username.label }}</label>
-          <input class="rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-[#353a55] border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] focus:ring-1 focus:ring-[#4c569b] py-2 px-3 text-gray-900 dark:text-white transition" type="email" name="username" id="{{ form.username.id_for_label }}" value="{{ form.username.value|default_if_none:'' }}" required placeholder="e@mail.com" />
+          <input class="rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-[#353a55] border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] focus:ring-1 focus:ring-[#4c569b] py-2 px-3 text-gray-900 dark:text-white transition" type="text" name="username" id="{{ form.username.id_for_label }}" value="{{ form.username.value|default_if_none:'' }}" required placeholder="e@mail.com" />
           <p class="text-red-500 text-sm mt-1">{{ form.username.errors }}</p>
         </div>
 
@@ -29,7 +29,7 @@
 {% block script %}
 {% if user.is_authenticated %}
 <script>
-  window.location.href = "/"
+  window.location.href = "/home"
 </script>
 {% endif %}
 {% endblock %}
