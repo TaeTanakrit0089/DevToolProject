@@ -17,8 +17,7 @@ Including another URLconf
 from debug_toolbar.toolbar import debug_toolbar_urls
 from django.contrib import admin
 from django.urls import path, include
-
-from remindme.views import RegisterView
+from remindme.views import RegisterView, CalendarView, GetEventsByDateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),

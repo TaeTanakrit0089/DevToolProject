@@ -1,0 +1,121 @@
+{% load static %}
+<nav class="relative z-30 border-gray-200 navbar flex flex-row justify-between place-items-center py-4 px-3 font-medium">
+  {% comment %} LOGO {% endcomment %}
+  <div class="flex flex-row">
+    
+    <div class="sm:hidden">
+      <button id="sidebar_btn" class="inline-flex items-center p-1 w-10 h-10 justify-center text-sm text-[#0c0d18] rounded-full hover:bg-[#f1f7fa] focus:outline-none focus:ring-2 focus:ring-[#e1f3fc] dark:text-[#eef7fc] hover:bg-[#eef7fc]/70 dark:hover:bg-[#272c4f] dark:focus:ring-[#4c569b]">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12" />
+        </svg>     
+      </button>
+    </div>
+
+    <a href="{% url 'home' %}" class="flex items-center space-x-3 rtl:space-x-reverse">
+      <img src="{% static 'images/family.png' %}" class="h-8 bg-white dark:bg-transparent" id="logo" />
+      <span class="self-center text-2xl font-semibold whitespace-nowrap text-brown-950 dark:text-white">RemindMe</span>
+    </a>
+  </div>
+
+  {% comment %} NAVBAR {% endcomment %}
+  <div class="flex flex-wrap items-center justify-start md:justify-center gap-3 max-h-10">
+    <button id="navbar_btn" data-collapse-toggle="navbar-default" type="button" 
+    {% if user.is_authenticated %} class="ml-auto inline-flex items-center p-1 w-10 h-10 justify-center text-sm text-[#0c0d18] rounded-full hover:bg-[#f1f7fa] focus:outline-none focus:ring-2 focus:ring-[#e1f3fc] dark:text-[#eef7fc] hover:bg-[#eef7fc]/70 dark:hover:bg-[#272c4f] dark:focus:ring-[#4c569b]"
+    {% else %} class="ml-auto inline-flex items-center p-1 w-10 h-10 justify-center text-sm text-[#0c0d18] rounded-full hover:bg-[#f1f7fa] focus:outline-none focus:ring-2 focus:ring-[#e1f3fc] dark:text-[#eef7fc] hover:bg-[#eef7fc]/70 dark:hover:bg-[#272c4f] dark:focus:ring-[#4c569b]" {% endif %} 
+    aria-controls="navbar-default" aria-expanded="false">
+      {% if user.is_authenticated %}
+      <p>Hi!!!</p>
+      {% else %}
+      {% comment %} <h1>Oh no</h1> {% endcomment %}
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-96">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25" />
+      </svg>
+      {% endif %}
+    </button>
+    
+    <div class="hidden w-full" id="navbar-default">
+
+      <div class="absolute top-25 right-[10px] min-w-32 flex flex-col border border-black dark:border-[#1b1e36] rounded-md bg-gray-50  dark:bg-[#0c0d18]">
+      {% if user.is_authenticated %}
+      <ul class="border-b-[1px] py-2 px-4">
+        <li>
+          <p>{{ user.get_full_name|truncatechars:"12" }}</p>
+        </li>
+      </ul>
+      {% endif %}
+
+      <ul id="link">
+        {% if not user.is_authenticated %}
+          {% include 'nav_item/guest.html' %}
+        {% else %}
+          {% include 'nav_item/customer.html' %}
+        {% endif %}
+      </ul>
+    </div>
+
+  </div>
+
+  {% comment %} {% if not user.is_authenticated %}
+  <div class="hidden w-full md:block md:w-auto" id="navbar-default2">
+    <div class="flex flex-col border p-4 md:p-0 mt-4 border-gray-100 md:flex-row md:space-x-8 md:mt-0 md:border-0 border-[#3b4682]/50 dark:border-[#3b4682] rounded-md rtl:space-x-reverse ">
+      <ul id="link2" class="flex flex-row gap-2">
+        {% include 'nav_item/guest.html' %}
+      </ul>
+  </div>
+  {% else %}
+  {% endif %} {% endcomment %}
+
+  </div>
+</nav>
+
+<script>
+  // Toggle navbar
+  const navbar_btn = document.getElementById("navbar_btn")
+  const navbar_display = document.getElementById("navbar-default")
+
+  navbar_btn.addEventListener("click", ()=>{
+    navbar_display.classList.toggle("hidden")
+  })
+
+  // Close navbar if clicking outside
+  document.addEventListener("click", (event) => {
+    const isClickInside = navbar_display.contains(event.target) || navbar_btn.contains(event.target);
+    
+    if (!isClickInside && !navbar_display.classList.contains("hidden")) {
+      navbar_display.classList.add("hidden");
+    }
+  });
+</script>
+
+<script>
+  function light_text(link, page){
+    return location.href.search(page+"/")+1 && link.href.search(page+"/")+1 && !exclude.includes(link.text) && !exclude2.includes(location.href)
+  }
+  // Make selected menu become purple-color
+  const a1 = document.getElementById("link").getElementsByTagName("a")
+  {% if not user.is_authenticated %}const a2 = document.getElementById("link2").getElementsByTagName("a")
+  {% endif %}
+
+  const exclude = ["Sign up", "Logout"]
+  const exclude2 = []
+  for (let i=0;i<a1.length;i++){
+    if (exclude.includes(a1[i].text)){
+      exclude2.push(a1[i].href)
+    }
+  }
+  for (let i=0;i<a1.length;i++){
+    if ((a1[i].href == location.href && !exclude.includes(a1[i].text)) || light_text(a1[i], "user") || light_text(a1[i], "manager")){
+      // (location.href.search("user/")+1 && a[i].href.search("user/")+1) หาก Path เป็นของ USER ก็จะขึ้นตลอด
+      a1[i].classList.remove("md:dark:text-[#4c569b]", "md:text-[#0c0d18]", "dark:hover:bg-[#272c4f]", "hover:bg-[#eef7fc]/70")
+      a1[i].classList.add("md:dark:text-white", "md:text-[#4c569b]", "font-bold", "dark:text-white")
+      a1[i].href = "#"
+      
+      {% if not user.is_authenticated %}
+      a2[i].classList.remove("md:dark:text-[#4c569b]", "md:text-[#0c0d18]", "dark:hover:bg-[#272c4f]", "hover:bg-[#eef7fc]/70")
+      a2[i].classList.add("md:dark:text-white", "md:text-[#4c569b]", "font-bold", "dark:text-white")
+      a2[i].href = "#"
+      {% endif %}
+      break;
+    }
+  }
+</script>
