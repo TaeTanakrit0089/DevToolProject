@@ -1,58 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Calendar</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100">
+{% extends 'base.html' %}
 
-    <div class="container mx-auto p-4 bg-white shadow-lg rounded-lg">
-        <div class="container mx-auto p-4">
-            <!-- Header -->
-            <div class="flex justify-between items-center mb-4">
-                <h1 id="monthYear" class="text-2xl font-bold">January 2022</h1>
-                <div class="flex space-x-4">
-                    <button id="todayBtn" class="bg-[#9B5642] hover:bg-[#B76B5A] text-white px-3 py-2 rounded">Today</button>
-                    <div class="flex items-center space-x-1">
-                        <button id="prevMonthBtn" class="bg-[#D1B1A1] hover:bg-[#C09081] px-2 py-2 rounded-l">&lt;</button>
-                        <button id="nextMonthBtn" class="bg-[#D1B1A1] hover:bg-[#C09081] px-2 py-2 rounded-r">&gt;</button>
-                    </div>
+{% block title %}
+    Dynamic Calendar
+{% endblock %}
+
+{% block main %}
+
+<div class="container mx-auto p-4 bg-white shadow-lg rounded-lg">
+    <div class="container mx-auto p-4">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-4">
+            <h1 id="monthYear" class="text-2xl font-bold">January 2022</h1>
+            <div class="flex space-x-4">
+                <button id="todayBtn" class="bg-brown-700 hover:bg-brown-600 text-white px-3 py-2 rounded">Today</button>
+                <div class="flex items-center space-x-1">
+                    <button id="prevMonthBtn" class="bg-brown-700 hover:bg-brown-600 text-white px-2 py-2 rounded-l">&lt;</button>
+                    <button id="nextMonthBtn" class="bg-brown-700 hover:bg-brown-600 text-white px-2 py-2 rounded-r">&gt;</button>
                 </div>
             </div>
-
-            <!-- ปฏิทิน -->
-            <div class="grid grid-cols-7 gap-2 text-center text-sm font-medium text-gray-700">
-                <!-- แสดงชื่อวันของสัปดาห์ -->
-                <div>Sun</div>
-                <div>Mon</div>
-                <div>Tue</div>
-                <div>Wed</div>
-                <div>Thu</div>
-                <div>Fri</div>
-                <div>Sat</div>
-            </div>
-
-            <!-- กล่องวันที่ของปฏิทิน -->
-            <div id="calendar-days" class="grid grid-cols-7 gap-2 mt-2">
-                <!-- วันที่ต่างๆ จะถูกสร้างด้วย JavaScript -->
-            </div>
         </div>
-    </div>
 
-<!-- Pop-up Modal -->
-<div id="eventModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center">
-    <div class="bg-white p-6 rounded-lg">
-        <h2 class="text-xl font-bold mb-4 text-[#9B5642]">Add Event for <span id="selectedDate"></span></h2>
-        <input type="text" placeholder="Event Name" class="w-full mb-4 p-2 border border-[#9B5642] rounded" />
-        <div class="flex justify-end space-x-4">
-            <button id="closeModal" class="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300">Cancel</button>
-            <button class="bg-[#9B5642] text-white px-4 py-2 rounded hover:bg-[#B76B5A]">Save</button>
+        <!-- ปฏิทิน -->
+        <div class="grid grid-cols-7 gap-2 text-center text-sm font-medium text-gray-700">
+            <!-- แสดงชื่อวันของสัปดาห์ -->
+            <div>Sun</div>
+            <div>Mon</div>
+            <div>Tue</div>
+            <div>Wed</div>
+            <div>Thu</div>
+            <div>Fri</div>
+            <div>Sat</div>
+        </div>
+
+        <!-- กล่องวันที่ของปฏิทิน -->
+        <div id="calendar-days" class="grid grid-cols-7 gap-2 mt-2">
+            <!-- วันที่ต่างๆ จะถูกสร้างด้วย JavaScript -->
         </div>
     </div>
 </div>
 
+<!-- Pop-up Modal -->
+<div id="eventModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center">
+    <div class="bg-white p-6 rounded-lg">
+        <h2 class="text-xl font-bold mb-4 text-brown-700">Add Event for <span id="selectedDate"></span></h2>
+        <input type="text" placeholder="Event Name" class="w-full mb-4 p-2 border border-brown-700 rounded" />
+        <div class="flex justify-end space-x-4">
+            <button id="closeModal" class="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300">Cancel</button>
+            <button class="bg-brown-700 text-white px-4 py-2 rounded hover:bg-brown-600">Save</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const monthYearElement = document.getElementById('monthYear');
@@ -104,7 +104,7 @@
 
                 // If the current date matches today's date, apply the highlight and shadow
                 if (date === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
-                    dateDiv.classList.add('bg-[#B76B5A]', 'text-white');
+                    dateDiv.classList.add('bg-brown-600', 'text-white');
                 }
 
                 dateDiv.innerText = date;
@@ -161,6 +161,4 @@
         });
     });
 </script>
-
-</body>
-</html>
+{% endblock %}
