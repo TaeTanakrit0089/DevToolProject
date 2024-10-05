@@ -20,7 +20,7 @@ class HomePage(View):
 class RegisterView(View):
     def get(self, request):
         if (request.user.is_authenticated):
-            return redirect("index")
+            return redirect("home")
         form = RegisterForm()
         return render(request, "register.html", {
             "form": form,
@@ -29,6 +29,7 @@ class RegisterView(View):
     
     def post(self, request):
         form = RegisterForm(request.POST)
+        print('username=', form['username'])
         if form.is_valid():
             user = form.save()
             login(request, user)

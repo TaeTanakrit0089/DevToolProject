@@ -10,7 +10,7 @@ from django.core.exceptions import ValidationError
 class RegisterForm(UserCreationForm):
     class Meta:
         model = Users
-        fields = ['birth_date', 'first_name', 'last_name']
+        fields = ['username','birth_date', 'first_name', 'last_name']
 
     def clean_birth_date(self):
         dob = self.cleaned_data.get("birth_date")

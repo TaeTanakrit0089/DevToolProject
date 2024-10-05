@@ -8,7 +8,22 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{% block title %}Title{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'output.css' %}">
+    <style>
+        @media (prefers-color-scheme: dark) {
+            body {
+              background-color: #6b4142;
+            }
+          }
+          @media (prefers-color-scheme: light) {
+            body {
+              background-color: white;
+              background-image: radial-gradient(blue, rgba(255, 255, 255, 0.1) 2px, transparent 50px), radial-gradient(blue, rgba(255, 255, 255, 0.15) 1px, transparent 50px), radial-gradient(blue, rgba(255, 255, 255, 0.1) 2px, transparent 50px), radial-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1) 2px, transparent 50px);
+              background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px;
+            }
+          }
+    </style>
 </head>
+{% block navbar %}{% endblock %}
 <body>
 <main>
     {% block main %}

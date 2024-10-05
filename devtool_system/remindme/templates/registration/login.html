@@ -1,22 +1,23 @@
-{% extends 'layout.html' %}
+{% extends 'base.html' %}
 {% block title %}Login{% endblock %}
+{% block navbar %}{% include 'navbar.html'%}{% endblock %}
 {% block main %}
   <div class="min-w-1/2 m-auto">
     <form class="m-3 bg-white/90 dark:bg-[#272c4f]/90 px-12 py-8 my-12 rounded-xl shadow-lg max-w-lg mx-auto" action="" method="post">
-      <h1 class="text-4xl font-bold mb-8 text-center text-[#4c569b] dark:text-white">Laundry System</h1>
+      <h1 class="text-4xl font-bold mb-8 text-center text-[#4c569b] dark:text-white">Login</h1>
       {% csrf_token %}
       <div class="flex flex-col gap-6">
         <!-- Email(username) -->
         <div class="flex flex-col">
           <label for="{{ form.username.id_for_label }}" class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ form.username.label }}</label>
-          <input class="rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-[#353a55] border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] focus:ring-1 focus:ring-[#4c569b] py-2 px-3 text-gray-900 dark:text-white transition" type="email" name="username" id="{{ form.username.id_for_label }}" value="{{ form.username.value|default_if_none:'' }}" required placeholder="e@mail.com" />
+          <input class="rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-[#353a55] border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] focus:ring-1 focus:ring-[#4c569b] py-2 px-3 text-gray-900 dark:text-white transition" type=".text" name="username" id="{{ form.username.id_for_label }}" value="{{ form.username.value|default_if_none:'' }}" required placeholder="Your Username" />
           <p class="text-red-500 text-sm mt-1">{{ form.username.errors }}</p>
         </div>
 
         <!-- Password(password)-->
         <div class="flex flex-col">
             <label for="{{ form.password.id_for_label }}" class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ form.password.label }}</label>
-            <input class="rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-[#353a55] border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] focus:ring-1 focus:ring-[#4c569b] py-2 px-3 text-gray-900 dark:text-white transition" type="password" name="password" id="{{ form.password.id_for_label }}" required placeholder="Must have at least 8 characters" />
+            <input class="rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-[#353a55] border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] focus:ring-1 focus:ring-[#4c569b] py-2 px-3 text-gray-900 dark:text-white transition" type="password" name="password" id="{{ form.password.id_for_label }}" required placeholder="Must have at least 4 characters" />
             <p class="text-red-500 text-sm mt-1">{{ form.password.errors }}</p>
           </div>
       </div>
@@ -29,7 +30,7 @@
 {% block script %}
 {% if user.is_authenticated %}
 <script>
-  window.location.href = "/"
+  window.location.href = "{% url 'home' %}"
 </script>
 {% endif %}
 {% endblock %}
