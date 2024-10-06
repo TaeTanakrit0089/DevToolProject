@@ -27,10 +27,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-^97m*!sxi-ze6v++q(q32u*-b5&7!7*e48l(+vc!hh@2v*k6vx'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 # Application definition
+
+CSRF_TRUSTED_ORIGINS = ['https://34.87.135.25']
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
