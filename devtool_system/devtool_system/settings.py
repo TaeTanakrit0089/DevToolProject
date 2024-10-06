@@ -18,7 +18,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -27,19 +27,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-^97m*!sxi-ze6v++q(q32u*-b5&7!7*e48l(+vc!hh@2v*k6vx'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['34.87.135.25']
+ALLOWED_HOSTS = ["*"]
 # Application definition
-
-CSRF_TRUSTED_ORIGINS = [
-    'https://34.87.135.25',
-    'http://34.87.135.25',
-]
-
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
-
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -73,11 +64,11 @@ MIDDLEWARE = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
-# INTERNAL_IPS = [
-#     # ...
-#     "127.0.0.1",
-#     # ...
-# ]
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
+]
 
 ROOT_URLCONF = 'devtool_system.urls'
 
@@ -122,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-        'OPTIONS':{
+        'OPTIONS': {
             'min_length': 4,
         }
     },
@@ -148,11 +139,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'static/'
+    os.path.join(BASE_DIR, 'static')
 ]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
@@ -161,6 +154,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Authentication
 LOGOUT_REDIRECT_URL = "home"
 LOGIN_REDIRECT_URL = "home"
-LOGIN_URL = "login" # หากยังไม่ได้ Login จะเข้าไปหน้านี้
+LOGIN_URL = "login"  # หากยังไม่ได้ Login จะเข้าไปหน้านี้
 
 AUTH_USER_MODEL = "remindme.Users"
