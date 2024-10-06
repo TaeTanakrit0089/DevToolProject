@@ -30,3 +30,6 @@ class Events(models.Model):
     routine = models.IntegerField(choices=ROUTINE, default=0)
     family = models.ForeignKey(Family, null=True, on_delete=models.CASCADE)
     create_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['noti_date', 'noti_time']
