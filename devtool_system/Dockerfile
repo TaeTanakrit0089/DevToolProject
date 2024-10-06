@@ -8,15 +8,6 @@ WORKDIR /devtool_system
 
 COPY . .
 
-RUN apt-get update && \
-    apt-get install -y libpq-dev nodejs npm && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
-
-
-COPY ./requirements.txt .
 RUN pip install -r requirements.txt
-
-RUN npm install
 
 EXPOSE 8000

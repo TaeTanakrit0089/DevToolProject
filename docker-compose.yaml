@@ -11,6 +11,16 @@ services:
       - .env
     depends_on:
       - postgres_db
+      - npm  # Web service waits for npm service to build static assets
+
+  npm:
+    image: node:16
+    working_dir: /app
+    volumes:
+      - ./devtool_system:/app
+    command: [ "npm", "run", "build" ]
+    env_file:
+      - .env
 
   postgres_db:
     image: postgres:16

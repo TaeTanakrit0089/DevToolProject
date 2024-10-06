@@ -8,6 +8,10 @@
       <change beforePath="$PROJECT_DIR$/.idea/DevToolProject.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/DevToolProject.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/devtool_system/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/devtool_system/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/devtool_system/start.sh" beforeDir="false" afterPath="$PROJECT_DIR$/devtool_system/start.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/devtool_system/static/output.css" beforeDir="false" afterPath="$PROJECT_DIR$/devtool_system/static/output.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,7 +51,7 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;Docker.docker-compose.yaml: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Python.manage.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.manage.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.OpenDjangoStructureViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;django.template.preview.state&quot;: &quot;SHOW_EDITOR_AND_PREVIEW&quot;,
@@ -101,7 +105,7 @@
       <recent name="$PROJECT_DIR$/nginx" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.manage">
+  <component name="RunManager" selected="Docker.docker-compose.yaml: Compose Deployment">
     <configuration name="manage" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="DevToolProject" />
       <option name="ENV_FILES" value="$PROJECT_DIR$/devtool_system/.env" />
@@ -111,7 +115,6 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="Python 3.9 (DevToolProject)" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/devtool_system" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -177,8 +180,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.manage" />
         <item itemvalue="Docker.docker-compose.yaml: Compose Deployment" />
+        <item itemvalue="Python.manage" />
       </list>
     </recent_temporary>
   </component>
@@ -204,6 +207,7 @@
       <workItem from="1728183595439" duration="4000" />
       <workItem from="1728183805677" duration="211000" />
       <workItem from="1728184026013" duration="15000" />
+      <workItem from="1728214077660" duration="666000" />
     </task>
     <task id="LOCAL-00001" summary="Added readme.md">
       <option name="closed" value="true" />
@@ -227,6 +231,17 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+        <option value="GitHub.CommitStatus" />
+      </list>
+    </option>
+  </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
@@ -241,6 +256,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Added readme.md" />
     <MESSAGE value="Added ssl certificate and updated DockerFile" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added ssl certificate and updated DockerFile" />
+    <MESSAGE value="Updated docker-compose.yaml" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated docker-compose.yaml" />
   </component>
 </project>
