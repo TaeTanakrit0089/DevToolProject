@@ -29,29 +29,29 @@ class EventsForm(forms.ModelForm):
             'name': forms.TextInput(attrs={
                 'id': 'eventName',
                 'placeholder': 'Event Name',
-                'class': 'w-full mb-4 p-2 border border-brown-700 rounded'
+                'class': 'w-full text-black p-2 border border-brown-700 rounded'
             }),
             'noti_time': forms.TimeInput(attrs={
                 'id': 'eventTime',
                 'type': 'time',
                 'placeholder': 'Event Time',
-                'class': 'w-full mb-4 p-2 border border-brown-700 rounded'
+                'class': 'w-full text-black p-2 border border-brown-700 rounded'
             }),
             'description': forms.Textarea(attrs={
                 'id': 'eventDescription',
                 'placeholder': 'Event Description',
-                'class': 'w-full mb-4 p-2 border border-brown-700 rounded',
+                'class': 'w-full text-black p-2 border border-brown-700 rounded',
                 'rows': 3
             }),
             'noti_date': forms.DateInput(attrs={
                 'type': 'date',
-                'class': 'w-full mb-4 p-2 border border-brown-700 rounded'
+                'class': 'w-full text-black p-2 border border-brown-700 rounded'
             }),
             'routine': forms.Select(attrs={
-                'class': 'w-full mb-4 p-2 border border-brown-700 rounded'
+                'class': 'w-full text-black p-2 border border-brown-700 rounded'
             }),
             'family': forms.Select(attrs={
-                'class': 'w-full mb-4 p-2 border border-brown-700 rounded'
+                'class': 'w-full text-black p-2 border border-brown-700 rounded'
             }),
         }
     def __init__(self, *args, **kwargs):

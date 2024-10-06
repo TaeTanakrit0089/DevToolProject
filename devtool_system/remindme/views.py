@@ -62,7 +62,7 @@ class CalendarView(View):
 class GetEventsByDateView(View):
     def get(self, request, date):
         # ค้นหากิจกรรมในวันที่ระบุ
-        events = list(Events.objects.filter(noti_date=date).values('noti_time', 'name', 'description'))
+        events = list(Events.objects.filter(noti_date=date).values('noti_time', 'name', 'description').order_by("noti_time"))
 
         for event in events:
             event['noti_time'] = event['noti_time'].strftime("%H:%M")  # แปลงเป็นสตริง เช่น '16:00'

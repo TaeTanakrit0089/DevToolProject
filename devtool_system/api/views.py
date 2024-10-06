@@ -12,10 +12,11 @@ from django.utils.decorators import method_decorator
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+
 from io import BytesIO
 
-from rest_framework.parsers import JSONParser
-from rest_framework.renderers import JSONRenderer
+from django.db.models import Q, Count
 
 from json import loads
 
@@ -192,3 +193,35 @@ class EventAction(APIView):
         event = get_object_or_404(Events, pk=pk)
         event.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(['GET'])
+@authentication_classes([SessionAuthentication])
+@permission_classes([IsAuthenticated])
+def user_event_year(request, year):
+    event = Events.objects.filter(Q(user=request.user) | Q(family__in=request.user.family_set.all())).filter(Q(routine__range=(1, 3)) | Q(noti_date__year=year))
+    serializer = EventSerializer(event, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+@authentication_classes([SessionAuthentication])
+@permission_classes([IsAuthenticated])
+def user_event_month(request, year, month):
+    event = Events.objects.filter(Q(user=request.user) | Q(family__in=request.user.family_set.all())).filter(Q(routine__range=(1, 3)) | Q(noti_date__year=year, noti_date__month=month))
+    serializer = EventSerializer(event, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+@authentication_classes([SessionAuthentication])
+@permission_classes([IsAuthenticated])
+def user_event_day(request, year, month, day):
+    event = Events.objects.filter(Q(user=request.user) | Q(family__in=request.user.family_set.all())).filter(Q(routine__range=(1, 3)) | Q(noti_date__year=year, noti_date__month=month, noti_date__day=day))
+    serializer = EventSerializer(event, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+@authentication_classes([SessionAuthentication])
+@permission_classes([IsAuthenticated])
+def user_event_month_count(request, year, month):
+    event = Events.objects.filter(Q(user=request.user) | Q(family__in=request.user.family_set.all())).filter(Q(routine__range=(1, 3)) | Q(noti_date__year=year, noti_date__month=month)).values("noti_date", "noti_date__year", "noti_date__month", "noti_date__day").annotate(count=Count("id"))
+    return Response(event)

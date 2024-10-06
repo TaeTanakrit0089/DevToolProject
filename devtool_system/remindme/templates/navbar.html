@@ -35,8 +35,8 @@
     
     <div class="hidden w-full" id="navbar-default">
 
-      <div class="absolute right-0 top-15 mr-3 min-w-48 flex flex-col border rounded-md bg-white dark:bg-black">
-        <ul class="border-b" id="link">
+      <div class="absolute right-0 top-15 mr-3 min-w-48 flex flex-col border dark:border-gray2 rounded-md bg-white dark:bg-black">
+        <ul class="border-b dark:border-b-gray2" id="link">
           {% if not user.is_authenticated %}
             {% include 'nav_item/guest.html' %}
           {% else %}
