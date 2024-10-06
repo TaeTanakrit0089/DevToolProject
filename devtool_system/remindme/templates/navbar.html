@@ -1,5 +1,5 @@
 {% load static %}
-<nav class="absolute left-0 right-0 z-30 border-b-[1px] border-b-brown-50 navbar flex flex-row justify-between place-items-center py-4 px-3 font-medium shadow">
+<nav class="sticky left-0 right-0 z-30 border-b-[1px] border-b-brown-50 navbar flex flex-row justify-between place-items-center py-4 px-3 font-medium shadow">
   {% comment %} LOGO {% endcomment %}
   <div class="flex flex-row">
     
@@ -20,8 +20,8 @@
   {% comment %} NAVBAR {% endcomment %}
   <div class="flex flex-wrap items-center justify-start md:justify-center gap-3 max-h-10">
     <button id="navbar_btn" data-collapse-toggle="navbar-default" type="button" 
-    {% if user.is_authenticated %} class="ml-auto inline-flex items-center p-1 w-10 h-10 justify-center text-sm rounded-full hover:bg-gray-50"
-    {% else %} class="ml-auto inline-flex items-center p-1 w-10 h-10 justify-center text-sm rounded-full hover:bg-gray-50 focus:outline-none" {% endif %} 
+    {% if user.is_authenticated %} class="ml-auto inline-flex items-center p-1 w-10 h-10 justify-center text-sm rounded-full"
+    {% else %} class="ml-auto inline-flex items-center p-1 w-10 h-10 justify-center text-sm rounded-full focus:outline-none" {% endif %} 
     aria-controls="navbar-default" aria-expanded="false">
       {% if user.is_authenticated %}
       <img class="rounded-full" src="{% static 'images/profile.jpg'%}" alt="">
@@ -35,22 +35,22 @@
     
     <div class="hidden w-full" id="navbar-default">
 
-      <div class="absolute top-20 right-[10px] min-w-32 flex flex-col border border-black dark:border-[#1b1e36] rounded-md bg-gray-50  dark:bg-[#0c0d18]">
+      <div class="absolute right-0 top-15 mr-3 min-w-48 flex flex-col border rounded-md bg-white dark:bg-black">
+        <ul class="border-b-[1px]" id="link">
+          {% if not user.is_authenticated %}
+            {% include 'nav_item/guest.html' %}
+          {% else %}
+            {% include 'nav_item/customer.html' %}
+          {% endif %}
+        </ul>
       {% if user.is_authenticated %}
-      <ul class="border-b-[1px] py-2 px-4">
+      <ul class="py-2 px-3">
         <li>
-          <p>{{ user.get_full_name|truncatechars:"12" }}</p>
+          <p class="text-sm">{{ user.get_full_name|title|truncatechars:"12" }}</p>
         </li>
       </ul>
       {% endif %}
 
-      <ul id="link">
-        {% if not user.is_authenticated %}
-          {% include 'nav_item/guest.html' %}
-        {% else %}
-          {% include 'nav_item/customer.html' %}
-        {% endif %}
-      </ul>
     </div>
 
   </div>
