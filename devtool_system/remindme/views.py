@@ -43,11 +43,11 @@ class RegisterView(View):
     
 class CalendarView(View):
     def get(self, request):
-        form = EventsForm()
+        form = EventsForm(user=request.user)
         return render(request, "calendar.html", {'form': form})
 
     def post(self, request):
-        form = EventsForm(request.POST)
+        form = EventsForm(request.POST, user=request.user)
         print(f"form is valid: {form.is_valid()}")
         print(form.errors)  
 
