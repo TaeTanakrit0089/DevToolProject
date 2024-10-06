@@ -1,12 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+    darkMode: 'media', // or 'class' if you want to control it manually
     content: ['./index.html', './*/templates/**/*.html'],
     theme: {
         extend: {
             colors: {
                 white: "#ffffff",
                 black: "#0e0e11",
-                'brown': {
+                brown: {
                     50: '#faf7f6',
                     100: '#f6eeed',
                     200: '#ede0de',
