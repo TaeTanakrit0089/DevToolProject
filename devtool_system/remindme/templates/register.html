@@ -15,7 +15,7 @@
                            class="text-sm font-medium text-gray-700 dark:text-gray-300">Username</label>
                     <input class="rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-[#353a55] border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] focus:ring-1 focus:ring-[#4c569b] py-2 px-3 text-gray-900 dark:text-white transition"
                            type="username" name="username" id="{{ form.username.id_for_label }}"
-                           value="{{ form.email.value|default_if_none:"" }}" required placeholder="JohnDoe"/>
+                           value="{{ form.email.value|default_if_none:"" }}" required placeholder="Don_Vito"/>
                     <p class="text-red-500 text-sm mt-1">{{ form.username.errors }}</p>
                 </div>
 
@@ -26,7 +26,7 @@
                                class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ form.first_name.label }}</label>
                         <input class="rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-[#353a55] border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] focus:ring-1 focus:ring-[#4c569b] py-2 px-3 text-gray-900 dark:text-white transition"
                                type="text" name="first_name" id="{{ form.first_name.id_for_label }}"
-                               value="{{ form.first_name.value|default_if_none:"" }}" required placeholder="John"/>
+                               value="{{ form.first_name.value|default_if_none:"" }}" required placeholder="Vito"/>
                         <p class="text-red-500 text-sm mt-1">{{ form.first_name.errors }}</p>
                     </div>
 
@@ -36,7 +36,7 @@
                                class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ form.last_name.label }}</label>
                         <input class="rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-[#353a55] border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] focus:ring-1 focus:ring-[#4c569b] py-2 px-3 text-gray-900 dark:text-white transition"
                                type="text" name="last_name" id="{{ form.last_name.id_for_label }}"
-                               value="{{ form.last_name.value|default_if_none:"" }}" required placeholder="Doe"/>
+                               value="{{ form.last_name.value|default_if_none:"" }}" required placeholder="Corleone"/>
                         <p class="text-red-500 text-sm mt-1">{{ form.last_name.errors }}</p>
                     </div>
                 </div>
