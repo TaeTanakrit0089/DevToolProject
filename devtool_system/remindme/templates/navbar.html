@@ -1,30 +1,30 @@
 {% load static %}
-<nav class="relative z-30 border-gray-200 navbar flex flex-row justify-between place-items-center py-4 px-3 font-medium">
+<nav class="absolute left-0 right-0 z-30 border-b-[1px] border-b-brown-50 navbar flex flex-row justify-between place-items-center py-4 px-3 font-medium shadow">
   {% comment %} LOGO {% endcomment %}
   <div class="flex flex-row">
     
-    <div class="sm:hidden">
-      <button id="sidebar_btn" class="inline-flex items-center p-1 w-10 h-10 justify-center text-sm text-[#0c0d18] rounded-full hover:bg-[#f1f7fa] focus:outline-none focus:ring-2 focus:ring-[#e1f3fc] dark:text-[#eef7fc] hover:bg-[#eef7fc]/70 dark:hover:bg-[#272c4f] dark:focus:ring-[#4c569b]">
+    {% comment %} <div class="sm:hidden">
+      <button id="sidebar_btn" class="inline-flex items-center p-1 w-10 h-10 justify-center text-sm text-[#0c0d18] rounded-full hover:bg-[#f1f7fa] focus:outline-none">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
           <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12" />
         </svg>     
       </button>
-    </div>
+    </div> {% endcomment %}
 
     <a href="{% url 'home' %}" class="flex items-center space-x-3 rtl:space-x-reverse">
-      <img src="{% static 'images/family.png' %}" class="h-8 bg-white dark:bg-transparent" id="logo" />
-      <span class="self-center text-2xl font-semibold whitespace-nowrap text-brown-950 dark:text-white">RemindMe</span>
+      <img src="{% static 'images/family.png' %}" class="size-8 bg-white dark:bg-transparent" id="logo" />
+      <span class="self-center text-2xl font-semibold whitespace-nowrap">RemindMe</span>
     </a>
   </div>
 
   {% comment %} NAVBAR {% endcomment %}
   <div class="flex flex-wrap items-center justify-start md:justify-center gap-3 max-h-10">
     <button id="navbar_btn" data-collapse-toggle="navbar-default" type="button" 
-    {% if user.is_authenticated %} class="ml-auto inline-flex items-center p-1 w-10 h-10 justify-center text-sm text-[#0c0d18] rounded-full hover:bg-[#f1f7fa] focus:outline-none focus:ring-2 focus:ring-[#e1f3fc] dark:text-[#eef7fc] hover:bg-[#eef7fc]/70 dark:hover:bg-[#272c4f] dark:focus:ring-[#4c569b]"
-    {% else %} class="ml-auto inline-flex items-center p-1 w-10 h-10 justify-center text-sm text-[#0c0d18] rounded-full hover:bg-[#f1f7fa] focus:outline-none focus:ring-2 focus:ring-[#e1f3fc] dark:text-[#eef7fc] hover:bg-[#eef7fc]/70 dark:hover:bg-[#272c4f] dark:focus:ring-[#4c569b]" {% endif %} 
+    {% if user.is_authenticated %} class="ml-auto inline-flex items-center p-1 w-10 h-10 justify-center text-sm rounded-full hover:bg-gray-50"
+    {% else %} class="ml-auto inline-flex items-center p-1 w-10 h-10 justify-center text-sm rounded-full hover:bg-gray-50 focus:outline-none" {% endif %} 
     aria-controls="navbar-default" aria-expanded="false">
       {% if user.is_authenticated %}
-      <p>Hi!!!</p>
+      <img class="rounded-full" src="{% static 'images/profile.jpg'%}" alt="">
       {% else %}
       {% comment %} <h1>Oh no</h1> {% endcomment %}
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-96">
@@ -35,7 +35,7 @@
     
     <div class="hidden w-full" id="navbar-default">
 
-      <div class="absolute top-25 right-[10px] min-w-32 flex flex-col border border-black dark:border-[#1b1e36] rounded-md bg-gray-50  dark:bg-[#0c0d18]">
+      <div class="absolute top-20 right-[10px] min-w-32 flex flex-col border border-black dark:border-[#1b1e36] rounded-md bg-gray-50  dark:bg-[#0c0d18]">
       {% if user.is_authenticated %}
       <ul class="border-b-[1px] py-2 px-4">
         <li>
