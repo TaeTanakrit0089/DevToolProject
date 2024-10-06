@@ -31,10 +31,10 @@ class RegisterView(View):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect("home")  # กลับไปหน้าหลัก มีการ Setting.py อยู่แล้วจึงไม่จำเป็นต้อง Redirect อีก
+            return redirect("home") # กลับไปหน้าหลัก มีการ Setting.py อยู่แล้วจึงไม่จำเป็นต้อง Redirect อีก
         return render(request, "register.html", {
             "form": form,
-            "now": now().date()  # ถ้า form ผิดส่ง now date มาด้วย
+            "now": now().date() # ถ้า form ผิดส่ง now date มาด้วย
         })
     
 class CalendarView(View):
@@ -61,7 +61,7 @@ class GetEventsByDateView(View):
         events = list(Events.objects.filter(noti_date=date).values('noti_time', 'name', 'description').order_by("noti_time"))
 
         for event in events:
-            event['noti_time'] = event['noti_time'].strftime("%H:%M")  # แปลงเป็นสตริง เช่น '16:00'
+            event['noti_time'] = event['noti_time'].strftime("%H:%M") # แปลงเป็นสตริง เช่น '16:00'
 
         if not events:  # ถ้าไม่มีข้อมูล
             return JsonResponse([], safe=False)  # ส่งกลับเป็นลิสต์ว่าง
