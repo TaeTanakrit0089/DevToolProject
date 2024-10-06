@@ -17,13 +17,12 @@ Including another URLconf
 from debug_toolbar.toolbar import debug_toolbar_urls
 from django.contrib import admin
 from django.urls import path, include
-
-from remindme.views import RegisterView
+from remindme.views import RegisterView, CalendarView, GetEventsByDateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include("api.urls")),
-    path('remindme/', include("remindme.urls")),
+    path('', include("remindme.urls")),
     path('authentication/', include("django.contrib.auth.urls")),
     path('register/', RegisterView.as_view(), name="register"),
 

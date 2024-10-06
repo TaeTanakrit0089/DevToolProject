@@ -1,166 +1,332 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Calendar</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100">
+{% extends 'base.html' %}
 
-    <div class="container mx-auto p-4 bg-white shadow-lg rounded-lg">
-        <div class="container mx-auto p-4">
-            <!-- Header -->
-            <div class="flex justify-between items-center mb-4">
-                <h1 id="monthYear" class="text-2xl font-bold">January 2022</h1>
-                <div class="flex space-x-4">
-                    <button id="todayBtn" class="bg-[#9B5642] hover:bg-[#B76B5A] text-white px-3 py-2 rounded">Today</button>
-                    <div class="flex items-center space-x-1">
-                        <button id="prevMonthBtn" class="bg-[#D1B1A1] hover:bg-[#C09081] px-2 py-2 rounded-l">&lt;</button>
-                        <button id="nextMonthBtn" class="bg-[#D1B1A1] hover:bg-[#C09081] px-2 py-2 rounded-r">&gt;</button>
-                    </div>
-                </div>
-            </div>
+{% block title %}
+  Dynamic Calendar
+{% endblock %}
 
-            <!-- ปฏิทิน -->
-            <div class="grid grid-cols-7 gap-2 text-center text-sm font-medium text-gray-700">
-                <!-- แสดงชื่อวันของสัปดาห์ -->
-                <div>Sun</div>
-                <div>Mon</div>
-                <div>Tue</div>
-                <div>Wed</div>
-                <div>Thu</div>
-                <div>Fri</div>
-                <div>Sat</div>
-            </div>
-
-            <!-- กล่องวันที่ของปฏิทิน -->
-            <div id="calendar-days" class="grid grid-cols-7 gap-2 mt-2">
-                <!-- วันที่ต่างๆ จะถูกสร้างด้วย JavaScript -->
-            </div>
+{% block content %}
+  <div class="m-3 dark:bg-black2 sm:px-6 sm:py-4 md:px-12 md:py-8 my-12 container mx-auto shadow-lg rounded-lg border dark:border-gray2">
+    <div class="container mx-auto p-4 flex flex-col">
+      <!-- Header -->
+      <div class="flex justify-between items-center mb-4">
+        <h1 id="monthYear" class="text-2xl font-bold dark:text-brown-50">January 2022</h1>
+        <div class="flex place-items-center gap-x-4 font-bold">
+          <button id="todayBtn" class="bg-brown-700 px-3 py-2 rounded-lg text-white">Today</button>
         </div>
-    </div>
+      </div>
 
-<!-- Pop-up Modal -->
-<div id="eventModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center">
+      <!-- Calendar -->
+      <div class="grid grid-cols-7 gap-2 text-center text-sm font-medium text-brown-800 dark:text-brown-100">
+        <!-- วันในสัปดาห์ -->
+        <div>Sun</div>
+        <div>Mon</div>
+        <div>Tue</div>
+        <div>Wed</div>
+        <div>Thu</div>
+        <div>Fri</div>
+        <div>Sat</div>
+      </div>
+
+      <!-- กล่องวันที่ของปฏิทิน -->
+      <div id="calendar-days" class="grid grid-cols-7 gap-2 mt-2 text-lg">
+        <!-- วันที่ต่างๆ จะถูกสร้างด้วย JavaScript -->
+      </div>
+
+      <div class="flex place-items-center gap-x-4 self-end mt-4">
+        <button id="prevMonthBtn" class="bg-brown-700 rounded-full size-10 text-white text-xl">&lt;</button>
+        <button id="nextMonthBtn" class="bg-brown-700 rounded-full size-10 text-white text-xl">&gt;</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="eventContainer" class="m-3 dark:bg-black2 px-12 py-8 my-12 container mx-auto p-4 shadow-lg rounded-lg mt-4 border dark:border-gray2">
+    <!-- ตารางข้อมูลกิจกรรม -->
+    <div id="eventDetails">
+      <h2 class="text-xl font-bold mb-4 flex justify-between items-center">
+        <div>
+          Events for <p id="selectedDate"></p>
+        </div>
+        <button id="addEventModalBtn" class="hidden sm:block bg-brown-800 text-white px-4 py-2 rounded">Add Event</button>
+      </h2>
+      <table class="min-w-full bg-white border border-brown-800 rounded-lg">
+        <thead>
+          <tr class="bg-brown-800 text-white">
+            <th class="px-4 py-2">Time</th>
+            <th class="px-4 py-2">Event Name</th>
+            <th class="px-4 py-2">Description</th>
+          </tr>
+        </thead>
+        <tbody id="eventTableBody" class="text-brown-950 divide-y divide-brown-800">
+          <!-- Generate By JavaScript -->
+        </tbody>
+      </table>
+      <button id="addEventModalBtn2" class="block sm:hidden mt-2 bg-brown-800 text-white px-4 py-2 rounded">Add Event</button>
+    </div>
+  </div>
+
+  <!-- Modal สำหรับเพิ่มกิจกรรม -->
+  <div id="eventModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center z-10">
     <div class="bg-white p-6 rounded-lg">
-        <h2 class="text-xl font-bold mb-4 text-[#9B5642]">Add Event for <span id="selectedDate"></span></h2>
-        <input type="text" placeholder="Event Name" class="w-full mb-4 p-2 border border-[#9B5642] rounded" />
-        <div class="flex justify-end space-x-4">
-            <button id="closeModal" class="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300">Cancel</button>
-            <button class="bg-[#9B5642] text-white px-4 py-2 rounded hover:bg-[#B76B5A]">Save</button>
+      <div class="text-xl font-bold mb-2 text-brown-700">Add Event for <p id="selectedModalDate"></p></div>
+      <form id="eventForm" onsubmit="event.preventDefault(); add_event();">
+        {% csrf_token %}
+
+        <input type="hidden" name="noti_date" id="notiDateInput" value="" />
+
+        {{ form.non_field_errors }}
+        <div class="mb-1">
+          {{ form.name.label_tag }}
+          {{ form.name }}
+          {% if form.name.errors %}
+            <div class="text-red-500 text-sm">{{ form.name.errors }}</div>
+          {% endif %}
         </div>
+        <div class="mb-1">
+          {{ form.noti_time.label_tag }}
+          {{ form.noti_time }}
+          {% if form.noti_time.errors %}
+            <div class="text-red-500 text-sm">{{ form.noti_time.errors }}</div>
+          {% endif %}
+        </div>
+        <div class="mb-1">
+          {{ form.description.label_tag }}
+          {{ form.description }}
+          {% if form.description.errors %}
+            <div class="text-red-500 text-sm">{{ form.description.errors }}</div>
+          {% endif %}
+        </div>
+        <div class="mb-1">
+          {{ form.routine.label_tag }}
+          {{ form.routine }}
+          {% if form.routine.errors %}
+            <div class="text-red-500 text-sm">{{ form.routine.errors }}</div>
+          {% endif %}
+        </div>
+        <div class="mb-1">
+          {{ form.family.label_tag }}
+          {{ form.family }}
+          {% if form.family.errors %}
+            <div class="text-red-500 text-sm">{{ form.family.errors }}</div>
+          {% endif %}
+        </div>
+        <div class="flex justify-end space-x-4">
+          <button type="button" id="closeModal" class="bg-gray-500 px-4 py-2 rounded hover:bg-gray-600 active:bg-gray-800">Cancel</button>
+          <button type="submit" onclick="this.forms.reset()" class="bg-brown-600 hover:bg-brown-700 active:bg-brown-800 text-white px-4 py-2 rounded">Save</button>
+        </div>
+      </form>
     </div>
-</div>
+  </div>
+{% endblock %}
+{% block script %}
+  <script>
+    const monthYearElement = document.getElementById('monthYear')
+    const calendarDaysElement = document.getElementById('calendar-days')
+    const prevMonthBtn = document.getElementById('prevMonthBtn')
+    const nextMonthBtn = document.getElementById('nextMonthBtn')
+    const todayBtn = document.getElementById('todayBtn')
+    const eventDetails = document.getElementById('eventDetails')
+    const selectedDateElement = document.getElementById('selectedDate')
+    const eventTableBody = document.getElementById('eventTableBody')
+    const addEventModalBtn = document.getElementById('addEventModalBtn')
+    const addEventModalBtn2 = document.getElementById('addEventModalBtn2')
+    const notiDateInput = document.getElementById('notiDateInput')
+    
+    // Open modal to add event
+    addEventModalBtn.addEventListener('click', () => {
+      const selectedDate = selectedDateElement.innerText
+      document.getElementById('selectedModalDate').innerText = selectedDate
+      notiDateInput.value = selectedDate
+      document.getElementById('eventModal').classList.toggle('hidden')
+    })
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const monthYearElement = document.getElementById('monthYear');
-        const calendarDaysElement = document.getElementById('calendar-days');
-        const prevMonthBtn = document.getElementById('prevMonthBtn');
-        const nextMonthBtn = document.getElementById('nextMonthBtn');
-        const todayBtn = document.getElementById('todayBtn');
-        const eventModal = document.getElementById('eventModal');
-        const closeModal = document.getElementById('closeModal');
-        const selectedDateElement = document.getElementById('selectedDate');
-
-        let currentDate = new Date();
-
-        // Modify the renderCalendar function
-        function renderCalendar() {
-            // Clear previous calendar days
-            calendarDaysElement.innerHTML = '';
-
-            const year = currentDate.getFullYear();
-            const month = currentDate.getMonth();
-
-            // Set the month and year in the header
-            const monthYearString = currentDate.toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long'
-            });
-            monthYearElement.innerText = monthYearString;
-
-            const firstDayOfMonth = new Date(year, month, 1).getDay();
-            const lastDateOfMonth = new Date(year, month + 1, 0).getDate();
-            const today = new Date();
-
-            // Previous month's last date (for displaying the last few days of the previous month)
-            const lastDatePrevMonth = new Date(year, month, 0).getDate();
-
-            // Add previous month's days as disabled
-            for (let i = 0; i < firstDayOfMonth; i++) {
-                const prevMonthDate = lastDatePrevMonth - firstDayOfMonth + i + 1;
-                const dateDiv = document.createElement('div');
-                dateDiv.classList.add('bg-[#F2DEDB]', 'text-[#D1B1A1]', 'p-2', 'rounded', 'border', 'text-center', 'cursor-not-allowed');
-                dateDiv.innerText = prevMonthDate;
-                calendarDaysElement.appendChild(dateDiv);
-            }
-
-            // Add the days of the current month
-            for (let date = 1; date <= lastDateOfMonth; date++) {
-                const dateDiv = document.createElement('div');
-                dateDiv.classList.add('bg-white', 'p-2', 'rounded', 'border', 'text-center', 'cursor-pointer');
-
-                // If the current date matches today's date, apply the highlight and shadow
-                if (date === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
-                    dateDiv.classList.add('bg-[#B76B5A]', 'text-white');
-                }
-
-                dateDiv.innerText = date;
-
-                // Add click event to open modal and set selected date
-                dateDiv.addEventListener('click', () => {
-                    const selectedDate = new Date(year, month, date).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                    });
-                    selectedDateElement.innerText = selectedDate; // Show the selected date in the modal
-                    eventModal.classList.remove('hidden'); // Show modal
-                });
-
-                calendarDaysElement.appendChild(dateDiv);
-            }
-
-            // Calculate next month's days to display
-            const remainingDays = (42 - firstDayOfMonth - lastDateOfMonth); // 42 slots in the 7x6 calendar grid
-
-            // Add next month's days as disabled
-            for (let i = 1; i <= remainingDays; i++) {
-                const dateDiv = document.createElement('div');
-                dateDiv.classList.add('bg-[#F2DEDB]', 'text-[#D1B1A1]', 'p-2', 'rounded', 'border', 'text-center', 'cursor-not-allowed');
-                dateDiv.innerText = i;
-                calendarDaysElement.appendChild(dateDiv);
-            }
+    addEventModalBtn2.addEventListener('click', () => {
+      const selectedDate = selectedDateElement.innerText
+      document.getElementById('selectedModalDate').innerText = selectedDate
+      notiDateInput.value = selectedDate
+      document.getElementById('eventModal').classList.toggle('hidden')
+    })
+    
+    // Close modal
+    document.getElementById('closeModal').addEventListener('click', () => {
+      document.getElementById('eventModal').classList.toggle('hidden') // Hide the modal
+    })
+    
+    let currentDate = new Date()
+    
+    async function renderCalendar() {
+      calendarDaysElement.innerHTML = ''
+      const year = currentDate.getFullYear()
+      const month = currentDate.getMonth()
+      const response = await fetch(`{{ base_url }}/api/events/user/${year}/${month+1}/count/`).then((response)=>response.json())
+      const monthYearString = currentDate.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long'
+      })
+      monthYearElement.innerText = monthYearString
+      const firstDayOfMonth = new Date(year, month, 1).getDay()
+      const lastDateOfMonth = new Date(year, month + 1, 0).getDate()
+      const today = new Date()
+      const lastDatePrevMonth = new Date(year, month, 0).getDate()
+    
+      // Fill previous month's days
+      for (let i = 0; i < firstDayOfMonth; i++) {
+        const prevMonthDate = lastDatePrevMonth - firstDayOfMonth + i + 1
+        const dateDiv = document.createElement('div')
+        dateDiv.classList.add('bg-brown-100', 'text-brown-400', 'p-2', 'rounded', 'shadow', 'text-center', 'cursor-not-allowed')
+        dateDiv.innerText = prevMonthDate
+        calendarDaysElement.appendChild(dateDiv)
+      }
+    
+      const days_event = response.map(e=>{
+        return e.noti_date__day;
+      });
+      // Fill current month's days
+      for (let date = 1; date <= lastDateOfMonth; date++) {
+        const dateDiv = document.createElement('div')
+        dateDiv.classList.add('bg-white', 'text-brown-950', 'p-2', 'rounded', 'shadow', 'text-center', 'cursor-pointer', "relative")
+        dateDiv.innerText = date
+    
+        // Highlight today's date and fetch events
+        if (date === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+          dateDiv.classList.add('bg-brown-700', 'text-white')
+          dateDiv.classList.remove('bg-white', 'text-brown-950')
+          fetchAndDisplayEvents(today.toLocaleDateString('en-CA'))
         }
+    
+        // Add click event to fetch and display events for the selected date
+        dateDiv.addEventListener('click', () => {
+          const selectedDate = new Date(year, month, date).toLocaleDateString('en-CA')
+          selectedDateElement.innerText = selectedDate
+          fetchAndDisplayEvents(selectedDate)
+        })
 
-        // ปุ่มเปลี่ยนเดือน
-        prevMonthBtn.addEventListener('click', () => {
-            currentDate.setMonth(currentDate.getMonth() - 1);
-            renderCalendar();
-        });
+        // Add notification light
+        if (days_event.includes(date)){
+          let noti_light = document.createElement("div")
+          let noti_light2 = document.createElement("div")
+          noti_light.classList.add("absolute", "size-4", "bg-sky-800", "dark:bg-sky-500", "-top-1", "-right-1", "rounded-full", "animate-ping", "z-10")
+          noti_light2.classList.add("absolute", "size-4", "bg-sky-800", "dark:bg-sky-500", "-top-1", "-right-1", "rounded-full", "z-10")
+          dateDiv.append(noti_light, noti_light2)
+          days_event.shift()
+        }
+    
+        calendarDaysElement.appendChild(dateDiv)
+      }
+    
+      const remainingDays = 42 - firstDayOfMonth - lastDateOfMonth
+      // Fill remaining days
+      for (let i = 1; i <= remainingDays; i++) {
+        const dateDiv = document.createElement('div')
+        dateDiv.classList.add('bg-brown-100', 'text-brown-400', 'p-2', 'rounded', 'shadow', 'text-center', 'cursor-not-allowed')
+        dateDiv.innerText = i
+        calendarDaysElement.appendChild(dateDiv)
+      }
+    }
+    
+    function fetchAndDisplayEvents(selectedDate) {
+      selectedDateElement.innerText = selectedDate
+      const year = Number(selectedDate.substring(0, 4))
+      const month = Number(selectedDate.substring(5, 7))
+      const day = Number(selectedDate.substring(8, 10))
+      fetch(`{{ base_url }}/api/events/user/${year}/${month}/${day}/`, {
+        method: 'GET'
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('No events found')
+          }
+          return response.json()
+        })
+        .then((data) => {
+          eventTableBody.innerHTML = '' // Clear previous event data
+    
+          if (data.length > 0) {
+            // Populate table with new events
+            data.forEach((event) => {
+              const row = document.createElement('tr')
+              row.innerHTML = `
+                                                              <td class="px-4 py-2 border-l border-r border-[#6b4142]">${event.noti_time.substring(0, 5)}</td>
+                                                              <td class="px-4 py-2 border-l border-r border-[#6b4142]">${event.name}</td>
+                                                              <td class="px-4 py-2 border-l border-r border-[#6b4142]">${event.description}</td>
+                                                          `
+              eventTableBody.appendChild(row)
+            })
+          } else {
+            // If no events, display a message
+            const noEventRow = document.createElement('tr')
+            noEventRow.innerHTML = `
+                                                          <td colspan="3" class="px-4 py-2 text-center">No events scheduled for this day</td>
+                                                      `
+            eventTableBody.appendChild(noEventRow)
+          }
+    
+          // Show the event details section and the container
+          eventDetails.classList.remove('hidden')
+          document.getElementById('eventContainer').classList.remove('hidden')
+        })
+        .catch((error) => {
+          // Handle errors
+          eventTableBody.innerHTML = '' // Clear previous event data
+          const noEventRow = document.createElement('tr')
+          noEventRow.innerHTML = `
+                                                      <td colspan="3" class="px-4 py-2 text-center">Error: ${error.message}</td>
+                                                  `
+          eventTableBody.appendChild(noEventRow)
+          eventDetails.classList.remove('hidden')
+          document.getElementById('eventContainer').classList.remove('hidden')
+        })
+    }
+    
+    prevMonthBtn.addEventListener('click', () => {
+      currentDate.setMonth(currentDate.getMonth() - 1)
+      renderCalendar()
+    })
+    
+    nextMonthBtn.addEventListener('click', () => {
+      currentDate.setMonth(currentDate.getMonth() + 1)
+      renderCalendar()
+    })
+    
+    todayBtn.addEventListener('click', () => {
+      currentDate = new Date() // Set current date
+      renderCalendar() // Render the calendar for the current date
+      fetchAndDisplayEvents(currentDate.toLocaleDateString('en-CA')) // Fetch events for today's date
+    })
+    
+    renderCalendar()
+  </script>
 
-        nextMonthBtn.addEventListener('click', () => {
-            currentDate.setMonth(currentDate.getMonth() + 1);
-            renderCalendar();
-        });
+  <script>
+    function add_event() {
+      let data = {
+        user: '{{ user.id }}',
+        name: document.getElementById('{{form.name.id_for_label}}').value,
+        noti_date: document.getElementById('notiDateInput').value,
+        noti_time: document.getElementById('{{form.noti_time.id_for_label}}').value,
+        description: document.getElementById('{{form.description.id_for_label}}').value,
+        family: document.getElementById('{{form.family.id_for_label}}').value
+      }
+      fetch("{{ base_url }}{% url 'event_list' %}", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify(data)
+      })
+        .then((data) => {
+          show_alert('Add event successful.')
+          document.getElementById('eventModal').classList.toggle('hidden')
+          fetchAndDisplayEvents(document.getElementById('selectedDate').innerText)
+        })
+        .catch((error) => {
+          console.log('Errors:', error)
+        })
+    }
+  </script>
 
-        // Today button event listener
-        todayBtn.addEventListener('click', () => {
-            currentDate = new Date();  // Reset to today's date
-            renderCalendar();
-        });
+  <script>
+    
+  </script>
 
-        // เรียกใช้ฟังก์ชัน renderCalendar ครั้งแรก
-        renderCalendar();
-
-        // Close modal event
-        closeModal.addEventListener('click', () => {
-            eventModal.classList.add('hidden');
-        });
-    });
-</script>
-
-</body>
-</html>
+{% endblock %}
