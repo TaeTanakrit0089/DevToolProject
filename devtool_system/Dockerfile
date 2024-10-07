@@ -1,4 +1,4 @@
-FROM lts-alpine3.20
+FROM node:lts-alpine3.20
 WORKDIR /src
 COPY . .
 RUN npm install
@@ -12,4 +12,3 @@ COPY --from=0 /src/static/tailwind/output.css /devtool_system/static/tailwind/ou
 RUN pip install -r requirements.txt
 
 EXPOSE 8000
-CMD [ "py", "manage.py", "runserver" ]

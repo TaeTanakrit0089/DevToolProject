@@ -3,7 +3,7 @@ services:
     build:
       context: devtool_system/
     ports:
-      - "8000:8000"  # Exposing internal port 8000 for web container
+      - "8083:8000"  # Exposing internal port 8000 for web container
     command: [ "sh", "./start.sh" ]
     volumes:
       - ./devtool_system:/app

@@ -1,4 +1,3 @@
-from tkinter.font import families
 from django.shortcuts import render, get_object_or_404
 from .serializers import *
 from rest_framework.views import APIView
