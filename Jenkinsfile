@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                echo 'Attempting to checkout repository'
+                echo 'Checking out repository...'
                 git url: 'https://github.com/TaeTanakrit0089/DevToolProject.git',
                     branch: 'main',
                     credentialsId: 'github'
@@ -21,36 +21,32 @@ pipeline {
         stage('Create .env File') {
             steps {
                 script {
-                    // Create a .env file with the environment variables
-                    writeFile file: '.env', text: """
+                    sh '''
+                        cat <<EOF > .env
                         DB_NAME=${DB_NAME}
                         DB_USER=${DB_USER}
                         DB_PASSWORD=${DB_PASSWORD}
                         DB_HOST=${DB_HOST}
                         DB_PORT=${DB_PORT}
-                    """
-                    echo '.env file created with database credentials.'
+                        EOF
+                    '''
+                    echo '.env file created.'
                 }
             }
         }
 
-        stage('Build and Run Docker Containers') {
-            parallel {
-                stage('Build Docker Images') {
-                    steps {
-                        script {
-                            // Build the Docker images defined in the Dockerfile
-                            sh 'docker compose build'
-                        }
-                    }
+        stage('Build Docker Images') {
+            steps {
+                script {
+                    sh 'docker compose build --no-cache'
                 }
-                stage('Run Docker Containers') {
-                    steps {
-                        script {
-                            // Run the containers
-                            sh 'docker compose up -d' // Run in detached mode
-                        }
-                    }
+            }
+        }
+
+        stage('Run Docker Containers') {
+            steps {
+                script {
+                    sh 'docker compose up -d'
                 }
             }
         }
@@ -58,13 +54,13 @@ pipeline {
 
     post {
         success {
-            echo 'Pipeline executed successfully! The repository was checked out, and Docker containers were built and run.'
+            echo 'Pipeline executed successfully!'
         }
         failure {
-            echo 'Pipeline execution failed. Please check the logs for details.'
+            echo 'Pipeline execution failed.'
         }
         always {
-            echo 'Pipeline execution completed. This message appears regardless of the outcome.'
+            echo 'Pipeline execution completed.'
         }
     }
 }
