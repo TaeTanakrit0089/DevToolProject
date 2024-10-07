@@ -15,7 +15,7 @@ services:
       - "8000:8000"  # Exposing internal port 8000 for web container
     command: [ "sh", "./start.sh" ]
     volumes:
-      - ./devtool_system:/app
+      - ./devtool_system/:/app/
     env_file:
       - .env
     depends_on:

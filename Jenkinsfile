@@ -38,7 +38,7 @@ pipeline {
         stage('Build Docker Images') {
             steps {
                 script {
-                    sh 'docker compose build --no-cache'
+                    sh 'docker compose build'
                 }
             }
         }
