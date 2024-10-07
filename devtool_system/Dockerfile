@@ -1,23 +1,15 @@
-# 1. Use an official Python runtime as a parent image
-FROM python:3.11-slim
+FROM lts-alpine3.20
+WORKDIR /src
+COPY . .
+RUN npm install
+RUN npm run build
 
-ENV PYTHONUNBUFFERED 1
-ENV PYTHONDONTWRITEBYTECODE 1
-
+FROM python:3.11.10-alpine
 WORKDIR /devtool_system
 
 COPY . .
-
-RUN apt-get update && apt-get install -y libpq-dev && apt-get install -y nodejs && apt-get install -y npm && apt-get install -y nginx
-
-RUN unlink /etc/nginx/sites-enabled/default
-RUN yes | cp -rf reverse-proxy.conf /etc/nginx/sites-available/reverse-proxy.conf
-RUN ln -s /etc/nginx/sites-available/reverse-proxy.conf /etc/nginx/sites-enabled/reverse-proxy.conf
-RUN yes | cp -rf nginx.conf /etc/nginx/nginx.conf
-
-COPY ./requirements.txt .
+COPY --from=0 /src/static/tailwind/output.css /devtool_system/static/tailwind/output.css
 RUN pip install -r requirements.txt
 
-RUN npm install
-
 EXPOSE 8000
+CMD [ "py", "manage.py", "runserver" ]
