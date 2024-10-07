@@ -159,7 +159,7 @@ LOGIN_URL = "login" # หากยังไม่ได้ Login จะเข้
 AUTH_USER_MODEL = "remindme.Users"
 
 CSRF_TRUSTED_ORIGINS = [
-    '34.87.135.25',
+    'https://34.87.135.25',
 ]
 
 
