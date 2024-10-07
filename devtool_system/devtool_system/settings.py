@@ -157,3 +157,11 @@ LOGIN_REDIRECT_URL = "home"
 LOGIN_URL = "login" # หากยังไม่ได้ Login จะเข้าไปหน้านี้
 
 AUTH_USER_MODEL = "remindme.Users"
+
+CSRF_TRUSTED_ORIGINS = [
+    '34.87.135.25',
+]
+
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
