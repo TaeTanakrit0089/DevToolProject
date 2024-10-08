@@ -9,9 +9,23 @@ from .models import *
 ## form
 from .forms import *
 
-from django.utils.timezone import now
+from django.utils.timezone import now, timedelta, localtime
 
 # Create your views here.
+def update_events():
+    now_time = localtime(now())
+    events = Events.objects.filter(routine__range=(1, 4), noti_date__lte=now_time, noti_time__lt=now_time)
+    for event in events:
+        plus_time = (now().date()-event.noti_date) + timedelta(days=1)
+        if event.routine == 2:
+            plus_time = timedelta(weeks=1)
+        elif event.routine == 3:
+            plus_time = timedelta(month=1)
+        elif event.routine == 4:
+            plus_time = timedelta(month=12)
+        event.noti_date += plus_time
+        print(event.noti_date)
+        event.save()
 
 class HomePage(View):
     def get(self, request):
@@ -43,6 +57,7 @@ class RegisterView(View):
     
 class CalendarView(View):
     def get(self, request):
+        update_events()
         form = EventsForm(user=request.user)
         return render(request, "calendar.html", {'form': form})
 
@@ -59,18 +74,9 @@ class CalendarView(View):
             return redirect('calendar_page')
         return render(request, "calendar.html", {'form': form})
 
-class GetEventsByDateView(View):
-    def get(self, request, date):
-        # ค้นหากิจกรรมในวันที่ระบุ
-        events = list(Events.objects.filter(noti_date=date).values('noti_time', 'name', 'description').order_by("noti_time"))
-
-        for event in events:
-            event['noti_time'] = event['noti_time'].strftime("%H:%M")  # แปลงเป็นสตริง เช่น '16:00'
-
-        if not events:  # ถ้าไม่มีข้อมูล
-            return JsonResponse([], safe=False)  # ส่งกลับเป็นลิสต์ว่าง
-
-        return JsonResponse(events, safe=False)  # ส่งกลับข้อมูลกิจกรรม
+class FamilyView(View):
+    def get(self, request):
+        return render(request, "family.html", {})
 
 class TestView(View):
     def get(self, request):

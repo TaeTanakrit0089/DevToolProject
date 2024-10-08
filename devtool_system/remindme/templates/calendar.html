@@ -46,7 +46,7 @@
         <div>
           Events for <p id="selectedDate"></p>
         </div>
-        <button id="addEventModalBtn" class="hidden sm:block bg-brown-800 text-white px-4 py-2 rounded">Add Event</button>
+        <button id="addEventModalBtn" class="hidden sm:block bg-brown-800 text-white px-4 py-2 rounded-lg">Add Event</button>
       </h2>
       <table class="min-w-full bg-white border border-brown-800 rounded-lg">
         <thead>
@@ -68,7 +68,7 @@
   <div id="eventModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center z-10">
     <div class="bg-white p-6 rounded-lg">
       <div class="text-xl font-bold mb-2 text-brown-700">Add Event for <p id="selectedModalDate"></p></div>
-      <form id="eventForm" onsubmit="event.preventDefault(); add_event();">
+      <form id="eventForm" class="text-black" onsubmit="event.preventDefault(); add_event();">
         {% csrf_token %}
 
         <input type="hidden" name="noti_date" id="notiDateInput" value="" />
@@ -110,7 +110,7 @@
           {% endif %}
         </div>
         <div class="flex justify-end space-x-4">
-          <button type="button" id="closeModal" class="bg-gray-500 px-4 py-2 rounded hover:bg-gray-600 active:bg-gray-800">Cancel</button>
+          <button type="button" id="closeModal" class="text-white bg-gray-500 px-4 py-2 rounded hover:bg-gray-600 active:bg-gray-800">Cancel</button>
           <button type="submit" onclick="this.forms.reset()" class="bg-brown-600 hover:bg-brown-700 active:bg-brown-800 text-white px-4 py-2 rounded">Save</button>
         </div>
       </form>
@@ -185,7 +185,11 @@
         const dateDiv = document.createElement('div')
         dateDiv.classList.add('bg-white', 'text-brown-950', 'p-2', 'rounded', 'shadow', 'text-center', 'cursor-pointer', "relative")
         dateDiv.innerText = date
-    
+
+        if(year <= today.getFullYear() && month <= today.getMonth() && date < today.getDate() || year <= today.getFullYear() && month < today.getMonth() || year < today.getFullYear()){
+          dateDiv.classList.add('opacity-80')
+        }
+
         // Highlight today's date and fetch events
         if (date === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
           dateDiv.classList.add('bg-brown-700', 'text-white')
@@ -197,6 +201,30 @@
         dateDiv.addEventListener('click', () => {
           const selectedDate = new Date(year, month, date).toLocaleDateString('en-CA')
           selectedDateElement.innerText = selectedDate
+
+          if (addEventModalBtn.classList.contains("hidden")){
+            addEventModalBtn.classList.remove("hidden")
+          }
+          if (addEventModalBtn.classList.contains("sm:block")){
+            addEventModalBtn.classList.remove("sm:block")
+          }
+          if (addEventModalBtn2.classList.contains("sm:hidden")){
+            addEventModalBtn2.classList.remove("sm:hidden")
+          }
+          if (addEventModalBtn2.classList.contains("block")){
+            addEventModalBtn2.classList.remove("block")
+          }
+          if (!(year >= today.getFullYear() && month >= today.getMonth() && date >= today.getDate())){
+            addEventModalBtn.classList.add("hidden")
+            addEventModalBtn2.classList.add("hidden")
+          }else{
+            addEventModalBtn.classList.remove("hidden")
+            addEventModalBtn2.classList.remove("hidden")
+
+            addEventModalBtn.classList.add("hidden", "sm:block")
+            addEventModalBtn2.classList.add("sm:hidden", "block")
+          }
+          
           fetchAndDisplayEvents(selectedDate)
         })
 
@@ -204,8 +232,17 @@
         if (days_event.includes(date)){
           let noti_light = document.createElement("div")
           let noti_light2 = document.createElement("div")
-          noti_light.classList.add("absolute", "size-4", "bg-sky-800", "dark:bg-sky-500", "-top-1", "-right-1", "rounded-full", "animate-ping", "z-10")
-          noti_light2.classList.add("absolute", "size-4", "bg-sky-800", "dark:bg-sky-500", "-top-1", "-right-1", "rounded-full", "z-10")
+          
+          if(year >= today.getFullYear() && month >= today.getMonth() && date > today.getDate()){
+            noti_light.classList.add("absolute", "size-4", "bg-sky-700", "dark:bg-sky-500", "-top-1", "-right-1", "rounded-full", "animate-ping", "z-10")
+            noti_light2.classList.add("absolute", "size-4", "bg-sky-700", "dark:bg-sky-500", "-top-1", "-right-1", "rounded-full", "z-10")
+          }else if(year == today.getFullYear() && month == today.getMonth() && date == today.getDate()){
+            noti_light.classList.add("absolute", "size-4", "bg-red-700", "dark:bg-red-500", "-top-1", "-right-1", "rounded-full", "animate-ping", "z-10")
+            noti_light2.classList.add("absolute", "size-4", "bg-red-700", "dark:bg-red-500", "-top-1", "-right-1", "rounded-full", "z-10")
+          }else{
+            noti_light2.classList.add("absolute", "size-4", "bg-gray-500", "-top-1", "-right-1", "rounded-full", "z-10")
+          }
+          
           dateDiv.append(noti_light, noti_light2)
           days_event.shift()
         }
@@ -323,10 +360,6 @@
           console.log('Errors:', error)
         })
     }
-  </script>
-
-  <script>
-    
   </script>
 
 {% endblock %}

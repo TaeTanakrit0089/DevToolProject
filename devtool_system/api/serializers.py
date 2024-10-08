@@ -1,9 +1,16 @@
 from rest_framework import serializers
 from remindme.models import *
+from django.utils.timezone import now, localtime
+
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Events
         fields = ["id", "user", "name", "description", "noti_date", "noti_time", "routine", "family"]
+    def validate(self, data):
+        now_time = localtime(now())
+        if not (data['noti_date'] >= now_time.date() and data['noti_time'] >= now_time.time()):
+            serializers.ValidationError("Cannot add event to the past.")
+        return data
 
 class UsersSerializer(serializers.ModelSerializer):
     events_set = serializers.SerializerMethodField()
