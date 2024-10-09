@@ -29,13 +29,6 @@ class EventsForm(forms.ModelForm):
         3: 'Monthly',
         4: 'Annually'
     }
-    routine = forms.IntegerField(widget=forms.Select(attrs={'class': 'w-full text-black p-2 border border-brown-700 rounded'},choices=ROUTINE))
-    noti_time = forms.TimeField(label="Notification Time",widget=forms.TimeInput(attrs={
-            'id': 'eventTime',
-            'type': 'time',
-            'placeholder': 'Event Time',
-            'class': 'w-full text-black p-2 border border-brown-700 rounded'
-        }))
     class Meta:
         model = Events
         fields = ['name', 'description', 'noti_time', 'routine', 'family']
@@ -43,23 +36,32 @@ class EventsForm(forms.ModelForm):
             'name': forms.TextInput(attrs={
                 'id': 'eventName',
                 'placeholder': 'Event Name',
-                'class': 'w-full text-black p-2 border border-brown-700 rounded'
+                'class': 'w-full text-brown-950 rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-brown-200 border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] py-2 px-3 transition'
             }),
             'description': forms.Textarea(attrs={
                 'id': 'eventDescription',
                 'placeholder': 'Event Description',
-                'class': 'w-full text-black p-2 border border-brown-700 rounded',
+                'class': 'w-full text-brown-950 rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-brown-200 border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] py-2 px-3 transition',
                 'rows': 3
             }),
             'noti_date': forms.DateInput(attrs={
                 'type': 'date',
-                'class': 'w-full text-black p-2 border border-brown-700 rounded'
-            }),
-            'family': forms.Select(attrs={
-                'class': 'w-full text-black p-2 border border-brown-700 rounded'
-            }),
+                'class': 'text-brown-950 rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-brown-200 border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] py-2 px-3 transition'
+            })
         }
-    
+    routine = forms.IntegerField(widget=forms.Select(attrs={
+            'class': 'text-brown-950 rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-brown-200 border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] py-2 px-3 transition'
+        },choices=ROUTINE))
+    noti_time = forms.TimeField(label="Notification Time",widget=forms.TimeInput(attrs={
+            'id': 'eventTime',
+            'type': 'time',
+            'placeholder': 'Event Time',
+            'class': 'text-brown-950 rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-brown-200 border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] py-2 px-3 transition',
+            'min': now().strftime("%H:%M")
+        }))
+    family = forms.ModelChoiceField(queryset=Family.objects.filter(id=None), help_text="Will make family's events, if selected.", widget=forms.Select(attrs={
+            'class': 'w-fit text-brown-950 rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-brown-200 border focus:border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] py-2 px-3 transition'
+        }))
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user')  # Extract 'user' from kwargs
         super(EventsForm, self).__init__(*args, **kwargs)

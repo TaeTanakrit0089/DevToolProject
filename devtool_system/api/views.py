@@ -150,7 +150,7 @@ class EventList(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response()
-        return Response(serializer.errors, stauts=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 class EventAction(APIView):
     authentication_classes = [SessionAuthentication]

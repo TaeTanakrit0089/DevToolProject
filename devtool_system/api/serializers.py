@@ -9,7 +9,7 @@ class EventSerializer(serializers.ModelSerializer):
     def validate(self, data):
         now_time = localtime(now())
         if not (data['noti_date'] >= now_time.date() and data['noti_time'] >= now_time.time()):
-            serializers.ValidationError("Cannot add event to the past.")
+            raise serializers.ValidationError("Cannot add event to the past.")
         return data
 
 class UsersSerializer(serializers.ModelSerializer):

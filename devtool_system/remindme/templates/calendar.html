@@ -11,7 +11,7 @@
       <div class="flex justify-between items-center mb-4">
         <h1 id="monthYear" class="text-2xl font-bold dark:text-brown-50">January 2022</h1>
         <div class="flex place-items-center gap-x-4 font-bold">
-          <button id="todayBtn" class="bg-brown-700 px-3 py-2 rounded-lg text-white">Today</button>
+          <button id="todayBtn" class="bg-brown-700 hover:bg-brown-800 active:bg-brown-900 px-3 py-2 rounded-lg text-white">Today</button>
         </div>
       </div>
 
@@ -33,8 +33,16 @@
       </div>
 
       <div class="flex place-items-center gap-x-4 self-end mt-4">
-        <button id="prevMonthBtn" class="bg-brown-700 rounded-full size-10 text-white text-xl">&lt;</button>
-        <button id="nextMonthBtn" class="bg-brown-700 rounded-full size-10 text-white text-xl">&gt;</button>
+        <button id="prevMonthBtn" class="bg-brown-700 hover:bg-brown-800 active:bg-brown-900 rounded-full size-10 text-white text-xl">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 m-auto">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+        </svg>
+        </button>
+        <button id="nextMonthBtn" class="bg-brown-700 hover:bg-brown-800 active:bg-brown-900 rounded-full size-10 text-white text-xl">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 m-auto">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+          </svg>          
+        </button>
       </div>
     </div>
   </div>
@@ -44,76 +52,93 @@
     <div id="eventDetails">
       <h2 class="text-xl font-bold mb-4 flex justify-between items-center">
         <div>
-          Events for <p id="selectedDate"></p>
+          Events for<p id="selectedDate"></p>
         </div>
         <button id="addEventModalBtn" class="hidden sm:block bg-brown-800 text-white px-4 py-2 rounded-lg">Add Event</button>
       </h2>
-      <table class="min-w-full bg-white border border-brown-800 rounded-lg">
-        <thead>
-          <tr class="bg-brown-800 text-white">
-            <th class="px-4 py-2">Time</th>
-            <th class="px-4 py-2">Event Name</th>
-            <th class="px-4 py-2">Description</th>
-          </tr>
-        </thead>
-        <tbody id="eventTableBody" class="text-brown-950 divide-y divide-brown-800">
-          <!-- Generate By JavaScript -->
-        </tbody>
-      </table>
+
+      <!-- ตารางแสดงข้อมูล Calendar -->
+      <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table class="w-full font-light text-lg text-left rtl:text-right">
+          <thead class="text-base font-bold bg-brown-400">
+            <tr>
+              <th class="px-4 py-2 border-0">Time</th>
+              <th class="px-4 py-2 border-0">Event Name</th>
+              <th class="px-4 py-2 border-0">Description</th>
+            </tr>
+          </thead>
+          <tbody id="eventTableBody" class="divide-y divide-brown-800">
+            <!-- Generate By JavaScript -->
+          </tbody>
+        </table>
+      </div>
+
       <button id="addEventModalBtn2" class="block sm:hidden mt-2 bg-brown-800 text-white px-4 py-2 rounded">Add Event</button>
     </div>
   </div>
 
   <!-- Modal สำหรับเพิ่มกิจกรรม -->
   <div id="eventModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center z-10">
-    <div class="bg-white p-6 rounded-lg">
-      <div class="text-xl font-bold mb-2 text-brown-700">Add Event for <p id="selectedModalDate"></p></div>
-      <form id="eventForm" class="text-black" onsubmit="event.preventDefault(); add_event();">
-        {% csrf_token %}
+    <div class="w-full">
+      <div id="eventModalContent" class="transition-all -translate-y-full opacity-0 duration-700 bg-white p-6 rounded-lg sm:mx-12 md:mx-48 lg:mx-56 xl:mx-96">
+        <div class="text-xl font-bold mb-2 text-brown-700">
+          Add Event for<p id="selectedModalDate"></p>
+        </div>
+        <form id="eventForm" class="text-black" onsubmit="event.preventDefault(); add_event(); this.reset();">
+          {% csrf_token %}
 
-        <input type="hidden" name="noti_date" id="notiDateInput" value="" />
+          <input type="hidden" name="noti_date" id="notiDateInput" value="" />
 
-        {{ form.non_field_errors }}
-        <div class="mb-1">
-          {{ form.name.label_tag }}
-          {{ form.name }}
-          {% if form.name.errors %}
-            <div class="text-red-500 text-sm">{{ form.name.errors }}</div>
-          {% endif %}
-        </div>
-        <div class="mb-1">
-          {{ form.noti_time.label_tag }}
-          {{ form.noti_time }}
-          {% if form.noti_time.errors %}
-            <div class="text-red-500 text-sm">{{ form.noti_time.errors }}</div>
-          {% endif %}
-        </div>
-        <div class="mb-1">
-          {{ form.description.label_tag }}
-          {{ form.description }}
-          {% if form.description.errors %}
-            <div class="text-red-500 text-sm">{{ form.description.errors }}</div>
-          {% endif %}
-        </div>
-        <div class="mb-1">
-          {{ form.routine.label_tag }}
-          {{ form.routine }}
-          {% if form.routine.errors %}
-            <div class="text-red-500 text-sm">{{ form.routine.errors }}</div>
-          {% endif %}
-        </div>
-        <div class="mb-1">
-          {{ form.family.label_tag }}
-          {{ form.family }}
-          {% if form.family.errors %}
-            <div class="text-red-500 text-sm">{{ form.family.errors }}</div>
-          {% endif %}
-        </div>
-        <div class="flex justify-end space-x-4">
-          <button type="button" id="closeModal" class="text-white bg-gray-500 px-4 py-2 rounded hover:bg-gray-600 active:bg-gray-800">Cancel</button>
-          <button type="submit" onclick="this.forms.reset()" class="bg-brown-600 hover:bg-brown-700 active:bg-brown-800 text-white px-4 py-2 rounded">Save</button>
-        </div>
-      </form>
+          {{ form.non_field_errors }}
+          <div class="mb-1">
+            <label for="{{ form.name.id_for_label }}" class="text-sm font-medium">{{ form.name.label }}</label>
+            {{ form.name }}
+            {% if form.name.errors %}
+              <div class="text-red-500 text-sm">{{ form.name.errors }}</div>
+            {% endif %}
+          </div>
+          <div class="mb-1">
+            <label for="{{ form.description.id_for_label }}" class="text-sm font-medium">{{ form.description.label }}</label>
+            {{ form.description }}
+            {% if form.description.errors %}
+              <div class="text-red-500 text-sm">{{ form.description.errors }}</div>
+            {% endif %}
+          </div>
+
+          <div class="flex flex-col sm:flex-row gap-x-3">
+            <div class="mb-1">
+              <label for="{{ form.noti_time.id_for_label }}" class="text-sm font-medium">{{ form.noti_time.label }}</label>
+              <br />
+              {{ form.noti_time }}
+              {% if form.noti_time.errors %}
+                <div class="text-red-500 text-sm">{{ form.noti_time.errors }}</div>
+              {% endif %}
+            </div>
+            <div class="mb-1">
+              <label for="{{ form.routine.id_for_label }}" class="text-sm font-medium">{{ form.routine.label }}</label>
+              <br />
+              {{ form.routine }}
+              {% if form.routine.errors %}
+                <div class="text-red-500 text-sm">{{ form.routine.errors }}</div>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="mb-1">
+            <label for="{{ form.family.id_for_label }}" class="text-sm font-medium">{{ form.family.label }} (Optional)</label>
+            <p class="text-xs font-bold">{{ form.family.help_text }}</p>
+            {{ form.family }}
+            {% if form.family.errors %}
+              <div class="text-red-500 text-sm">{{ form.family.errors }}</div>
+            {% endif %}
+          </div>
+
+          <div class="flex justify-end space-x-4">
+            <button type="button" id="closeModal" class="text-white bg-gray-500 px-4 py-2 rounded hover:bg-gray-600 active:bg-gray-800">Cancel</button>
+            <button type="submit" class="bg-brown-600 hover:bg-brown-700 active:bg-brown-800 text-white px-4 py-2 rounded">Save</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 {% endblock %}
@@ -136,19 +161,31 @@
       const selectedDate = selectedDateElement.innerText
       document.getElementById('selectedModalDate').innerText = selectedDate
       notiDateInput.value = selectedDate
+    
       document.getElementById('eventModal').classList.toggle('hidden')
+      setTimeout(() => {
+        document.getElementById('eventModalContent').classList.toggle('-translate-y-full')
+        document.getElementById('eventModalContent').classList.toggle('opacity-0')
+      }, 100)
     })
-
+    
     addEventModalBtn2.addEventListener('click', () => {
       const selectedDate = selectedDateElement.innerText
       document.getElementById('selectedModalDate').innerText = selectedDate
       notiDateInput.value = selectedDate
+    
       document.getElementById('eventModal').classList.toggle('hidden')
+      setTimeout(() => {
+        document.getElementById('eventModalContent').classList.toggle('-translate-y-full')
+        document.getElementById('eventModalContent').classList.toggle('opacity-0')
+      }, 100)
     })
     
     // Close modal
     document.getElementById('closeModal').addEventListener('click', () => {
-      document.getElementById('eventModal').classList.toggle('hidden') // Hide the modal
+      document.getElementById('eventModalContent').classList.toggle('-translate-y-full')
+      document.getElementById('eventModalContent').classList.toggle('opacity-0')
+      setTimeout(() => document.getElementById('eventModal').classList.toggle('hidden'), 300) // Hide the modal
     })
     
     let currentDate = new Date()
@@ -157,7 +194,7 @@
       calendarDaysElement.innerHTML = ''
       const year = currentDate.getFullYear()
       const month = currentDate.getMonth()
-      const response = await fetch(`{{ base_url }}/api/events/user/${year}/${month+1}/count/`).then((response)=>response.json())
+      const response = await fetch(`{{ base_url }}/api/events/user/${year}/${month + 1}/count/`).then((response) => response.json())
       const monthYearString = currentDate.toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'long'
@@ -177,19 +214,19 @@
         calendarDaysElement.appendChild(dateDiv)
       }
     
-      const days_event = response.map(e=>{
-        return e.noti_date__day;
-      });
+      const days_event = response.map((e) => {
+        return e.noti_date__day
+      })
       // Fill current month's days
       for (let date = 1; date <= lastDateOfMonth; date++) {
         const dateDiv = document.createElement('div')
-        dateDiv.classList.add('bg-white', 'text-brown-950', 'p-2', 'rounded', 'shadow', 'text-center', 'cursor-pointer', "relative")
+        dateDiv.classList.add('bg-white', 'text-brown-950', 'p-2', 'rounded', 'shadow', 'text-center', 'cursor-pointer', 'relative')
         dateDiv.innerText = date
-
-        if(year <= today.getFullYear() && month <= today.getMonth() && date < today.getDate() || year <= today.getFullYear() && month < today.getMonth() || year < today.getFullYear()){
+    
+        if ((year <= today.getFullYear() && month <= today.getMonth() && date < today.getDate()) || (year <= today.getFullYear() && month < today.getMonth()) || year < today.getFullYear()) {
           dateDiv.classList.add('opacity-80')
         }
-
+    
         // Highlight today's date and fetch events
         if (date === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
           dateDiv.classList.add('bg-brown-700', 'text-white')
@@ -201,48 +238,48 @@
         dateDiv.addEventListener('click', () => {
           const selectedDate = new Date(year, month, date).toLocaleDateString('en-CA')
           selectedDateElement.innerText = selectedDate
-
-          if (addEventModalBtn.classList.contains("hidden")){
-            addEventModalBtn.classList.remove("hidden")
+    
+          if (addEventModalBtn.classList.contains('hidden')) {
+            addEventModalBtn.classList.remove('hidden')
           }
-          if (addEventModalBtn.classList.contains("sm:block")){
-            addEventModalBtn.classList.remove("sm:block")
+          if (addEventModalBtn.classList.contains('sm:block')) {
+            addEventModalBtn.classList.remove('sm:block')
           }
-          if (addEventModalBtn2.classList.contains("sm:hidden")){
-            addEventModalBtn2.classList.remove("sm:hidden")
+          if (addEventModalBtn2.classList.contains('sm:hidden')) {
+            addEventModalBtn2.classList.remove('sm:hidden')
           }
-          if (addEventModalBtn2.classList.contains("block")){
-            addEventModalBtn2.classList.remove("block")
+          if (addEventModalBtn2.classList.contains('block')) {
+            addEventModalBtn2.classList.remove('block')
           }
-          if (!(year >= today.getFullYear() && month >= today.getMonth() && date >= today.getDate())){
-            addEventModalBtn.classList.add("hidden")
-            addEventModalBtn2.classList.add("hidden")
-          }else{
-            addEventModalBtn.classList.remove("hidden")
-            addEventModalBtn2.classList.remove("hidden")
-
-            addEventModalBtn.classList.add("hidden", "sm:block")
-            addEventModalBtn2.classList.add("sm:hidden", "block")
+          if (!(year >= today.getFullYear() && month >= today.getMonth() && date >= today.getDate())) {
+            addEventModalBtn.classList.add('hidden')
+            addEventModalBtn2.classList.add('hidden')
+          } else {
+            addEventModalBtn.classList.remove('hidden')
+            addEventModalBtn2.classList.remove('hidden')
+    
+            addEventModalBtn.classList.add('hidden', 'sm:block')
+            addEventModalBtn2.classList.add('sm:hidden', 'block')
           }
-          
+    
           fetchAndDisplayEvents(selectedDate)
         })
-
+    
         // Add notification light
-        if (days_event.includes(date)){
-          let noti_light = document.createElement("div")
-          let noti_light2 = document.createElement("div")
-          
-          if(year >= today.getFullYear() && month >= today.getMonth() && date > today.getDate()){
-            noti_light.classList.add("absolute", "size-4", "bg-sky-700", "dark:bg-sky-500", "-top-1", "-right-1", "rounded-full", "animate-ping", "z-10")
-            noti_light2.classList.add("absolute", "size-4", "bg-sky-700", "dark:bg-sky-500", "-top-1", "-right-1", "rounded-full", "z-10")
-          }else if(year == today.getFullYear() && month == today.getMonth() && date == today.getDate()){
-            noti_light.classList.add("absolute", "size-4", "bg-red-700", "dark:bg-red-500", "-top-1", "-right-1", "rounded-full", "animate-ping", "z-10")
-            noti_light2.classList.add("absolute", "size-4", "bg-red-700", "dark:bg-red-500", "-top-1", "-right-1", "rounded-full", "z-10")
-          }else{
-            noti_light2.classList.add("absolute", "size-4", "bg-gray-500", "-top-1", "-right-1", "rounded-full", "z-10")
+        if (days_event.includes(date)) {
+          let noti_light = document.createElement('div')
+          let noti_light2 = document.createElement('div')
+    
+          if (year >= today.getFullYear() && month >= today.getMonth() && date > today.getDate()) {
+            noti_light.classList.add('absolute', 'size-4', 'bg-sky-700', 'dark:bg-sky-500', '-top-1', '-right-1', 'rounded-full', 'animate-ping', 'z-10')
+            noti_light2.classList.add('absolute', 'size-4', 'bg-sky-700', 'dark:bg-sky-500', '-top-1', '-right-1', 'rounded-full', 'z-10')
+          } else if (year == today.getFullYear() && month == today.getMonth() && date == today.getDate()) {
+            noti_light.classList.add('absolute', 'size-4', 'bg-red-700', 'dark:bg-red-500', '-top-1', '-right-1', 'rounded-full', 'animate-ping', 'z-10')
+            noti_light2.classList.add('absolute', 'size-4', 'bg-red-700', 'dark:bg-red-500', '-top-1', '-right-1', 'rounded-full', 'z-10')
+          } else {
+            noti_light2.classList.add('absolute', 'size-4', 'bg-gray-500', '-top-1', '-right-1', 'rounded-full', 'z-10')
           }
-          
+    
           dateDiv.append(noti_light, noti_light2)
           days_event.shift()
         }
@@ -280,20 +317,27 @@
           if (data.length > 0) {
             // Populate table with new events
             data.forEach((event) => {
+              const [year, month, day] = event.noti_date.split('-')
+              const [hour, minute, second] = event.noti_time.split(':')
+              const currentDateEvent = new Date(year, Number(month) - 1, day, hour, minute, second)
+    
               const row = document.createElement('tr')
+              row.classList.add('bg-white', 'border-b', 'dark:bg-brown-950', 'dark:border-b-brown-800')
               row.innerHTML = `
-                                                              <td class="px-4 py-2 border-l border-r border-[#6b4142]">${event.noti_time.substring(0, 5)}</td>
-                                                              <td class="px-4 py-2 border-l border-r border-[#6b4142]">${event.name}</td>
-                                                              <td class="px-4 py-2 border-l border-r border-[#6b4142]">${event.description}</td>
-                                                          `
+                                                                              <td class="px-4 py-2">${hour}:${minute}</td>
+                                                                              <td class="px-4 py-2">${event.name}</td>
+                                                                              <td class="px-4 py-2">${event.description}</td>
+                                                                          `
+              if (currentDate.getTime() > currentDateEvent.getTime()) row.classList.add('opacity-50')
               eventTableBody.appendChild(row)
             })
           } else {
             // If no events, display a message
             const noEventRow = document.createElement('tr')
+            noEventRow.classList.add('bg-white', 'border-b', 'dark:bg-brown-950', 'dark:border-b-brown-800')
             noEventRow.innerHTML = `
-                                                          <td colspan="3" class="px-4 py-2 text-center">No events scheduled for this day</td>
-                                                      `
+                                                                          <td colspan="3" class="px-4 py-2 text-center">No events scheduled for this day</td>
+                                                                      `
             eventTableBody.appendChild(noEventRow)
           }
     
@@ -306,8 +350,8 @@
           eventTableBody.innerHTML = '' // Clear previous event data
           const noEventRow = document.createElement('tr')
           noEventRow.innerHTML = `
-                                                      <td colspan="3" class="px-4 py-2 text-center">Error: ${error.message}</td>
-                                                  `
+                                                                      <td colspan="3" class="px-4 py-2 text-center">Error: ${error.message}</td>
+                                                                  `
           eventTableBody.appendChild(noEventRow)
           eventDetails.classList.remove('hidden')
           document.getElementById('eventContainer').classList.remove('hidden')
@@ -351,15 +395,17 @@
         },
         body: JSON.stringify(data)
       })
-        .then((data) => {
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Cannot add event to the past.')
+          }
           show_alert('Add event successful.')
           document.getElementById('eventModal').classList.toggle('hidden')
           fetchAndDisplayEvents(document.getElementById('selectedDate').innerText)
         })
         .catch((error) => {
-          console.log('Errors:', error)
+          show_error(error)
         })
     }
   </script>
-
 {% endblock %}

@@ -19,14 +19,19 @@
     {% comment %}Alert{% endcomment %}
     <div id="alert" role="alert" class="fixed top-5 inset-x-0 flex justify-center z-40 transition-full -translate-y-full opacity-0 duration-300">
       <div class="flex items-start gap-4 rounded-xl border p-4 bg-white dark:bg-black dark:border-gray2">
-        <span class="text-green-600">
+        <span id="icon_ok" class="text-green-600 hidden">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
         </span>
+        <span id="icon_error" class="text-red-600 hidden">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+          </svg>          
+        </span>
 
         <div class="flex-1">
-          <strong class="block font-medium">Changes saved</strong>
+          <strong id="alert_title" class="block font-medium">Changes saved</strong>
 
           <p id="alert_text" class="mt-1 text-sm text-gray-700 dark:text-gray-300">Your product changes have been saved.</p>
         </div>
@@ -106,15 +111,39 @@
       // Alert
       const alert = document.getElementById("alert")
       const alert_text = document.getElementById("alert_text")
+      const icon_ok = document.getElementById("icon_ok")
+      const icon_error = document.getElementById("icon_error")
+      const alert_title = document.getElementById("alert_title")
       function show_alert(text){
         alert_text.innerText = text
+        icon_ok.classList.toggle("hidden")
         alert.classList.toggle("-translate-y-full")
         alert.classList.toggle("opacity-0")
+        alert_title.innerText = "Changes saved"
 
         setTimeout(()=>{
           alert.classList.toggle("-translate-y-full")
           alert.classList.toggle("opacity-0")
-        }, 1500)
+        }, 3000)
+        setTimeout(()=>{
+          icon_ok.classList.toggle("hidden")
+        }, 3100)
+      }
+
+      function show_error(text){
+        alert_text.innerText = text
+        icon_error.classList.toggle("hidden")
+        alert.classList.toggle("-translate-y-full")
+        alert.classList.toggle("opacity-0")
+        alert_title.innerText = "Changes canceled"
+
+        setTimeout(()=>{
+          alert.classList.toggle("-translate-y-full")
+          alert.classList.toggle("opacity-0")
+        }, 3000)
+        setTimeout(()=>{
+          icon_error.classList.toggle("hidden")
+        }, 3100)
       }
     </script>
   </body>
