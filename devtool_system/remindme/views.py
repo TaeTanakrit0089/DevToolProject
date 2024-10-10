@@ -78,9 +78,10 @@ class CalendarView(View):
 class FamilyView(View):
     def get(self, request):
         user_families = Family.objects.filter(users=request.user)
+        base_url = request.build_absolute_uri('/')[:-1]
         # print("User families:", user_families)
         # print("Current user:", request.user)
-        return render(request, "family.html", {'user_families': user_families})
+        return render(request, "family.html", {'user_families': user_families, 'base_url': base_url})
     
     def post(self, request, name):
         try:

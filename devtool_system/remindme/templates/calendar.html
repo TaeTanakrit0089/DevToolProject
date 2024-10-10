@@ -58,16 +58,16 @@
       </h2>
 
       <!-- ตารางแสดงข้อมูล Calendar -->
-      <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <div class="relative overflow-x-auto shadow-sm sm:rounded-lg">
         <table class="w-full font-light text-lg text-left rtl:text-right">
-          <thead class="text-base font-bold bg-brown-400">
+          <thead class="text-base font-bold text-white bg-brown-400">
             <tr>
               <th class="px-4 py-2 border-0">Time</th>
               <th class="px-4 py-2 border-0">Event Name</th>
               <th class="px-4 py-2 border-0">Description</th>
             </tr>
           </thead>
-          <tbody id="eventTableBody" class="divide-y divide-brown-800">
+          <tbody id="eventTableBody" class="">
             <!-- Generate By JavaScript -->
           </tbody>
         </table>
@@ -209,7 +209,7 @@
       for (let i = 0; i < firstDayOfMonth; i++) {
         const prevMonthDate = lastDatePrevMonth - firstDayOfMonth + i + 1
         const dateDiv = document.createElement('div')
-        dateDiv.classList.add('bg-brown-100', 'text-brown-400', 'p-2', 'rounded', 'shadow', 'text-center', 'cursor-not-allowed')
+        dateDiv.classList.add('bg-brown-100', 'text-brown-400', 'border', 'border-brown-200', 'p-2', 'rounded', 'shadow-sm', 'text-center', 'cursor-not-allowed')
         dateDiv.innerText = prevMonthDate
         calendarDaysElement.appendChild(dateDiv)
       }
@@ -221,7 +221,7 @@
       for (let date = 1; date <= lastDateOfMonth; date++) {
         const selectedDate = new Date(year, month, date)
         const dateDiv = document.createElement('div')
-        dateDiv.classList.add('bg-white', 'text-brown-950', 'p-2', 'rounded', 'shadow', 'text-center', 'cursor-pointer', 'relative')
+        dateDiv.classList.add('bg-white', 'text-brown-950', 'border', 'border-gray-50', 'p-2', 'rounded', 'shadow-sm', 'text-center', 'cursor-pointer', 'relative')
         dateDiv.innerText = date
     
         if (selectedDate.getTime() < today.getTime()) {
@@ -231,7 +231,7 @@
         // Highlight today's date and fetch events
         if (date === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
           dateDiv.classList.add('bg-brown-700', 'text-white')
-          dateDiv.classList.remove('bg-white', 'text-brown-950')
+          dateDiv.classList.remove('bg-white', 'text-brown-950', 'border')
           fetchAndDisplayEvents(today.toLocaleDateString('en-CA'))
         }
     
@@ -323,14 +323,14 @@
               const currentDateEvent = new Date(year, Number(month) - 1, day, hour, minute, second)
               const today = new Date()
     
-              const row = document.createElement('tr')
-              row.classList.add('bg-white', 'border-b', 'dark:bg-brown-950', 'dark:border-b-brown-800')
+              let row = document.createElement('tr')
+              row.classList.add('bg-brown-100', 'border-b', 'border-b-gray-100', 'dark:bg-brown-950', 'dark:border-b-brown-800')
               row.innerHTML = `
                                                                               <td class="px-4 py-2">${hour}:${minute}</td>
                                                                               <td class="px-4 py-2">${event.name}</td>
                                                                               <td class="px-4 py-2">${event.description}</td>
                                                                           `
-              if (today.getTime() > currentDateEvent.getTime()) row.classList.add('opacity-50')
+              if (today.getTime() > currentDateEvent.getTime()) row.classList.add('opacity-30')
               eventTableBody.appendChild(row)
             })
           } else {
