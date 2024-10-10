@@ -404,6 +404,7 @@
           show_alert('Add event successful.')
           document.getElementById('eventModal').classList.toggle('hidden')
           fetchAndDisplayEvents(document.getElementById('selectedDate').innerText)
+          window.location.reload();
         })
         .catch((error) => {
           show_error(error)

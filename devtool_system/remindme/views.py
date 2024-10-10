@@ -1,5 +1,5 @@
 from django.contrib.auth import login
-from django.shortcuts import render, redirect, resolve_url
+from django.shortcuts import render, redirect, resolve_url, get_object_or_404
 from django.views import View
 from django.http import JsonResponse
 
@@ -77,7 +77,33 @@ class CalendarView(View):
 
 class FamilyView(View):
     def get(self, request):
-        return render(request, "family.html", {})
+        user_families = Family.objects.filter(users=request.user)
+        # print("User families:", user_families)
+        # print("Current user:", request.user)
+        return render(request, "family.html", {'user_families': user_families})
+    
+    def post(self, request, name):
+        try:
+            family = Family.objects.create(name=name)
+            family.users.add(request.user)
+            return JsonResponse({'message': f'Family "{family.name}" created successfully.', 'name': family.name}, status=201)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+        
+    def put(self, request, token):
+        try:
+            family = get_object_or_404(Family, token=token)
+            family.users.add(request.user)
+            return JsonResponse({'message': f'You have joined the family "{family.name}".'}, status=200)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    
+    def delete(self, request, family_id):
+        if request.method == 'DELETE':
+            family = get_object_or_404(Family, id=family_id)
+            family.delete()
+            return JsonResponse({'message': f'Family "{family.name}" deleted successfully.'}, status=200)
+        return JsonResponse({'error': 'Invalid request method.'}, status=405)
 
 class TestView(View):
     def get(self, request):
