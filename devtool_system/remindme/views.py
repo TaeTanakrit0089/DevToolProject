@@ -10,21 +10,22 @@ from .models import *
 from .forms import *
 
 from django.utils.timezone import now, timedelta, localtime
+from dateutil.relativedelta import relativedelta
+from django.db.models import Q
 
 # Create your views here.
 def update_events():
     now_time = localtime(now())
-    events = Events.objects.filter(routine__range=(1, 4), noti_date__lte=now_time, noti_time__lt=now_time)
+    events = Events.objects.filter(routine__range=(1, 4)).filter(Q(noti_date__lt=now_time.date()) | Q(noti_date__lte=now_time.date(), noti_time__lt=now_time.time()))
     for event in events:
-        plus_time = (now().date()-event.noti_date) + timedelta(days=1)
+        plus_time = (now_time.date()-event.noti_date) + timedelta(days=1)
         if event.routine == 2:
             plus_time = timedelta(weeks=1)
         elif event.routine == 3:
-            plus_time = timedelta(month=1)
+            plus_time = relativedelta(months=1)
         elif event.routine == 4:
-            plus_time = timedelta(month=12)
+            plus_time = relativedelta(years=1)
         event.noti_date += plus_time
-        print(event.noti_date)
         event.save()
 
 class HomePage(View):

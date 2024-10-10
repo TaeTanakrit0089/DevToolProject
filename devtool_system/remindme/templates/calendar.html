@@ -219,11 +219,12 @@
       })
       // Fill current month's days
       for (let date = 1; date <= lastDateOfMonth; date++) {
+        const selectedDate = new Date(year, month, date)
         const dateDiv = document.createElement('div')
         dateDiv.classList.add('bg-white', 'text-brown-950', 'p-2', 'rounded', 'shadow', 'text-center', 'cursor-pointer', 'relative')
         dateDiv.innerText = date
     
-        if ((year <= today.getFullYear() && month <= today.getMonth() && date < today.getDate()) || (year <= today.getFullYear() && month < today.getMonth()) || year < today.getFullYear()) {
+        if (selectedDate.getTime() < today.getTime()) {
           dateDiv.classList.add('opacity-80')
         }
     
@@ -270,7 +271,7 @@
           let noti_light = document.createElement('div')
           let noti_light2 = document.createElement('div')
     
-          if (year >= today.getFullYear() && month >= today.getMonth() && date > today.getDate()) {
+          if (selectedDate.getTime() > today.getTime()) {
             noti_light.classList.add('absolute', 'size-4', 'bg-sky-700', 'dark:bg-sky-500', '-top-1', '-right-1', 'rounded-full', 'animate-ping', 'z-10')
             noti_light2.classList.add('absolute', 'size-4', 'bg-sky-700', 'dark:bg-sky-500', '-top-1', '-right-1', 'rounded-full', 'z-10')
           } else if (year == today.getFullYear() && month == today.getMonth() && date == today.getDate()) {
@@ -320,6 +321,7 @@
               const [year, month, day] = event.noti_date.split('-')
               const [hour, minute, second] = event.noti_time.split(':')
               const currentDateEvent = new Date(year, Number(month) - 1, day, hour, minute, second)
+              const today = new Date()
     
               const row = document.createElement('tr')
               row.classList.add('bg-white', 'border-b', 'dark:bg-brown-950', 'dark:border-b-brown-800')
@@ -328,7 +330,7 @@
                                                                               <td class="px-4 py-2">${event.name}</td>
                                                                               <td class="px-4 py-2">${event.description}</td>
                                                                           `
-              if (currentDate.getTime() > currentDateEvent.getTime()) row.classList.add('opacity-50')
+              if (today.getTime() > currentDateEvent.getTime()) row.classList.add('opacity-50')
               eventTableBody.appendChild(row)
             })
           } else {

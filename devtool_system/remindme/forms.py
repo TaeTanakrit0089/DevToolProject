@@ -1,10 +1,10 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 
-from django.utils.timezone import now
+from django.utils.timezone import now, localtime
 ## models
 from .models import *
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.core.exceptions import ValidationError
 
 class RegisterForm(UserCreationForm):
@@ -14,7 +14,7 @@ class RegisterForm(UserCreationForm):
 
     def clean_birth_date(self):
         dob = self.cleaned_data.get("birth_date")
-        if dob > now().date():
+        if dob > localtime(now()).date():
             raise ValidationError(
                 "Date Of Birth Must Not Be Future"
             )
@@ -57,7 +57,8 @@ class EventsForm(forms.ModelForm):
             'type': 'time',
             'placeholder': 'Event Time',
             'class': 'text-brown-950 rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-brown-200 border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] py-2 px-3 transition',
-            'min': now().strftime("%H:%M")
+            'min': (localtime(now())+timedelta(minutes=1)).strftime("%H:%M"),
+            'value': (localtime(now())+timedelta(minutes=1)).strftime("%H:%M")
         }))
     family = forms.ModelChoiceField(queryset=Family.objects.filter(id=None), help_text="Will make family's events, if selected.", widget=forms.Select(attrs={
             'class': 'w-fit text-brown-950 rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-brown-200 border focus:border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] py-2 px-3 transition'
