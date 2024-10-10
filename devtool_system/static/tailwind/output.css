@@ -853,6 +853,10 @@ video {
   max-width: 1280px;
 }
 
+.max-w-3xl {
+  max-width: 48rem;
+}
+
 .flex-1 {
   flex: 1 1 0%;
 }
@@ -1236,6 +1240,11 @@ video {
 .bg-gray-300 {
   --tw-bg-opacity: 1;
   background-color: rgb(209 213 219 / var(--tw-bg-opacity));
+}
+
+.bg-brown-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(237 224 222 / var(--tw-bg-opacity));
 }
 
 .bg-opacity-75 {
@@ -2012,6 +2021,11 @@ body {
 
   .dark\:bg-transparent {
     background-color: transparent;
+  }
+
+  .dark\:bg-brown-700 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(130 78 78 / var(--tw-bg-opacity));
   }
 
   .dark\:text-\[\#eef7fc\] {

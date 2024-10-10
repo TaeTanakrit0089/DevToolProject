@@ -28,10 +28,10 @@
         <p class="mb-4 text-sm text-gray-600 dark:text-gray-400">Token: <span id="token{{ family.id }}" class="font-mono">{{ family.token }}</span></p>
         
         <!-- Action Buttons for Edit and Delete -->
-        <div class="flex space-x-4 mb-4">
-          <button class="bg-yellow-600 hover:bg-yellow-700 active:bg-yellow-800 text-white px-4 py-2 rounded-lg">
-            Edit
-          </button>
+          <div class="flex space-x-4 mb-4">
+            <button class="bg-yellow-600 hover:bg-yellow-700 active:bg-yellow-800 text-white px-4 py-2 rounded-lg" data-family-id="{{ family.id }}" onclick="openEditModal('{{ family.id }}', '{{ family.name }}', '{{ family.users.all|safe }}')">
+              Edit
+            </button>
           <button class="bg-red-600 hover:bg-red-700 active:bg-red-800 text-white px-4 py-2 rounded-lg" onclick="confirmDelete('{{ family.id }}', '{{ family.name }}', '{{ csrf_token }}')">
             Delete
           </button>
@@ -109,6 +109,36 @@
               <button type="submit" class="bg-brown-600 text-white font-bold py-2 px-4 rounded">Join</button>
           </div>
       </form>
+    </div>
+</div>
+
+<!-- Edit Family Modal -->
+<div id="editModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
+  <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-3xl">
+    <h2 class="text-lg text-brown-800 font-bold mb-4">Edit Family</h2>
+    <form id="editFamilyForm" class="text-black" onsubmit="event.preventDefault(); saveFamily();">
+      {% csrf_token %}
+      <div class="mb-4">
+        <label for="editFamilyName" class="block text-gray-700">Family Name:</label>
+        <input type="text" id="editFamilyName" name="editFamilyName" required class="mt-1 block w-full border border-brown-700 rounded-md p-2 focus:outline-none focus:ring focus:ring-brown-500">
+      </div>
+      <table class="table-auto w-full text-left text-sm mb-4">
+        <thead>
+          <tr class="bg-brown-600">
+            <th class="px-4 py-2">#</th>
+            <th class="px-4 py-2">Name</th>
+            <th class="px-4 py-2">Action</th>
+          </tr>
+        </thead>
+        <tbody id="editMembersTable">
+          <!-- Dynamic member rows will be injected here -->
+        </tbody>
+      </table>
+      <div class="flex justify-end">
+        <button type="button" class="bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded mr-2" onclick="closeEditModal()">Cancel</button>
+        <button type="submit" class="bg-brown-600 text-white font-bold py-2 px-4 rounded">Save</button>
+      </div>
+    </form>
   </div>
 </div>
 
@@ -136,6 +166,44 @@
   document.getElementById('closeJoinModal').addEventListener('click', function() {
     document.getElementById('joinModal').classList.add('hidden');
   });
+
+  // Close modal Join Family
+  document.getElementById('closeJoinModal').addEventListener('click', function() {
+      document.getElementById('joinModal').classList.add('hidden');
+  });
+
+  function openEditModal(familyId, familyName, membersJson) {
+    // console.log('Family ID:', familyId);
+    // console.log('Family Name:', familyName);
+    // console.log('Members JSON:', membersJson);
+    // const members = JSON.parse(membersJson); // แปลง JSON string เป็น JavaScript object
+    
+    document.getElementById('editModal').classList.remove('hidden'); // Show the modal
+    const familyNameInput = document.getElementById('editFamilyName');
+    familyNameInput.value = familyName; // Set the family name
+
+    const membersTable = document.getElementById('editMembersTable');
+    membersTable.innerHTML = ''; // Clear existing rows
+
+    // สร้างแถวสำหรับสมาชิกแต่ละคนในตาราง
+    members.forEach((user, index) => {
+        const memberRow = document.createElement('tr');
+        memberRow.innerHTML = `
+            <td class="px-4 py-2">${index + 1}</td>
+            <td class="px-4 py-2">${user.fields.first_name} ${user.fields.last_name}</td>
+            <td class="px-4 py-2">
+                <button type="button" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg" onclick="removeMember('${user.pk}', '${familyId}')">Delete</button>
+            </td>
+        `;
+        membersTable.appendChild(memberRow);
+    });
+  } 
+
+
+  // Close the Edit Modal
+  function closeEditModal() {
+    document.getElementById('editModal').classList.add('hidden');
+  }
 
   function createFamily() {
     const familyName = document.getElementById('familyName').value;
@@ -196,6 +264,32 @@ function joinFamily() {
       console.error('Error:', error);
       show_alert('Failed to join family. Please check the token and try again.');
     });
+  }
+
+  function removeMember(userId, familyId) {
+  if (confirm('Are you sure you want to remove this member?')) {
+    fetch(`/editfamily/${familyId}/remove-member/${userId}/`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': '{{ csrf_token }}',
+      }
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok.');
+        }
+        return response.json();
+      })
+      .then(data => {
+        alert('Member removed successfully!');
+        location.reload();
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to remove member.');
+      });
+    }
   }
 
   function copyToken(tokenId) {

@@ -105,6 +105,16 @@ class FamilyView(View):
             return JsonResponse({'message': f'Family "{family.name}" deleted successfully.'}, status=200)
         return JsonResponse({'error': 'Invalid request method.'}, status=405)
 
+class FamilyMemberView(View):
+    # Remove a member from family
+    def delete(self, request, family_id, user_id):
+        family = get_object_or_404(Family, id=family_id)
+        if request.user in family.users.all():
+            user = get_object_or_404(User, id=user_id)
+            family.users.remove(user)
+            return JsonResponse({'message': f'Member "{user.username}" removed from family "{family.name}".'}, status=200)
+        return JsonResponse({'error': 'Unauthorized or family not found.'}, status=403)
+
 class TestView(View):
     def get(self, request):
         form = EventsForm(user=request.user)
