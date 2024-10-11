@@ -65,6 +65,7 @@
               <th class="px-4 py-2 border-0">Time</th>
               <th class="px-4 py-2 border-0">Event Name</th>
               <th class="px-4 py-2 border-0">Description</th>
+              <th class="px-4 py-2 border-0">UserCreated</th>
             </tr>
           </thead>
           <tbody id="eventTableBody" class="">
@@ -313,6 +314,7 @@
           return response.json()
         })
         .then((data) => {
+          console.log(data)
           eventTableBody.innerHTML = '' // Clear previous event data
     
           if (data.length > 0) {
@@ -329,6 +331,11 @@
                                                                               <td class="px-4 py-2">${hour}:${minute}</td>
                                                                               <td class="px-4 py-2">${event.name}</td>
                                                                               <td class="px-4 py-2">${event.description}</td>
+                                                                              <td class="px-4 py-2">
+                                                                                <span class="inline-block bg-yellow-500 text-gray-700 rounded-full px-3 py-1 text-sm font-semibold"> ${event.display_family.name} </span>
+                                                                                ${event.display_user.first_name} 
+                                                                                ${event.display_user.last_name}
+                                                                              </td>
                                                                           `
               if (today.getTime() > currentDateEvent.getTime()) row.classList.add('opacity-30')
               eventTableBody.appendChild(row)
@@ -338,7 +345,7 @@
             const noEventRow = document.createElement('tr')
             noEventRow.classList.add('bg-white', 'border-b', 'dark:bg-brown-950', 'dark:border-b-brown-800')
             noEventRow.innerHTML = `
-                                                                          <td colspan="3" class="px-4 py-2 text-center">No events scheduled for this day</td>
+                                                                          <td colspan="4" class="px-4 py-2 text-center">No events scheduled for this day</td>
                                                                       `
             eventTableBody.appendChild(noEventRow)
           }
