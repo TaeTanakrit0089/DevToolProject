@@ -62,7 +62,7 @@ class EventsForm(forms.ModelForm):
         }))
     family = forms.ModelChoiceField(queryset=Family.objects.filter(id=None), help_text="Will make family's events, if selected.", widget=forms.Select(attrs={
             'class': 'w-fit text-brown-950 rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-brown-200 border focus:border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] py-2 px-3 transition'
-        }))
+        }), required=False)
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user')  # Extract 'user' from kwargs
         super(EventsForm, self).__init__(*args, **kwargs)
