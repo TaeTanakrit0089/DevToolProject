@@ -18,13 +18,21 @@ class FamilySerializer2(serializers.ModelSerializer):
         model = Family
         fields = ["id", "name"]
 
+class UsersSerializer2(serializers.ModelSerializer):
+    class Meta:
+        model = Users
+        fields = ["id", "first_name", "last_name"]
+
 class EventSerializer(serializers.ModelSerializer):
     display_family = FamilySerializer2(source="family", read_only=True)
+    display_user = UsersSerializer2(source="user", read_only=True)
+    
     class Meta:
         model = Events
-        fields = ["id", "user", "name", "description", "noti_date", "noti_time", "routine", "family", "display_family"]
+        fields = ["id", "user", "name", "description", "noti_date", "noti_time", "routine", "family", "display_family", "display_user"]
         extra_kwargs = {
-            'family': {'write_only': True}
+            'family': {'write_only': True},
+            'user': {'write_only': True}
         }
     def validate(self, data):
         now_time = localtime(now())
