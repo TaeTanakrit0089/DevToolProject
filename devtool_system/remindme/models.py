@@ -15,6 +15,9 @@ class Family(models.Model):
     def __str__(self):
         return self.name
     
+    class Meta:
+        ordering = ['id']
+    
 class Events(models.Model):
     ROUTINE = {
         0: 'once',

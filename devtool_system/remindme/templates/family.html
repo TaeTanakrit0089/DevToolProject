@@ -87,7 +87,7 @@
               
               <div class="mt-1 flex justify-start">
                 <label for="familyName" class="block text-gray-700 mr-2">Select Family Color:</label>
-                <div class="color-picker-container rounded-full w-6 h-6 bg-brown-800" id="color-picker-container" >
+                <div class="rounded-full w-6 h-6 bg-brown-800" id="color-picker-container" >
                   <input type="color" id="colorInput">
                 </div>
               </div>
@@ -166,7 +166,6 @@
   // Update the background color of the container when the input value changes
   colorInput.addEventListener('input', function() {
       colorPickerContainer.style.backgroundColor = colorInput.value;
-      console.log(colorInput.value);
   });
 </script>
 
@@ -264,19 +263,6 @@
       .catch((error)=>{
         console.log(error)
       })
-    /*
-    members.forEach((user, index) => {
-        const memberRow = document.createElement('tr');
-        memberRow.innerHTML = `
-            <td class="px-4 py-2">${index + 1}</td>
-            <td class="px-4 py-2">${user.fields.first_name} ${user.fields.last_name}</td>
-            <td class="px-4 py-2">
-                <button type="button" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg" onclick="removeMember('${user.pk}', '${familyId}')">Delete</button>
-            </td>
-        `;
-        membersTable.appendChild(memberRow);
-    });
-    */
   } 
 
   // Close the Edit Modal
@@ -288,6 +274,34 @@
     editModalContent.classList.toggle("-translate-y-full")
 
     setTimeout(()=>editModal.classList.toggle('hidden'), 300)
+  }
+
+  function editColor(getColor, getContainer){
+    getContainer.style.backgroundColor = getColor.value;
+    
+  }
+
+  function submitColor(getColor, getID){
+    fetch(`{{ base_url }}/api/family/${getID}/`, {
+      method: 'PATCH', 
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': '{{ csrf_token }}'
+    },
+    body: JSON.stringify({ "color":getColor.value.substring(1, 7)})
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('No events found')
+        }
+        show_alert(`Change color success!`);
+        return response
+      })
+      .catch((error)=>{
+        console.log(error)
+      })
+
+    console.log(getColor.value.substring(1, 7))
   }
 
   function getFamily(){
@@ -311,8 +325,15 @@
           div_family.innerHTML = 
           `
             <div class="relative">
+
               <div class="flex justify-between items-center mb-2">
-                <h2 class="text-lg font-bold dark:text-brown-50">${data[i].name}</h2>
+                <div class="flex items-center space-x-2">
+                    <div class="inline-block rounded-full w-6 h-6" style="background-color: #${data[i].color};" id="color-picker-${data[i].id}">
+                        <input type="color" class="w-6 h-6 opacity-0" onblur="submitColor(this, ${data[i].id})" oninput="editColor(this, document.getElementById('color-picker-${data[i].id}'))" value="#${data[i].color}">
+                    </div>
+                    <h2 class="text-lg font-bold dark:text-brown-50">${data[i].name}</h2>
+                </div>
+
                 <div class="absolute right-0">
                   <button onclick="copyToken('token${data[i].id}')" class="text-sm text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 px-3 py-2 rounded-lg font-bold">
                     Copy Token
