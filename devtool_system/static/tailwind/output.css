@@ -677,14 +677,6 @@ video {
   margin: auto;
 }
 
-.m-10 {
-  margin: 2.5rem;
-}
-
-.m-2 {
-  margin: 0.5rem;
-}
-
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -764,18 +756,6 @@ video {
   margin-top: auto;
 }
 
-.ml-10 {
-  margin-left: 2.5rem;
-}
-
-.mt-10 {
-  margin-top: 2.5rem;
-}
-
-.mb-3 {
-  margin-bottom: 0.75rem;
-}
-
 .block {
   display: block;
 }
@@ -833,6 +813,10 @@ video {
   height: 2.5rem;
 }
 
+.h-6 {
+  height: 1.5rem;
+}
+
 .h-8 {
   height: 2rem;
 }
@@ -845,30 +829,6 @@ video {
   height: 100vh;
 }
 
-.h-auto {
-  height: auto;
-}
-
-.h-16 {
-  height: 4rem;
-}
-
-.h-1 {
-  height: 0.25rem;
-}
-
-.h-5 {
-  height: 1.25rem;
-}
-
-.h-28 {
-  height: 7rem;
-}
-
-.h-6 {
-  height: 1.5rem;
-}
-
 .max-h-10 {
   max-height: 2.5rem;
 }
@@ -877,36 +837,16 @@ video {
   width: 2.5rem;
 }
 
+.w-6 {
+  width: 1.5rem;
+}
+
 .w-96 {
   width: 24rem;
 }
 
 .w-full {
   width: 100%;
-}
-
-.w-1 {
-  width: 0.25rem;
-}
-
-.w-16 {
-  width: 4rem;
-}
-
-.w-5 {
-  width: 1.25rem;
-}
-
-.w-28 {
-  width: 7rem;
-}
-
-.w-8 {
-  width: 2rem;
-}
-
-.w-6 {
-  width: 1.5rem;
 }
 
 .min-w-48 {
@@ -1224,11 +1164,6 @@ video {
   background-color: rgb(250 253 255 / var(--tw-bg-opacity));
 }
 
-.bg-black {
-  --tw-bg-opacity: 1;
-  background-color: rgb(14 14 17 / var(--tw-bg-opacity));
-}
-
 .bg-blue-600 {
   --tw-bg-opacity: 1;
   background-color: rgb(37 99 235 / var(--tw-bg-opacity));
@@ -1319,24 +1254,14 @@ video {
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
-.bg-yellow-600 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(202 138 4 / var(--tw-bg-opacity));
-}
-
-.bg-gray-400 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(156 163 175 / var(--tw-bg-opacity));
-}
-
-.bg-brown-900 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(95 60 62 / var(--tw-bg-opacity));
-}
-
 .bg-yellow-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(234 179 8 / var(--tw-bg-opacity));
+}
+
+.bg-yellow-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(202 138 4 / var(--tw-bg-opacity));
 }
 
 .bg-opacity-50 {

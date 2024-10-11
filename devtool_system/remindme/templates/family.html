@@ -15,7 +15,7 @@
   <div class="container mx-auto p-4 flex flex-col">
     <!-- Header -->
     <div class="flex justify-between items-center mb-4">
-      <h1 id="monthYear" class="text-2xl font-bold dark:text-brown-50">Families ({{ user_families|length }})</h1>
+      <h1 class="text-2xl font-bold dark:text-brown-50">Families (<span id="CountFamily">{{ user_families|length }}</span>) </h1>
       <div class="flex place-items-center gap-x-4 font-bold">
         <button id="openCreateModal" class="bg-brown-700 hover:bg-brown-800 active:bg-brown-900 px-5 py-2 rounded-lg text-white">Create</button>
         <button id="openJoinModal" class="text-brown-700 px-5 py-2 rounded-lg bg-gray-50 hover:bg-gray-100 active:bg-gray-200">Join</button>
@@ -41,7 +41,7 @@
 
           <div class="relative overflow-x-auto shadow-sm sm:rounded-lg border border-brown-200 dark:border-brown-900">
             <table class="w-full text-sm font-light text-left rtl:text-right">
-              <thead class="font-bold bg-brown-400 text-white">
+              <thead class="font-bold bg-brown-800 text-white">
                 <tr>
                   <th class="px-4 py-2 text-center">#</th>
                   <th class="px-4 py-2">Member Name</th>
@@ -411,6 +411,7 @@
         show_alert(`Family "${familyName}" created successfully!`);
         document.getElementById('familyModal').classList.toggle('hidden'); // ปิด modal
         // สามารถรีเฟรชหน้าหรือเรียกข้อมูลใหม่ที่นี่
+        document.getElementById('CountFamily').innerHTML = Number(document.getElementById('CountFamily').innerHTML) + 1
         getFamily()
     })
     .catch(error => {
@@ -506,6 +507,7 @@ function confirmDelete(familyId, familyName, csrf_token) {
       .then((data) => {
         // แสดงข้อความแจ้งเตือนการลบสำเร็จพร้อมชื่อของครอบครัว
         show_alert('Deletion successful for family: ' + familyName);
+        document.getElementById('CountFamily').innerHTML = Number(document.getElementById('CountFamily').innerHTML) - 1
         getFamily() // รีโหลดข้อมูล Family
       })
       .catch((error) => {
