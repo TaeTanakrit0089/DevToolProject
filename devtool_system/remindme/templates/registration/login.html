@@ -14,14 +14,14 @@
         <div class="flex flex-col gap-6">
           <!-- Email(username) -->
           <div class="flex flex-col">
-            <label for="{{ form.username.id_for_label }}" class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ form.username.label }}</label>
+            <label for="{{ form.username.id_for_label }}" class="text-sm font-medium">{{ form.username.label }}</label>
             <input class="text-brown-950 rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-brown-200 border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] py-2 px-3 transition" type=".text" name="username" id="{{ form.username.id_for_label }}" value="{{ form.username.value|default_if_none:'' }}" required placeholder="Your Username" />
             <p class="text-red-500 text-sm mt-1">{{ form.username.errors }}</p>
           </div>
 
           <!-- Password(password) -->
           <div class="flex flex-col">
-            <label for="{{ form.password.id_for_label }}" class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ form.password.label }}</label>
+            <label for="{{ form.password.id_for_label }}" class="text-sm font-medium">{{ form.password.label }}</label>
             <input class="text-brown-950 rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-brown-200 border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] py-2 px-3 transition" type="password" name="password" id="{{ form.password.id_for_label }}" required placeholder="Must have at least 4 characters" />
             <p class="text-red-500 text-sm mt-1">{{ form.password.errors }}</p>
           </div>

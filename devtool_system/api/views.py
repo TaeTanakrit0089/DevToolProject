@@ -68,6 +68,7 @@ class FamilyList(APIView):
         #     "name": "test Family"
         # }
         request.data['token'] = get_token_family()
+        request.data['users'] = [request.user.id]
         serializer = FamilySerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -125,6 +126,7 @@ class JoinFamily(APIView):
         except Family.DoesNotExist:
             return Response({"detail": "There's a wrong token"}, stauts=status.HTTP_400_BAD_REQUEST)
 
+
 class EventList(APIView):
     authentication_classes = [SessionAuthentication]
     permission_classes = [IsAuthenticated]
@@ -150,7 +152,7 @@ class EventList(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response()
-        return Response(serializer.errors, stauts=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 class EventAction(APIView):
     authentication_classes = [SessionAuthentication]
@@ -199,7 +201,7 @@ class EventAction(APIView):
 @authentication_classes([SessionAuthentication])
 @permission_classes([IsAuthenticated])
 def user_event_year(request, year):
-    event = Events.objects.filter(Q(user=request.user) | Q(family__in=request.user.family_set.all())).filter(Q(routine__range=(1, 3)) | Q(noti_date__year=year))
+    event = Events.objects.filter(Q(user=request.user) | Q(family__in=request.user.family_set.all())).filter(noti_date__year=year)
     serializer = EventSerializer(event, many=True)
     return Response(serializer.data)
 
@@ -207,7 +209,7 @@ def user_event_year(request, year):
 @authentication_classes([SessionAuthentication])
 @permission_classes([IsAuthenticated])
 def user_event_month(request, year, month):
-    event = Events.objects.filter(Q(user=request.user) | Q(family__in=request.user.family_set.all())).filter(Q(routine__range=(1, 3)) | Q(noti_date__year=year, noti_date__month=month))
+    event = Events.objects.filter(Q(user=request.user) | Q(family__in=request.user.family_set.all())).filter(noti_date__year=year, noti_date__month=month)
     serializer = EventSerializer(event, many=True)
     return Response(serializer.data)
 
@@ -215,7 +217,7 @@ def user_event_month(request, year, month):
 @authentication_classes([SessionAuthentication])
 @permission_classes([IsAuthenticated])
 def user_event_day(request, year, month, day):
-    event = Events.objects.filter(Q(user=request.user) | Q(family__in=request.user.family_set.all())).filter(Q(routine__range=(1, 3)) | Q(noti_date__year=year, noti_date__month=month, noti_date__day=day))
+    event = Events.objects.filter(Q(user=request.user) | Q(family__in=request.user.family_set.all())).filter(noti_date__year=year, noti_date__month=month, noti_date__day=day)
     serializer = EventSerializer(event, many=True)
     return Response(serializer.data)
 
@@ -223,5 +225,16 @@ def user_event_day(request, year, month, day):
 @authentication_classes([SessionAuthentication])
 @permission_classes([IsAuthenticated])
 def user_event_month_count(request, year, month):
-    event = Events.objects.filter(Q(user=request.user) | Q(family__in=request.user.family_set.all())).filter(Q(routine__range=(1, 3)) | Q(noti_date__year=year, noti_date__month=month)).values("noti_date", "noti_date__year", "noti_date__month", "noti_date__day").annotate(count=Count("id"))
+    event = Events.objects.filter(Q(user=request.user) | Q(family__in=request.user.family_set.all())).filter(noti_date__year=year, noti_date__month=month).values("noti_date", "noti_date__year", "noti_date__month", "noti_date__day").annotate(count=Count("id"))
     return Response(event)
+
+class MemberAction(APIView):
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+    
+    def delete(self, request, userID, familyID):
+        family = get_object_or_404(Family, pk=familyID)
+        if request.user.id != userID:
+            family.users.remove(userID)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_400_BAD_REQUEST)

@@ -11,4 +11,6 @@ urlpatterns = [
     path("events/user/<int:year>/<int:month>/", user_event_month, name="event_user_month"),
     path("events/user/<int:year>/<int:month>/<int:day>/", user_event_day, name="event_user_day"),
     path("events/user/<int:year>/<int:month>/count/", user_event_month_count, name="event_user_count"),
+    
+    path("member/<int:familyID>/<int:userID>/", MemberAction.as_view(), name="member_action"),
 ]

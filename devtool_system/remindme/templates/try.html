@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Try{% endblock %}
+
+{% block content %}
+<style>
+    /* Customize input */
+    input[type="color"] {
+        opacity: 0;
+        cursor: pointer; 
+    }
+</style>
+<div class="color-picker-container rounded-full w-6 h-6 bg-brown-800" id="color-picker-container" >
+    <input type="color" id="colorInput" class="w-6">
+</div>
+
+<script>
+    // Get the color input and container
+    const colorInput = document.getElementById('colorInput');
+    const colorPickerContainer = document.getElementById('color-picker-container');
+
+    // Update the background color of the container when the input value changes
+    colorInput.addEventListener('input', function() {
+        colorPickerContainer.style.backgroundColor = colorInput.value;
+    });
+</script>
+{% endblock %}
