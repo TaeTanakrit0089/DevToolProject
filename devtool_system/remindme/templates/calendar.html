@@ -66,6 +66,7 @@
               <th class="px-4 py-2 border-0">Event Name</th>
               <th class="px-4 py-2 border-0">Description</th>
               <th class="px-4 py-2 border-0">UserCreated</th>
+              <th class="px-4 py-2 border-0">Action</th>
             </tr>
           </thead>
           <tbody id="eventTableBody" class="">
@@ -298,6 +299,27 @@
         calendarDaysElement.appendChild(dateDiv)
       }
     }
+
+    document.querySelectorAll(".deleteEventBtn").forEach((button) => {
+    button.addEventListener("click", (e) => {
+      const eventId = e.target.dataset.id;
+      if (confirm("Are you sure you want to delete this event?")) {
+        fetch(`{{ base_url }}/api/events/${eventId}/`, {
+          method: "DELETE",
+          headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+          },
+        }).then((response) => {
+          if (response.ok) {
+            // ลบแถวออกจากตาราง
+            e.target.closest("tr").remove();
+          } else {
+            alert("Failed to delete event");
+          }
+        });
+      }
+    });
+  });
     
     function fetchAndDisplayEvents(selectedDate) {
       selectedDateElement.innerText = selectedDate
@@ -339,6 +361,9 @@
                                                                                 ${event.display_user.first_name} 
                                                                                 ${event.display_user.last_name}
                                                                               </td>
+                                                                              <td class="px-4 py-2">
+                                                                                <button class="deleteEventBtn bg-red-500 text-white px-3 py-1 rounded" data-id="${event.id}">Delete</button>
+                                                                              </td>
                                                                           `
               if (today.getTime() > currentDateEvent.getTime()) row.classList.add('opacity-30')
               eventTableBody.appendChild(row)
@@ -348,7 +373,7 @@
             const noEventRow = document.createElement('tr')
             noEventRow.classList.add('bg-white', 'border-b', 'dark:bg-brown-950', 'dark:border-b-brown-800')
             noEventRow.innerHTML = `
-                                                                          <td colspan="4" class="px-4 py-2 text-center">No events scheduled for this day</td>
+                                                                          <td colspan="5" class="px-4 py-2 text-center">No events scheduled for this day</td>
                                                                       `
             eventTableBody.appendChild(noEventRow)
           }
