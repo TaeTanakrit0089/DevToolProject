@@ -68,8 +68,8 @@
 </div>
 
 <!-- Create Family Modal -->
-<div id="modal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden z-10">
-  <div class="bg-white rounded-lg shadow-lg p-6 w-96">
+<div id="familyModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden z-10">
+  <div id="familyModalContent" class="transition-all -translate-y-full opacity-0 duration-500 bg-white rounded-lg shadow-lg p-6 w-96">
       <h2 class="text-lg text-brown-800 font-bold mb-4">Create Family</h2>
       <form id="eventForm" class="text-black" onsubmit="event.preventDefault(); createFamily(); this.reset();">
           {% csrf_token %}
@@ -87,7 +87,7 @@
 
 <!-- Join Family Modal -->
 <div id="joinModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden z-10">
-  <div class="bg-white rounded-lg shadow-lg p-6 w-96">
+  <div id="joinModalContent" class="transition-all -translate-y-full opacity-0 duration-500 bg-white rounded-lg shadow-lg p-6 w-96">
       <h2 class="text-lg text-brown-800 font-bold mb-4">Join Family</h2>
       <form id="joinForm" class="text-black" onsubmit="event.preventDefault(); joinFamily(); this.reset();">
           <div class="mb-4">
@@ -104,7 +104,7 @@
 
 <!-- Edit Family Modal -->
 <div id="editModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden z-10">
-  <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-3xl">
+  <div id="editModalContent" class="transition-all -translate-y-full opacity-0 duration-500 bg-white rounded-lg shadow-lg p-6 w-full max-w-3xl">
     <h2 class="text-lg text-brown-800 font-bold mb-4">Edit Family</h2>
     <form id="editFamilyForm" class="flex flex-col gap-4 text-black" onsubmit="event.preventDefault(); saveFamily();">
       {% csrf_token %}
@@ -146,36 +146,49 @@
 
   // Open modal Create Family
   document.getElementById('openCreateModal').addEventListener('click', function() {
-        document.getElementById('modal').classList.remove('hidden');
-    });
+      document.getElementById('familyModal').classList.toggle('hidden');
+      setTimeout(()=>{
+        document.getElementById('familyModalContent').classList.toggle("opacity-0")
+        document.getElementById('familyModalContent').classList.toggle("-translate-y-full")
+      }, 200)
+  });
 
   // Close modal Create Family
   document.getElementById('closeModal').addEventListener('click', function() {
-      document.getElementById('modal').classList.add('hidden');
+    document.getElementById('familyModalContent').classList.toggle("opacity-0")
+    document.getElementById('familyModalContent').classList.toggle("-translate-y-full")
+    setTimeout(()=>document.getElementById('familyModal').classList.toggle('hidden'), 300)
   });
 
   // Open modal Join Family
   document.getElementById('openJoinModal').addEventListener('click', function() {
-    document.getElementById('joinModal').classList.remove('hidden');
+    document.getElementById('joinModal').classList.toggle('hidden');
+    setTimeout(()=>{
+      document.getElementById('joinModalContent').classList.toggle("opacity-0")
+      document.getElementById('joinModalContent').classList.toggle("-translate-y-full")
+    }, 200)
   });
 
   // Close modal Join Family
   document.getElementById('closeJoinModal').addEventListener('click', function() {
-    document.getElementById('joinModal').classList.add('hidden');
-  });
-
-  // Close modal Join Family
-  document.getElementById('closeJoinModal').addEventListener('click', function() {
-      document.getElementById('joinModal').classList.add('hidden');
+    document.getElementById('joinModalContent').classList.toggle("opacity-0")
+    document.getElementById('joinModalContent').classList.toggle("-translate-y-full")
+    setTimeout(()=>document.getElementById('joinModal').classList.toggle('hidden'), 300)
   });
 
   function openEditModal(familyId, familyName) {
+    const editModal = document.getElementById('editModal')
+    const editModalContent = document.getElementById('editModalContent')
     // console.log('Family ID:', familyId);
     // console.log('Family Name:', familyName);
     // console.log('Members JSON:', membersJson);
     // const members = JSON.parse(membersJson); // แปลง JSON string เป็น JavaScript object
     
-    document.getElementById('editModal').classList.remove('hidden'); // Show the modal
+    editModal.classList.toggle('hidden'); // Show the modal
+    setTimeout(()=>{
+      editModalContent.classList.toggle("opacity-0")
+      editModalContent.classList.toggle("-translate-y-full")
+    }, 200)
     const familyNameInput = document.getElementById('editFamilyName');
     familyNameInput.value = familyName; // Set the family name
 
@@ -240,7 +253,13 @@
 
   // Close the Edit Modal
   function closeEditModal() {
-    document.getElementById('editModal').classList.add('hidden');
+    const editModal = document.getElementById('editModal')
+    const editModalContent = document.getElementById('editModalContent')
+
+    editModalContent.classList.toggle("opacity-0")
+    editModalContent.classList.toggle("-translate-y-full")
+
+    setTimeout(()=>editModal.classList.toggle('hidden'), 300)
   }
 
   function getFamily(){
@@ -361,7 +380,7 @@
     .then(data => {
         // แสดงข้อความแจ้งเตือนการสร้างสำเร็จพร้อมชื่อของครอบครัว
         show_alert(`Family "${familyName}" created successfully!`);
-        document.getElementById('modal').classList.add('hidden'); // ปิด modal
+        document.getElementById('familyModal').classList.toggle('hidden'); // ปิด modal
         // สามารถรีเฟรชหน้าหรือเรียกข้อมูลใหม่ที่นี่
         getFamily()
     })
@@ -390,7 +409,7 @@ function joinFamily() {
     .then(data => {
       // Show success alert for joining family
       show_alert(`Join family successful`);
-      document.getElementById('joinModal').classList.add('hidden'); // Close modal
+      document.getElementById('joinModal').classList.toggle('hidden'); // Close modal
       getFamily()
     })
     .catch(error => {

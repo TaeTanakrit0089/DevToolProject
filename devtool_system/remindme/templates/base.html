@@ -114,36 +114,46 @@
       const icon_ok = document.getElementById("icon_ok")
       const icon_error = document.getElementById("icon_error")
       const alert_title = document.getElementById("alert_title")
+      
+      let timeouts = []
       function show_alert(text){
+        clearTimeouts(timeouts)
         alert_text.innerText = text
-        icon_ok.classList.toggle("hidden")
-        alert.classList.toggle("-translate-y-full")
-        alert.classList.toggle("opacity-0")
+        icon_ok.classList.remove("hidden")
+        alert.classList.remove("-translate-y-full")
+        alert.classList.remove("opacity-0")
         alert_title.innerText = "Changes saved"
 
-        setTimeout(()=>{
-          alert.classList.toggle("-translate-y-full")
-          alert.classList.toggle("opacity-0")
+        timeouts['show_alert'] = setTimeout(()=>{
+          alert.classList.add("-translate-y-full")
+          alert.classList.add("opacity-0")
         }, 3000)
-        setTimeout(()=>{
-          icon_ok.classList.toggle("hidden")
+        timeouts['show_alert_hidden'] = setTimeout(()=>{
+          icon_ok.classList.add("hidden")
         }, 3100)
       }
 
       function show_error(text){
+        clearTimeouts(timeouts)
         alert_text.innerText = text
-        icon_error.classList.toggle("hidden")
-        alert.classList.toggle("-translate-y-full")
-        alert.classList.toggle("opacity-0")
+        icon_error.classList.remove("hidden")
+        alert.classList.remove("-translate-y-full")
+        alert.classList.remove("opacity-0")
         alert_title.innerText = "Error ocurred"
 
-        setTimeout(()=>{
-          alert.classList.toggle("-translate-y-full")
-          alert.classList.toggle("opacity-0")
+        timeouts['show_error'] = setTimeout(()=>{
+          alert.classList.add("-translate-y-full")
+          alert.classList.add("opacity-0")
         }, 3000)
-        setTimeout(()=>{
-          icon_error.classList.toggle("hidden")
+        timeouts['show_error_hidden'] = setTimeout(()=>{
+          icon_error.classList.add("hidden")
         }, 3100)
+      }
+
+      function clearTimeouts(timeouts){
+        for (i in timeouts){
+          clearTimeout(timeouts[i])
+        }
       }
     </script>
   </body>
