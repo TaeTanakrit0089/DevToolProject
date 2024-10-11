@@ -16,7 +16,7 @@ class UsersSerializer(serializers.ModelSerializer):
 class FamilySerializer2(serializers.ModelSerializer):
     class Meta:
         model = Family
-        fields = ["id", "name"]
+        fields = ["id", "name", "color"]
 
 class UsersSerializer2(serializers.ModelSerializer):
     class Meta:
