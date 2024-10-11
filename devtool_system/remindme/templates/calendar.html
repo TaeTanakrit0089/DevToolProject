@@ -332,7 +332,10 @@
                                                                               <td class="px-4 py-2">${event.name}</td>
                                                                               <td class="px-4 py-2">${event.description}</td>
                                                                               <td class="px-4 py-2">
-                                                                                <span class="inline-block bg-yellow-500 text-gray-700 rounded-full px-3 py-1 text-sm font-semibold"> ${event.display_family.name} </span>
+                                                                                <span class="inline-block text-gray-700 rounded-full px-3 py-1 text-sm font-semibold"
+                                                                                      style="background-color: #${event.display_family.color};"> 
+                                                                                  ${event.display_family.name} 
+                                                                                </span>
                                                                                 ${event.display_user.first_name} 
                                                                                 ${event.display_user.last_name}
                                                                               </td>
