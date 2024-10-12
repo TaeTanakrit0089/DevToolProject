@@ -15,9 +15,7 @@ from django.db.models import Q
 
 from os import environ
 
-class Type(View):
-    def get(self, request):
-        return render(request, "try.html")
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 def solved_url(request):
@@ -65,10 +63,12 @@ class RegisterView(View):
             "now": now().date() # ถ้า form ผิดส่ง now date มาด้วย
         })
     
-class CalendarView(View):
+class CalendarView(LoginRequiredMixin, View):
     def get(self, request):
         update_events()
-        form = EventsForm(user=request.user)
+        value = (localtime(now())+timedelta(minutes=1)).strftime("%H:%M")
+        
+        form = EventsForm(user=request.user, initial={'noti_time': value})
         base_url = solved_url(request)
         return render(request, "calendar.html", {'form': form, 'base_url': base_url})
 
@@ -84,7 +84,7 @@ class CalendarView(View):
             return redirect('calendar_page')
         return render(request, "calendar.html", {'form': form, 'base_url': base_url})
 
-class FamilyView(View):
+class FamilyView(LoginRequiredMixin, View):
     def get(self, request):
         user_families = Family.objects.filter(users=request.user)
         base_url = solved_url(request)
@@ -113,7 +113,7 @@ class FamilyView(View):
             return JsonResponse({'message': f'Family "{family.name}" deleted successfully.'}, status=200)
         return JsonResponse({'error': 'Invalid request method.'}, status=405)
 
-class FamilyMemberView(View):
+class FamilyMemberView(LoginRequiredMixin, View):
     # Remove a member from family
     def delete(self, request, family_id, user_id):
         family = get_object_or_404(Family, id=family_id)
@@ -122,9 +122,3 @@ class FamilyMemberView(View):
             family.users.remove(user)
             return JsonResponse({'message': f'Member "{user.username}" removed from family "{family.name}".'}, status=200)
         return JsonResponse({'error': 'Unauthorized or family not found.'}, status=403)
-
-class TestView(View):
-    def get(self, request):
-        form = EventsForm(user=request.user)
-        base_url = solved_url(request)
-        return render(request, "test.html", {"form": form, "base_url": base_url})

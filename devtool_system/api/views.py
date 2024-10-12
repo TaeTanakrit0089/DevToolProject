@@ -1,3 +1,4 @@
+from sched import Event
 from tkinter.font import families
 from django.shortcuts import render, get_object_or_404
 from .serializers import *
@@ -8,6 +9,7 @@ from rest_framework import status
 from remindme.models import *
 from django.core.exceptions import PermissionDenied
 from django.utils.decorators import method_decorator
+from django.db import transaction
 
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -234,7 +236,12 @@ class MemberAction(APIView):
     
     def delete(self, request, userID, familyID):
         family = get_object_or_404(Family, pk=familyID)
-        if request.user.id != userID:
+        with transaction.atomic():
+            events = Events.objects.filter(user__id=userID, family__id=familyID)
+            for i in events:
+                i.family = None
+                i.save()
             family.users.remove(userID)
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+            if family.users.count() == 0:
+                family.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
