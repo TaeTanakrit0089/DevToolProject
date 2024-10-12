@@ -6,6 +6,7 @@ pipeline {
         DB_PASSWORD = 'Ab123456*'
         DB_HOST = 'postgres_db'
         DB_PORT = '5432'
+        PRODUCTION=1
     }
 
     stages {
@@ -28,6 +29,7 @@ pipeline {
                         DB_PASSWORD=${DB_PASSWORD}
                         DB_HOST=${DB_HOST}
                         DB_PORT=${DB_PORT}
+                        PRODUCTION=${PRODUCTION}
                         EOF
                     '''
                     echo '.env file created.'

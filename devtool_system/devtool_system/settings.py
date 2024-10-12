@@ -146,7 +146,7 @@ AUTH_USER_MODEL = "remindme.Users"
 CSRF_TRUSTED_ORIGINS = [
     'https://34.87.135.25',
     'http://localhost',
-    'https://34.143.177.154'
+    # 'https://34.143.177.154'
 ]
 
 
