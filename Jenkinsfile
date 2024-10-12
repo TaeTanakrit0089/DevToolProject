@@ -48,7 +48,7 @@ pipeline {
         stage('Run Docker Containers') {
             steps {
                 script {
-                    sh 'docker compose up -d'
+                    sh 'docker compose up'
                 }
             }
         }
