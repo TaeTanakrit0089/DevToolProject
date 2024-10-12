@@ -57,6 +57,7 @@ pipeline {
     post {
         success {
             echo 'Pipeline executed successfully!'
+            echo "Current working directory: ${pwd()}"
         }
         failure {
             echo 'Pipeline execution failed.'
