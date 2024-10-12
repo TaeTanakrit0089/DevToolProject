@@ -17,7 +17,7 @@
   {% endblock %}
   <body>
     {% comment %}Alert{% endcomment %}
-    <div id="alert" role="alert" class="fixed top-5 inset-x-0 flex justify-center z-40 transition-full -translate-y-full opacity-0 duration-300">
+    <div id="alert" onmouseenter="close_alert()" role="alert" class="fixed top-5 inset-x-0 flex justify-center z-40 transition-full -translate-y-full opacity-0 duration-300">
       <div class="flex items-start gap-4 rounded-xl border p-4 bg-white dark:bg-black dark:border-gray2">
         <span id="icon_ok" class="text-green-600 hidden">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -136,6 +136,14 @@
         timeouts['show_error_hidden'] = setTimeout(()=>{
           icon_error.classList.add("hidden")
         }, 3100)
+      }
+
+      function close_alert(){
+        clearTimeouts(timeouts)
+        setTimeout(()=>{
+          alert.classList.add("-translate-y-full")
+          alert.classList.add("opacity-0")
+        }, 500)
       }
 
       function clearTimeouts(timeouts){
