@@ -294,14 +294,13 @@
         if (!response.ok) {
           throw new Error('No events found')
         }
-        show_alert(`Change color success!`);
+        show_alert(`Change color successfully!`);
         return response
       })
       .catch((error)=>{
         console.log(error)
       })
 
-    console.log(getColor.value.substring(1, 7))
   }
 
   function getFamily(){
