@@ -3,4 +3,5 @@ python manage.py migrate
 
 python manage.py collectstatic --no-input
 
-python manage.py runserver 0.0.0.0:8000
+# --workers 3 
+gunicorn devtool_system.wsgi:application --bind web:8000

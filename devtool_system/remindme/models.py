@@ -31,5 +31,8 @@ class Events(models.Model):
     family = models.ForeignKey(Family, null=True, on_delete=models.CASCADE)
     create_at = models.DateTimeField(auto_now_add=True)
     
+    def __str__(self):
+        return "%s %s %s"%(self.name, self.noti_date, self.noti_time)
+    
     class Meta:
         ordering = ['noti_date', 'noti_time']

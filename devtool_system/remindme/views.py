@@ -1,15 +1,37 @@
 from django.contrib.auth import login
-from django.shortcuts import render, redirect, resolve_url
+from django.shortcuts import render, redirect, resolve_url, get_object_or_404
 from django.views import View
 from django.http import JsonResponse
 
 ## form
 from .forms import *
 
+from django.utils.timezone import now, timedelta, localtime
+from dateutil.relativedelta import relativedelta
+from django.db.models import Q
 
-## models
+from os import environ
 
 # Create your views here.
+def solved_url(request):
+    base_url = request.build_absolute_uri('/')[:-1]
+    if environ.get("PRODUCTION") is not None:
+        base_url = base_url.replace("http", "https")
+    return base_url
+
+def update_events():
+    now_time = localtime(now())
+    events = Events.objects.filter(routine__range=(1, 4)).filter(Q(noti_date__lt=now_time.date()) | Q(noti_date__lte=now_time.date(), noti_time__lt=now_time.time()))
+    for event in events:
+        plus_time = (now_time.date()-event.noti_date) + timedelta(days=1)
+        if event.routine == 2:
+            plus_time = timedelta(weeks=1)
+        elif event.routine == 3:
+            plus_time = relativedelta(months=1)
+        elif event.routine == 4:
+            plus_time = relativedelta(years=1)
+        event.noti_date += plus_time
+        event.save()
 
 class HomePage(View):
     def get(self, request):
@@ -39,11 +61,14 @@ class RegisterView(View):
     
 class CalendarView(View):
     def get(self, request):
+        update_events()
         form = EventsForm(user=request.user)
-        return render(request, "calendar.html", {'form': form})
+        base_url = solved_url(request)
+        return render(request, "calendar.html", {'form': form, 'base_url': base_url})
 
     def post(self, request):
         form = EventsForm(request.POST, user=request.user)
+        base_url = solved_url(request)
         print(f"form is valid: {form.is_valid()}")
         print(form.errors)  
 
@@ -53,23 +78,51 @@ class CalendarView(View):
             new_event.noti_date = request.POST.get('noti_date')
             new_event.save()
             return redirect('calendar_page')
-        return render(request, "calendar.html", {'form': form})
+        return render(request, "calendar.html", {'form': form, 'base_url': base_url})
 
-class GetEventsByDateView(View):
-    def get(self, request, date):
-        # ค้นหากิจกรรมในวันที่ระบุ
-        events = list(Events.objects.filter(noti_date=date).values('noti_time', 'name', 'description').order_by("noti_time"))
+class FamilyView(View):
+    def get(self, request):
+        user_families = Family.objects.filter(users=request.user)
+        base_url = solved_url(request)
+        # print("User families:", user_families)
+        # print("Current user:", request.user)
+        return render(request, "family.html", {'user_families': user_families, 'base_url': base_url})
+    
+    def post(self, request, name):
+        try:
+            family = Family.objects.create(name=name)
+            family.users.add(request.user)
+            return JsonResponse({'message': f'Family "{family.name}" created successfully.', 'name': family.name}, status=201)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+        
+    def put(self, request, token):
+        try:
+            family = get_object_or_404(Family, token=token)
+            family.users.add(request.user)
+            return JsonResponse({'message': f'You have joined the family "{family.name}".'}, status=200)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    
+    def delete(self, request, family_id):
+        if request.method == 'DELETE':
+            family = get_object_or_404(Family, id=family_id)
+            family.delete()
+            return JsonResponse({'message': f'Family "{family.name}" deleted successfully.'}, status=200)
+        return JsonResponse({'error': 'Invalid request method.'}, status=405)
 
-        for event in events:
-            event['noti_time'] = event['noti_time'].strftime("%H:%M") # แปลงเป็นสตริง เช่น '16:00'
-
-        if not events:  # ถ้าไม่มีข้อมูล
-            return JsonResponse([], safe=False)  # ส่งกลับเป็นลิสต์ว่าง
-
-        return JsonResponse(events, safe=False)  # ส่งกลับข้อมูลกิจกรรม
+class FamilyMemberView(View):
+    # Remove a member from family
+    def delete(self, request, family_id, user_id):
+        family = get_object_or_404(Family, id=family_id)
+        if request.user in family.users.all():
+            user = get_object_or_404(User, id=user_id)
+            family.users.remove(user)
+            return JsonResponse({'message': f'Member "{user.username}" removed from family "{family.name}".'}, status=200)
+        return JsonResponse({'error': 'Unauthorized or family not found.'}, status=403)
 
 class TestView(View):
     def get(self, request):
         form = EventsForm(user=request.user)
-        base_url = request.build_absolute_uri('/')[:-1]
+        base_url = solved_url(request)
         return render(request, "test.html", {"form": form, "base_url": base_url})
