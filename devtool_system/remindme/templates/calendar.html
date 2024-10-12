@@ -65,6 +65,8 @@
               <th class="px-4 py-2 border-0">Time</th>
               <th class="px-4 py-2 border-0">Event Name</th>
               <th class="px-4 py-2 border-0">Description</th>
+              <th class="px-4 py-2 border-0">UserCreated</th>
+              <th class="px-4 py-2 border-0">Action</th>
             </tr>
           </thead>
           <tbody id="eventTableBody" class="">
@@ -224,16 +226,18 @@
         dateDiv.classList.add('bg-white', 'text-brown-950', 'border', 'border-gray-50', 'p-2', 'rounded', 'shadow-sm', 'text-center', 'cursor-pointer', 'relative')
         dateDiv.innerText = date
     
-        if (selectedDate.getTime() < today.getTime()) {
-          dateDiv.classList.add('opacity-80')
-        }
-    
         // Highlight today's date and fetch events
         if (date === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
           dateDiv.classList.add('bg-brown-700', 'text-white')
           dateDiv.classList.remove('bg-white', 'text-brown-950', 'border')
           fetchAndDisplayEvents(today.toLocaleDateString('en-CA'))
         }
+
+        else if (selectedDate.getTime() < today.getTime() ) {
+          dateDiv.classList.add('bg-gray-100', 'opacity-80')
+          dateDiv.classList.remove('bg-white')
+        }
+    
     
         // Add click event to fetch and display events for the selected date
         dateDiv.addEventListener('click', () => {
@@ -297,6 +301,27 @@
         calendarDaysElement.appendChild(dateDiv)
       }
     }
+
+    document.querySelectorAll(".deleteEventBtn").forEach((button) => {
+    button.addEventListener("click", (e) => {
+      const eventId = e.target.dataset.id;
+      if (confirm("Are you sure you want to delete this event?")) {
+        fetch(`{{ base_url }}/api/events/${eventId}/`, {
+          method: "DELETE",
+          headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+          },
+        }).then((response) => {
+          if (response.ok) {
+            // ลบแถวออกจากตาราง
+            e.target.closest("tr").remove();
+          } else {
+            alert("Failed to delete event");
+          }
+        });
+      }
+    });
+  });
     
     function fetchAndDisplayEvents(selectedDate) {
       selectedDateElement.innerText = selectedDate
@@ -318,6 +343,7 @@
           if (data.length > 0) {
             // Populate table with new events
             data.forEach((event) => {
+              console.log(event)
               const [year, month, day] = event.noti_date.split('-')
               const [hour, minute, second] = event.noti_time.split(':')
               const currentDateEvent = new Date(year, Number(month) - 1, day, hour, minute, second)
@@ -330,6 +356,22 @@
                                                                               <td class="px-4 py-2">${event.name}</td>
                                                                               <td class="px-4 py-2">${event.description}</td>
                                                                           `
+              if (event.display_family != null)row.innerHTML += 
+              `
+              <td class="px-4 py-2 flex flex-col md:flex-row items-center md:space-x-2">
+                <div class="text-gray-700 rounded-full text-sm font-semibold size-6"
+                  style="background-color: #${event.display_family.color};"><p class='text-center'>${event.display_family.name.substring(0, 2).toUpperCase()}</p></div>
+                <span class="m-0">${event.display_user.first_name} ${event.display_user.last_name}</span>
+              </td>
+              `
+              else row.innerHTML +=
+              `
+              <td class="px-4 py-2 text-center md:text-left">
+                ${event.display_user.first_name} 
+                ${event.display_user.last_name}
+              </td>
+              `
+              row.innerHTML += `<td class="px-4 py-2"><button class="deleteEventBtn bg-red-600 hover:bg-red-800 active:bg-red-900 text-white px-3 py-1 rounded" data-id="${event.id}">Delete</button></td>`
               if (today.getTime() > currentDateEvent.getTime()) row.classList.add('opacity-30')
               eventTableBody.appendChild(row)
             })
@@ -338,7 +380,7 @@
             const noEventRow = document.createElement('tr')
             noEventRow.classList.add('bg-white', 'border-b', 'dark:bg-brown-950', 'dark:border-b-brown-800')
             noEventRow.innerHTML = `
-                                                                          <td colspan="3" class="px-4 py-2 text-center">No events scheduled for this day</td>
+                                                                          <td colspan="5" class="px-4 py-2 text-center">No events scheduled for this day</td>
                                                                       `
             eventTableBody.appendChild(noEventRow)
           }

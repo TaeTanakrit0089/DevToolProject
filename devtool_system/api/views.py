@@ -94,7 +94,7 @@ class FamilyAction(APIView):
         #     "name": "test Family2"
         # }
         if not check_family(pk, request.user):
-            return Response(status=status.HTTP_403_FORBIDDEN)
+            return Response({'test':'TEST'}, status=status.HTTP_403_FORBIDDEN)
 
         request.data['token'] = get_token_family()
         family = get_object_or_404(Family, pk=pk)

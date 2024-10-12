@@ -12,6 +12,10 @@ from django.db.models import Q
 
 from os import environ
 
+class Type(View):
+    def get(self, request):
+        return render(request, "try.html")
+
 # Create your views here.
 def solved_url(request):
     base_url = request.build_absolute_uri('/')[:-1]
@@ -49,7 +53,6 @@ class RegisterView(View):
 
     def post(self, request):
         form = RegisterForm(request.POST)
-        print('username=', form['username'])
         if form.is_valid():
             user = form.save()
             login(request, user)
@@ -69,8 +72,6 @@ class CalendarView(View):
     def post(self, request):
         form = EventsForm(request.POST, user=request.user)
         base_url = solved_url(request)
-        print(f"form is valid: {form.is_valid()}")
-        print(form.errors)  
 
         if form.is_valid():
             new_event = form.save(commit=False)
@@ -84,8 +85,6 @@ class FamilyView(View):
     def get(self, request):
         user_families = Family.objects.filter(users=request.user)
         base_url = solved_url(request)
-        # print("User families:", user_families)
-        # print("Current user:", request.user)
         return render(request, "family.html", {'user_families': user_families, 'base_url': base_url})
     
     def post(self, request, name):

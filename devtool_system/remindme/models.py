@@ -9,10 +9,14 @@ class Users(AbstractUser):
 class Family(models.Model):
     name = models.CharField(max_length=200)
     token = models.CharField(max_length=6) # TOKEN for Invite
+    color = models.CharField(max_length=6, default="5f3c3e") # Selected color by user
     users = models.ManyToManyField(Users)
 
     def __str__(self):
         return self.name
+    
+    class Meta:
+        ordering = ['id']
     
 class Events(models.Model):
     ROUTINE = {

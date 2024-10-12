@@ -57,7 +57,6 @@ class EventsForm(forms.ModelForm):
             'type': 'time',
             'placeholder': 'Event Time',
             'class': 'text-brown-950 rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-brown-200 border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] py-2 px-3 transition',
-            'min': (localtime(now())+timedelta(minutes=1)).strftime("%H:%M"),
             'value': (localtime(now())+timedelta(minutes=1)).strftime("%H:%M")
         }))
     family = forms.ModelChoiceField(queryset=Family.objects.filter(id=None), help_text="Will make family's events, if selected.", widget=forms.Select(attrs={

@@ -14,4 +14,6 @@ urlpatterns = [
 
     path('editfamily/<int:family_id>/remove-member/<int:user_id>/', FamilyMemberView.as_view(), name='remove_family_member'),
     path("test/", TestView.as_view(), name="test"),
+
+    path("try/", Type.as_view(), name='try')
 ]

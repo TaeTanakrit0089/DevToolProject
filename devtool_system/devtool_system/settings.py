@@ -57,6 +57,12 @@ MIDDLEWARE = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
+# INTERNAL_IPS = [
+#     # ...
+#     "127.0.0.1",
+#     # ...
+# ]
+
 ROOT_URLCONF = 'devtool_system.urls'
 
 TEMPLATES = [
@@ -148,7 +154,6 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost',
     # 'https://34.143.177.154'
 ]
-
 
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
