@@ -13,11 +13,19 @@ from django.utils.timezone import now, timedelta, localtime
 from dateutil.relativedelta import relativedelta
 from django.db.models import Q
 
+from os import environ
+
 class Type(View):
     def get(self, request):
         return render(request, "try.html")
 
 # Create your views here.
+def solved_url(request):
+    base_url = request.build_absolute_uri('/')[:-1]
+    if environ.get("PRODUCTION") is not None:
+        base_url = base_url.replace("http", "https")
+    return base_url
+
 def update_events():
     now_time = localtime(now())
     events = Events.objects.filter(routine__range=(1, 4)).filter(Q(noti_date__lt=now_time.date()) | Q(noti_date__lte=now_time.date(), noti_time__lt=now_time.time()))
@@ -35,8 +43,6 @@ def update_events():
 class HomePage(View):
     def get(self, request):
         return render(request, 'index.html')
-    def post(self, request):
-        pass
     
 class RegisterView(View):
     def get(self, request):
@@ -50,7 +56,6 @@ class RegisterView(View):
     
     def post(self, request):
         form = RegisterForm(request.POST)
-        print('username=', form['username'])
         if form.is_valid():
             user = form.save()
             login(request, user)
@@ -64,12 +69,12 @@ class CalendarView(View):
     def get(self, request):
         update_events()
         form = EventsForm(user=request.user)
-        return render(request, "calendar.html", {'form': form})
+        base_url = solved_url(request)
+        return render(request, "calendar.html", {'form': form, 'base_url': base_url})
 
     def post(self, request):
         form = EventsForm(request.POST, user=request.user)
-        print(f"form is valid: {form.is_valid()}")
-        print(form.errors)  
+        base_url = solved_url(request)
 
         if form.is_valid():
             new_event = form.save(commit=False)
@@ -77,14 +82,12 @@ class CalendarView(View):
             new_event.noti_date = request.POST.get('noti_date')
             new_event.save()
             return redirect('calendar_page')
-        return render(request, "calendar.html", {'form': form})
+        return render(request, "calendar.html", {'form': form, 'base_url': base_url})
 
 class FamilyView(View):
     def get(self, request):
         user_families = Family.objects.filter(users=request.user)
-        base_url = request.build_absolute_uri('/')[:-1]
-        # print("User families:", user_families)
-        # print("Current user:", request.user)
+        base_url = solved_url(request)
         return render(request, "family.html", {'user_families': user_families, 'base_url': base_url})
     
     def post(self, request, name):
@@ -123,5 +126,5 @@ class FamilyMemberView(View):
 class TestView(View):
     def get(self, request):
         form = EventsForm(user=request.user)
-        base_url = request.build_absolute_uri('/')[:-1]
+        base_url = solved_url(request)
         return render(request, "test.html", {"form": form, "base_url": base_url})

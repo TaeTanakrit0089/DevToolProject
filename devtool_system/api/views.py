@@ -94,7 +94,6 @@ class FamilyAction(APIView):
         # {
         #     "name": "test Family2"
         # }
-        print(pk)
         if not check_family(pk, request.user):
             return Response({'test':'TEST'}, status=status.HTTP_403_FORBIDDEN)
 

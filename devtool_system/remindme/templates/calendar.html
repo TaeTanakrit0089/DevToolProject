@@ -226,16 +226,18 @@
         dateDiv.classList.add('bg-white', 'text-brown-950', 'border', 'border-gray-50', 'p-2', 'rounded', 'shadow-sm', 'text-center', 'cursor-pointer', 'relative')
         dateDiv.innerText = date
     
-        if (selectedDate.getTime() < today.getTime()) {
-          dateDiv.classList.add('opacity-80')
-        }
-    
         // Highlight today's date and fetch events
         if (date === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
           dateDiv.classList.add('bg-brown-700', 'text-white')
           dateDiv.classList.remove('bg-white', 'text-brown-950', 'border')
           fetchAndDisplayEvents(today.toLocaleDateString('en-CA'))
         }
+
+        else if (selectedDate.getTime() < today.getTime() ) {
+          dateDiv.classList.add('bg-gray-100', 'opacity-80')
+          dateDiv.classList.remove('bg-white')
+        }
+    
     
         // Add click event to fetch and display events for the selected date
         dateDiv.addEventListener('click', () => {
@@ -336,12 +338,12 @@
           return response.json()
         })
         .then((data) => {
-          console.log(data)
           eventTableBody.innerHTML = '' // Clear previous event data
     
           if (data.length > 0) {
             // Populate table with new events
             data.forEach((event) => {
+              console.log(event)
               const [year, month, day] = event.noti_date.split('-')
               const [hour, minute, second] = event.noti_time.split(':')
               const currentDateEvent = new Date(year, Number(month) - 1, day, hour, minute, second)
@@ -353,18 +355,23 @@
                                                                               <td class="px-4 py-2">${hour}:${minute}</td>
                                                                               <td class="px-4 py-2">${event.name}</td>
                                                                               <td class="px-4 py-2">${event.description}</td>
-                                                                              <td class="px-4 py-2">
-                                                                                <span class="inline-block text-gray-700 rounded-full px-3 py-1 text-sm font-semibold"
-                                                                                      style="background-color: #${event.display_family.color};"> 
-                                                                                  ${event.display_family.name} 
-                                                                                </span>
-                                                                                ${event.display_user.first_name} 
-                                                                                ${event.display_user.last_name}
-                                                                              </td>
-                                                                              <td class="px-4 py-2">
-                                                                                <button class="deleteEventBtn bg-red-500 text-white px-3 py-1 rounded" data-id="${event.id}">Delete</button>
-                                                                              </td>
                                                                           `
+              if (event.display_family != null)row.innerHTML += 
+              `
+              <td class="px-4 py-2 flex flex-col md:flex-row items-center md:space-x-2">
+                <div class="text-gray-700 rounded-full text-sm font-semibold size-6"
+                  style="background-color: #${event.display_family.color};"><p class='text-center'>${event.display_family.name.substring(0, 2).toUpperCase()}</p></div>
+                <span class="m-0">${event.display_user.first_name} ${event.display_user.last_name}</span>
+              </td>
+              `
+              else row.innerHTML +=
+              `
+              <td class="px-4 py-2 text-center md:text-left">
+                ${event.display_user.first_name} 
+                ${event.display_user.last_name}
+              </td>
+              `
+              row.innerHTML += `<td class="px-4 py-2"><button class="deleteEventBtn bg-red-600 hover:bg-red-800 active:bg-red-900 text-white px-3 py-1 rounded" data-id="${event.id}">Delete</button></td>`
               if (today.getTime() > currentDateEvent.getTime()) row.classList.add('opacity-30')
               eventTableBody.appendChild(row)
             })

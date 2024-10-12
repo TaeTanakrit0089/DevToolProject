@@ -57,11 +57,11 @@ MIDDLEWARE = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
-INTERNAL_IPS = [
-    # ...
-    "127.0.0.1",
-    # ...
-]
+# INTERNAL_IPS = [
+#     # ...
+#     "127.0.0.1",
+#     # ...
+# ]
 
 ROOT_URLCONF = 'devtool_system.urls'
 
@@ -147,3 +147,12 @@ LOGIN_REDIRECT_URL = "home"
 LOGIN_URL = "login" # หากยังไม่ได้ Login จะเข้าไปหน้านี้
 
 AUTH_USER_MODEL = "remindme.Users"
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://34.87.135.25',
+    'http://localhost',
+    # 'https://34.143.177.154'
+]
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
