@@ -8,6 +8,7 @@ output.css
 
 ### DJANGO ###
 __pycache__/
+staticfiles/
 
 ### Node ###
 # Logs
