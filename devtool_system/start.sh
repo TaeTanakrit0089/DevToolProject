@@ -1,3 +1,11 @@
+#!/bin/sh
+
+# Wait for the NPM build to complete
+while [ ! -f /app/.build_complete ]; do
+  echo "Waiting for npm build to complete..."
+  sleep 1
+done
+
 python manage.py makemigrations
 python manage.py migrate
 
