@@ -15,7 +15,7 @@ services:
       - "8000:8000"  # Exposing internal port 8000 for web container
     command: [ "sh", "./start.sh" ]
     volumes:
-      - shared_volume:/app/staticfiles
+      - shared_volume:/app/staticfiles:ro
       - ./devtool_system:/app
     env_file:
       - .env
@@ -26,7 +26,7 @@ services:
   postgres_db:
     image: postgres:16
     volumes:
-      - ./postgres_data:/var/lib/postgresql/data  # Persistent data storage
+      - ./postgres_data:/var/lib/postgresql/data
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql  # Mount your SQL dump
     environment:
       - POSTGRES_DB=${DB_NAME}
@@ -41,10 +41,9 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./ssl:/etc/nginx/ssl
-      - shared_volume:/usr/share/nginx/html/static
+      - shared_volume:/usr/share/nginx/html/static:ro
 
 
 volumes:
   postgres_data:
   shared_volume:
-
