@@ -67,6 +67,7 @@
               <th class="px-4 py-2 border-0">Description</th>
               <th class="px-4 py-2 border-0">UserCreated</th>
               <th class="px-4 py-2 border-0">Action</th>
+              <th class="px-4 py-2 border-0">Voice</th>
             </tr>
           </thead>
           <tbody id="eventTableBody" class="">
@@ -349,7 +350,7 @@
               row.classList.add('bg-brown-100', 'border-b', 'border-b-gray-100', 'dark:bg-brown-950', 'dark:border-b-brown-800')
               row.innerHTML = `
                                                                               <td class="px-4 py-2">${hour}:${minute}</td>
-                                                                              <td class="px-4 py-2">${event.name}</td>
+                                                                              <td id="event-name-${event.id}" class="px-4 py-2">${event.name}</td>
                                                                               <td class="px-4 py-2">${event.description}</td>
                                                                           `
               if (event.display_family != null){
@@ -370,6 +371,22 @@
               </td>
               `
               row.innerHTML += `<td class="px-4 py-2"><button onclick="confirmDelete(${event.id})" class="bg-red-600 hover:bg-red-800 active:bg-red-900 text-white px-3 py-1 rounded">Delete</button></td>`
+              row.innerHTML += `<td class="px-4 py-2"><button onclick="speech('${event.id}')" id="speak-btn-${event.id}" class=" px-3 py-1 rounded">
+                <svg version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                  width="40px" height="40px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
+                <g>
+                  <path  class="fill-[#824e4e] dark:fill-[#fff]" d="M59.998,28.001h-7.999c-2.211,0-4,1.789-4,4s1.789,4,4,4h7.999c2.211,0,4-1.789,4-4
+                    S62.209,28.001,59.998,28.001z"/>
+                  <path  class="fill-[#824e4e] dark:fill-[#fff]" d="M49.71,19.466l6.929-4c1.914-1.105,2.57-3.551,1.461-5.465c-1.102-1.914-3.547-2.57-5.46-1.465l-6.93,4
+                    c-1.914,1.105-2.57,3.551-1.461,5.464C45.351,19.915,47.796,20.571,49.71,19.466z"/>
+                  <path  class="fill-[#824e4e] dark:fill-[#fff]" d="M56.639,48.535l-6.929-3.999c-1.914-1.105-4.355-0.449-5.461,1.464c-1.105,1.914-0.453,4.359,1.461,5.465
+                    l6.93,4c1.913,1.105,4.358,0.449,5.464-1.465S58.553,49.641,56.639,48.535z"/>
+                  <path  class="fill-[#824e4e] dark:fill-[#fff]" d="M37.53,0.307c-1.492-0.625-3.211-0.277-4.359,0.867L18.343,16.001H4c-2.211,0-4,1.789-4,4v24
+                    C0,46.211,1.789,48,4,48h14.343l14.828,14.828C33.937,63.594,34.96,64,35.999,64c0.516,0,1.035-0.098,1.531-0.305
+                    c1.496-0.617,2.469-2.078,2.469-3.695V4.001C39.999,2.384,39.026,0.924,37.53,0.307z"/>
+                </g>
+                </svg></button>
+                <audio hidden id="audio-${event.id}" controls></audio></td>`
               if (today.getTime() > currentDateEvent.getTime()) row.classList.add('opacity-30')
               eventTableBody.appendChild(row)
             })
@@ -378,7 +395,7 @@
             const noEventRow = document.createElement('tr')
             noEventRow.classList.add('bg-white', 'border-b', 'dark:bg-brown-950', 'dark:border-b-brown-800')
             noEventRow.innerHTML = `
-                                                                          <td colspan="5" class="px-4 py-2 text-center">No events scheduled for this day</td>
+                                                                          <td colspan="6" class="px-4 py-2 text-center">No events scheduled for this day</td>
                                                                       `
             eventTableBody.appendChild(noEventRow)
           }
@@ -478,5 +495,43 @@
         });
       }
     }
+
+    function speech(id){
+      const apiKey = "{{ google_tts_api_key }}";
+      console.log('Your API Key:', apiKey);
+      const text = document.getElementById('event-name-'+id).innerText
+      console.log(text)
+      
+      const url = `https://texttospeech.googleapis.com/v1/text:synthesize?key=${apiKey}`;
+      
+      const data = {
+          input: {
+              text: text
+          },
+          voice: {
+              languageCode: 'th-TH', // Thai language code
+              ssmlGender: 'NEUTRAL'  // Choose between 'MALE', 'FEMALE', or 'NEUTRAL'
+          },
+          audioConfig: {
+              audioEncoding: 'MP3'  // You can also use 'OGG_OPUS' or 'LINEAR16'
+          }
+      };
+      
+      fetch(url, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+      })
+      .then(response => response.json())
+      .then(data => {
+          const audioContent = data.audioContent;
+          const audio = document.getElementById('audio-'+id);
+          audio.src = `data:audio/mp3;base64,${audioContent}`;
+          audio.play();
+      })
+    }
   </script>
+  
 {% endblock %}

@@ -1,27 +1,52 @@
+require('dotenv').config();
 {% extends 'base.html' %}
-
-{% block title %}Try{% endblock %}
-
 {% block content %}
-<style>
-    /* Customize input */
-    input[type="color"] {
-        opacity: 0;
-        cursor: pointer; 
-    }
-</style>
-<div class="color-picker-container rounded-full w-6 h-6 bg-brown-800" id="color-picker-container" >
-    <input type="color" id="colorInput" class="w-6">
-</div>
+<h1>Text-to-Speech (Thai)</h1>
+    <textarea class="text-black" id="text" rows="4" cols="50" placeholder="Enter text to speak in Thai"></textarea>
+    <br>
+    <button id="speak-btn">Speak</button>
+    <audio hidden id="audio" controls></audio>
+{% endblock %}
 
-<script>
-    // Get the color input and container
-    const colorInput = document.getElementById('colorInput');
-    const colorPickerContainer = document.getElementById('color-picker-container');
-
-    // Update the background color of the container when the input value changes
-    colorInput.addEventListener('input', function() {
-        colorPickerContainer.style.backgroundColor = colorInput.value;
+{% block script %}
+  <script>
+    document.getElementById('speak-btn').addEventListener('click', function() {
+    const apiKey = "{{ google_tts_api_key }}";
+    console.log('Your API Key:', apiKey);
+    const text = document.getElementById('text').value;
+    
+    const url = `https://texttospeech.googleapis.com/v1/text:synthesize?key=${apiKey}`;
+    
+    const data = {
+        input: {
+            text: text
+        },
+        voice: {
+            languageCode: 'th-TH', // Thai language code
+            ssmlGender: 'NEUTRAL'  // Choose between 'MALE', 'FEMALE', or 'NEUTRAL'
+        },
+        audioConfig: {
+            audioEncoding: 'MP3'  // You can also use 'OGG_OPUS' or 'LINEAR16'
+        }
+    };
+    
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        const audioContent = data.audioContent;
+        const audio = document.getElementById('audio');
+        audio.src = `data:audio/mp3;base64,${audioContent}`;
+        audio.play();
+    })
+    .catch(error => {
+        console.error('Error:', error);
     });
-</script>
+  });
+  </script>
 {% endblock %}
