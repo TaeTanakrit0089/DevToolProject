@@ -424,6 +424,7 @@
           let input_c = color.style.backgroundColor
           let [r, g, b] = input_c.substring(0, input_c.length-1).substring(4).split(", ")
           color.style.backgroundColor = `rgb(${r}, ${g}, ${Number(b)+1})`
+          console.log(color)
         }
       })
       .catch((error) => {
