@@ -362,24 +362,29 @@
                                                                               <td class="px-4 py-2">${event.description}</td>
                                                                           `
               if (event.display_family != null){
-                let text_color = textColorBasedOnBackground(event.display_family.color)//
-                row.innerHTML += 
-              `
-              <td class="px-4 py-2">
-                <div class="flex flex-col md:flex-row items-center md:space-x-2">
-                  <span class="m-0">${event.display_user.first_name} ${event.display_user.last_name}</span>
-                  <div class="text-gray-700 rounded-full text-sm font-semibold size-6 bg-[#${event.display_family.color}] text-[#${text_color}]"
-                    style="background-color: #${event.display_family.color}; color: ${text_color}"><p class='text-center'>${event.display_family.name.substring(0, 2).toUpperCase()}</p></div>
-                </div>
-              </td>
-              `
+                let text_color = textColorBasedOnBackground(event.display_family.color)
+                let row2 = document.createElement("td")
+                let div2 = document.createElement("div")
+                let div3 = document.createElement("div")
+
+                row2.classList.add("px-4", "py-2")
+                div2.classList.add("flex", "flex-col", "md:flex-row", "items-center", "md:space-x-2")
+                div2.innerHTML = `<span class='m-0'>${event.display_user.first_name} ${event.display_user.last_name}</span>`
+                div3.classList.add("text-gray-700", "rounded-full", "text-sm", "font-semibold", "size-6")
+                div3.style.backgroundColor = "#"+event.display_family.color
+                div3.style.color = text_color
+                div3.innerHTML = `<p class='text-center'>${event.display_family.name.substring(0, 2).toUpperCase()}</p>`
+
+                div2.append(div3)
+                row2.append(div2)
+                row.append(row2)
               }else row.innerHTML +=
-              `
-              <td class="px-4 py-2 text-center md:text-left">
-                ${event.display_user.first_name} 
-                ${event.display_user.last_name}
-              </td>
-              `
+                `
+                <td class="px-4 py-2 text-center md:text-left">
+                  ${event.display_user.first_name} 
+                  ${event.display_user.last_name}
+                </td>
+                `
               row.innerHTML += `<td class="px-4 py-2"><button onclick="confirmDelete(${event.id})" class="bg-red-600 hover:bg-red-800 active:bg-red-900 text-white px-3 py-1 rounded">ลบ</button></td>`
               row.innerHTML += `<td class="px-4 py-2"><button onclick="speech('${event.id}')" id="speak-btn-${event.id}" class="py-1 rounded">
                 <svg version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
