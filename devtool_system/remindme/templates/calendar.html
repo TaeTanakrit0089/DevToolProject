@@ -365,10 +365,12 @@
                 let text_color = textColorBasedOnBackground(event.display_family.color)
                 row.innerHTML += 
               `
-              <td class="px-4 py-2 flex flex-col md:flex-row items-center md:space-x-2">
-                <span class="m-0">${event.display_user.first_name} ${event.display_user.last_name}</span>
-                <div class="text-gray-700 rounded-full text-sm font-semibold size-6"
-                  style="background-color: #${event.display_family.color}; color: ${text_color}"><p class='text-center'>${event.display_family.name.substring(0, 2).toUpperCase()}</p></div>
+              <td class="px-4 py-2">
+                <div class="flex flex-col md:flex-row items-center md:space-x-2">
+                  <span class="m-0">${event.display_user.first_name} ${event.display_user.last_name}</span>
+                  <div class="text-gray-700 rounded-full text-sm font-semibold size-6"
+                    style="background-color: #${event.display_family.color}; color: ${text_color}"><p class='text-center'>${event.display_family.name.substring(0, 2).toUpperCase()}</p></div>
+                </div>
               </td>
               `
               }else row.innerHTML +=
@@ -506,9 +508,7 @@
 
     function speech(id){
       const apiKey = "{{ google_tts_api_key }}";
-      console.log('Your API Key:', apiKey);
       const text = document.getElementById('event-name-'+id).innerText
-      console.log(text)
       
       const url = `https://texttospeech.googleapis.com/v1/text:synthesize?key=${apiKey}`;
       
