@@ -7,6 +7,7 @@ pipeline {
         DB_HOST = 'postgres_db'
         DB_PORT = '5432'
         PRODUCTION=1
+        GOOGLE_TTS_API_KEY=AIzaSyBraYQ-MBPgh8xYBmuQKS93EJDQFkkoTpg
     }
 
     stages {
