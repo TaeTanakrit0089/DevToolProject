@@ -14,6 +14,8 @@ from os import environ
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from django.conf import settings
+
 # Create your views here.
 def solved_url(request):
     base_url = request.build_absolute_uri('/')[:-1]
@@ -67,7 +69,7 @@ class CalendarView(LoginRequiredMixin, View):
         
         form = EventsForm(user=request.user, initial={'noti_time': value})
         base_url = solved_url(request)
-        return render(request, "calendar.html", {'form': form, 'base_url': base_url})
+        return render(request, "calendar.html", {'form': form, 'base_url': base_url, 'google_tts_api_key': settings.GOOGLE_TTS_API_KEY})
 
     def post(self, request):
         form = EventsForm(request.POST, user=request.user)

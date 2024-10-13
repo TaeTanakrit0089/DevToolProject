@@ -1,4 +1,5 @@
 {% load static %}
+{% load custom_translations %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -32,13 +33,13 @@
         </span>
 
         <div class="flex-1">
-          <strong id="alert_title" class="block font-medium">Changes saved</strong>
+          <strong id="alert_title" class="block font-medium">บันทึกการเปลี่ยนแปลง</strong>
 
-          <p id="alert_text" class="mt-1 text-sm text-gray-700 dark:text-gray-300">Your product changes have been saved.</p>
+          <p id="alert_text" class="mt-1 text-sm text-gray-700 dark:text-gray-300">การเปลี่ยนแปลงของคุณได้ถูกบันทึกแล้ว</p>
         </div>
 
         <button class="text-gray-500 transition hover:text-gray-600">
-          <span class="sr-only">Dismiss popup</span>
+          <span class="sr-only">ปิด</span>
 
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
@@ -64,15 +65,15 @@
                 <img src="{% static 'images/family.png' %}" class="h-8" alt="RemindMe Logo" />
                 <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">RemindMe</span>
               </a>
-              <p class="text-sm text-brown-800 dark:text-brown-100 mt-2">Your trusted app for reminders and personal organization.</p>
+              <p class="text-sm text-brown-800 dark:text-brown-100 mt-2">แอปที่คุณไว้วางใจสำหรับการเตือนความจำและการจัดระเบียบส่วนบุคคล .</p>
             </div>
   
             <!-- Quick Links -->
             <div class="mb-6">
-              <h4 class="text-lg font-bold dark:text-white">Quick Links</h4>
+              <h4 class="text-lg font-bold dark:text-white">ลิงค์เข้าโดยตรง</h4>
               <ul class="mt-2 space-y-2">
                 <li>
-                  <a href="{% url 'home' %}" class="text-brown-800 dark:text-brown-100">Home</a>
+                  <a href="{% url 'home' %}" class="text-brown-800 dark:text-brown-100">หน้าหลัก</a>
                 </li>
                 <li>
 {#                  <a href="#" class="text-brown-800 dark:text-brown-100">About Us</a>#}
@@ -85,7 +86,7 @@
   
             <!-- Contact Information -->
             <div class="mb-6">
-              <h4 class="text-lg font-bold dark:text-white">Contact Us</h4>
+              <h4 class="text-lg font-bold dark:text-white">ติดต่อ</h4>
               <p class="text-sm text-brown-800 dark:text-brown-100">Email: 65070118@kmitl.ac.th</p>
               <p class="text-sm text-brown-800 dark:text-brown-100">Phone: +1 234 567 890</p>
             </div>
@@ -111,7 +112,7 @@
         icon_ok.classList.remove("hidden")
         alert.classList.remove("-translate-y-full")
         alert.classList.remove("opacity-0")
-        alert_title.innerText = "Changes saved"
+        alert_title.innerText = "บันทึกการเปลี่ยนแปลงแล้ว"
 
         timeouts['show_alert'] = setTimeout(()=>{
           alert.classList.add("-translate-y-full")
@@ -128,7 +129,7 @@
         icon_error.classList.remove("hidden")
         alert.classList.remove("-translate-y-full")
         alert.classList.remove("opacity-0")
-        alert_title.innerText = "Error ocurred"
+        alert_title.innerText = "เกิดการผิดพลาาด"
 
         timeouts['show_error'] = setTimeout(()=>{
           alert.classList.add("-translate-y-full")
