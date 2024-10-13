@@ -71,36 +71,3 @@
     }
   });
 </script>
-
-<script>
-  function light_text(link, page){
-    return location.href.search(page+"/")+1 && link.href.search(page+"/")+1 && !exclude.includes(link.text) && !exclude2.includes(location.href)
-  }
-  // Make selected menu become purple-color
-  const a1 = document.getElementById("link").getElementsByTagName("a")
-  {% if not user.is_authenticated %}const a2 = document.getElementById("link2").getElementsByTagName("a")
-  {% endif %}
-
-  const exclude = ["Sign up", "Logout"]
-  const exclude2 = []
-  for (let i=0;i<a1.length;i++){
-    if (exclude.includes(a1[i].text)){
-      exclude2.push(a1[i].href)
-    }
-  }
-  for (let i=0;i<a1.length;i++){
-    if ((a1[i].href == location.href && !exclude.includes(a1[i].text)) || light_text(a1[i], "user") || light_text(a1[i], "manager")){
-      // (location.href.search("user/")+1 && a[i].href.search("user/")+1) หาก Path เป็นของ USER ก็จะขึ้นตลอด
-      a1[i].classList.remove("md:dark:text-[#4c569b]", "md:text-[#0c0d18]", "dark:hover:bg-[#272c4f]", "hover:bg-[#eef7fc]/70")
-      a1[i].classList.add("md:dark:text-white", "md:text-[#4c569b]", "font-bold", "dark:text-white")
-      a1[i].href = "#"
-      
-      {% if not user.is_authenticated %}
-      a2[i].classList.remove("md:dark:text-[#4c569b]", "md:text-[#0c0d18]", "dark:hover:bg-[#272c4f]", "hover:bg-[#eef7fc]/70")
-      a2[i].classList.add("md:dark:text-white", "md:text-[#4c569b]", "font-bold", "dark:text-white")
-      a2[i].href = "#"
-      {% endif %}
-      break;
-    }
-  }
-</script>
