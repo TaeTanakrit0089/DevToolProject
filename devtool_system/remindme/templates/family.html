@@ -421,7 +421,9 @@
 
         for (let j=0;j<colors_array.length;j++){
           let color = document.getElementById(colors_array[j])
-          color.style.backgroundColor = color.style.backgroundColor
+          let input_c = color.style.backgroundColor
+          let [r, g, b] = input_c.substring(0, input_c.length-1).substring(4).split(", ")
+          color.style.backgroundColor = `rgb(${r}, ${g}, ${Number(b)+1})`
         }
       })
       .catch((error) => {
