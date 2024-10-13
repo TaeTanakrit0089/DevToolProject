@@ -5,6 +5,7 @@
 .idea/*
 
 output.css
+.build_complete
 
 ### DJANGO ###
 __pycache__/
