@@ -342,7 +342,7 @@
 
               <div class="flex justify-between items-center mb-2">
                 <div class="flex items-center space-x-2">
-                    <div class="inline-block rounded-full w-6 h-6" style="background-color: #${data[i].color};" id="color-picker-${data[i].id}">
+                    <div class="inline-block rounded-full w-6 h-6 bg-[#${data[i].color}]" style="background-color: #${data[i].color};" id="color-picker-${data[i].id}">
                         <input type="color" class="w-6 h-6 opacity-0" onblur="submitColor(this, ${data[i].id})" oninput="editColor(this, document.getElementById('color-picker-${data[i].id}'))" value="#${data[i].color}">
                     </div>
                     <h2 class="text-lg font-bold dark:text-brown-50">${data[i].name}</h2>
