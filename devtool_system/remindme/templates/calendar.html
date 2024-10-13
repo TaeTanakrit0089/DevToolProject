@@ -67,6 +67,7 @@
               <th class="px-4 py-2 border-0">รายระเอียด</th>
               <th class="px-4 py-2 border-0">คนสร้าง</th>
               <th class="px-4 py-2 border-0">การกระทำ</th>
+              <th class="px-4 py-2 border-0">อ่าน</th>
             </tr>
           </thead>
           <tbody id="eventTableBody" class="">
@@ -377,8 +378,8 @@
                 ${event.display_user.last_name}
               </td>
               `
-              row.innerHTML += `<td class="px-4 py-2"><button onclick="confirmDelete(${event.id})" class="bg-red-600 hover:bg-red-800 active:bg-red-900 text-white px-3 py-1 rounded">Delete</button></td>`
-              row.innerHTML += `<td class="px-4 py-2"><button onclick="speech('${event.id}')" id="speak-btn-${event.id}" class=" px-3 py-1 rounded">
+              row.innerHTML += `<td class="px-4 py-2"><button onclick="confirmDelete(${event.id})" class="bg-red-600 hover:bg-red-800 active:bg-red-900 text-white px-3 py-1 rounded">ลบ</button></td>`
+              row.innerHTML += `<td class="px-4 py-2"><button onclick="speech('${event.id}')" id="speak-btn-${event.id}" class="py-1 rounded">
                 <svg version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
                   width="40px" height="40px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
                 <g>
@@ -402,7 +403,7 @@
             const noEventRow = document.createElement('tr')
             noEventRow.classList.add('bg-white', 'border-b', 'dark:bg-brown-950', 'dark:border-b-brown-800')
             noEventRow.innerHTML = `
-                                                                          <td colspan="5" class="px-4 py-2 text-center">No events scheduled for this day</td>
+                                                                          <td colspan="6" class="px-4 py-2 text-center">No events scheduled for this day</td>
                                                                       `
             eventTableBody.appendChild(noEventRow)
           }
