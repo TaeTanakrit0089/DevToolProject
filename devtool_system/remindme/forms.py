@@ -7,6 +7,7 @@ from .models import *
 from datetime import datetime, timedelta
 from django.core.exceptions import ValidationError
 
+
 class RegisterForm(UserCreationForm):
     class Meta:
         model = Users
@@ -16,7 +17,7 @@ class RegisterForm(UserCreationForm):
         dob = self.cleaned_data.get("birth_date")
         if dob > localtime(now()).date():
             raise ValidationError(
-                "Date Of Birth Must Not Be Future"
+                "วันเกิดต้องไม่เป็นวันที่ในอนาคต"
             )
         return dob
     
@@ -58,7 +59,7 @@ class EventsForm(forms.ModelForm):
             'placeholder': 'Event Time',
             'class': 'text-brown-950 rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-brown-200 border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] py-2 px-3 transition',
         }))
-    family = forms.ModelChoiceField(queryset=Family.objects.filter(id=None), help_text="Will make family's events, if selected.", widget=forms.Select(attrs={
+    family = forms.ModelChoiceField(queryset=Family.objects.filter(id=None), help_text="จะจัดเพิ่มกิจกรรมในครอบครัว ถ้าเลือกครอบครัวที่ต้องการเพิ่มกิจกรรม", widget=forms.Select(attrs={
             'class': 'w-fit text-brown-950 rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-brown-200 border focus:border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] py-2 px-3 transition'
         }), required=False)
     def __init__(self, *args, **kwargs):
