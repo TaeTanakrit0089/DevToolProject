@@ -60,10 +60,6 @@
     {% block content %}
     {% endblock %}
 
-    {% block script %}
-
-    {% endblock %}
-
     <footer class="sticky border-t py-4 mt-8 border-t-brown-300 dark:border-t-brown-800">
         <div class="max-w-screen-xl mx-auto px-4">
             <div class="flex flex-wrap justify-between">
@@ -105,6 +101,10 @@
         </div>
     </footer>
 </div>
+
+{% block script %}
+
+{% endblock %}
 
 <script>
     // Alert
