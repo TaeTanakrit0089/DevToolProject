@@ -41,7 +41,7 @@ pipeline {
         stage('Build Docker Images') {
             steps {
                 script {
-                    sh 'docker compose build'
+                    sh 'docker compose build --progress=plain --no-cache'
                 }
             }
         }
@@ -49,7 +49,7 @@ pipeline {
         stage('Run Docker Containers') {
             steps {
                 script {
-                    sh 'docker compose up'
+                    sh 'docker compose up -d'
                 }
             }
         }
