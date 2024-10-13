@@ -13,7 +13,7 @@
   <div class="flex flex-wrap items-center justify-start md:justify-center gap-3 max-h-10">
     {% if user.is_authenticated %}
       <a href="{% url 'calendar_page' %}" class="hidden sm:block py-2 pl-3 pr-6 md:pr-3 pr-auto rounded-lg transition-colors duration-300 md:hover:bg-transparent md:dark:hover:bg-transparent text-start hover:opacity-50">ปฏิทิน</a>
-      <a href="{% url 'family' %}" class="hidden sm:block py-2 pl-3 pr-6 md:pr-3 pr-auto rounded-lg transition-colors duration-300 md:hover:bg-transparent md:dark:hover:bg-transparent text-start hover:opacity-50">กลุ่มครอบครัว</a>
+      <a href="{% url 'family' %}" class="hidden sm:block py-2 pl-3 pr-6 md:pr-3 pr-auto rounded-lg transition-colors duration-300 md:hover:bg-transparent md:dark:hover:bg-transparent text-start hover:opacity-50">กลุ่ม</a>
     {% endif %}
     <button id="navbar_btn" data-collapse-toggle="navbar-default" type="button" 
       {% if user.is_authenticated %} class="m-0 inline-flex items-center p-1 w-10 h-10 justify-center text-sm rounded-full"
