@@ -370,7 +370,7 @@
                 row2.classList.add("px-4", "py-2")
                 div2.classList.add("flex", "flex-col", "md:flex-row", "items-center", "md:space-x-2")
                 div2.innerHTML = `<span class='m-0'>${event.display_user.first_name} ${event.display_user.last_name}</span>`
-                div3.classList.add("text-gray-700", "rounded-full", "text-sm", "font-semibold", "size-6")
+                div3.classList.add("text-gray-700", "rounded-full", "text-sm", "font-semibold", "size-6", "dark:text-white")
                 div3.style.backgroundColor = "#"+event.display_family.color
                 div3.style.color = text_color
                 div3.innerHTML = `<p class='text-center'>${event.display_family.name.substring(0, 2).toUpperCase()}</p>`
