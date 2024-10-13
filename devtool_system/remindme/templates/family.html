@@ -15,10 +15,10 @@
   <div class="container mx-auto p-4 flex flex-col">
     <!-- Header -->
     <div class="flex justify-between items-center mb-4">
-      <h1 class="text-2xl font-bold dark:text-brown-50">Families (<span id="CountFamily">{{ user_families|length }}</span>) </h1>
+      <h1 class="text-2xl font-bold dark:text-brown-50">กลุ่ม (<span id="CountFamily">{{ user_families|length }}</span>) </h1>
       <div class="flex place-items-center gap-x-4 font-bold">
-        <button id="openCreateModal" class="bg-brown-700 hover:bg-brown-800 active:bg-brown-900 px-5 py-2 rounded-lg text-white">Create</button>
-        <button id="openJoinModal" class="text-brown-700 px-5 py-2 rounded-lg bg-gray-50 hover:bg-gray-100 active:bg-gray-200">Join</button>
+        <button id="openCreateModal" class="bg-brown-700 hover:bg-brown-800 active:bg-brown-900 px-5 py-2 rounded-lg text-white">สร้าง</button>
+        <button id="openJoinModal" class="text-brown-700 px-5 py-2 rounded-lg bg-gray-50 hover:bg-gray-100 active:bg-gray-200">เข้ากลุ่ม</button>
       </div>
     </div>
 
@@ -32,11 +32,11 @@
               <h2 class="text-lg font-bold dark:text-brown-50">{{ family.name }}</h2>
               <div class="absolute right-0">
                 <button onclick="copyToken('token{{ family.id }}')" class="text-sm text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 px-3 py-2 rounded-lg font-bold">
-                  Copy Token
+                  คัดลอกรหัส
                 </button>
               </div>
             </div>
-            <p class="mb-4 text-sm dark:text-brown-100">Token: <code id="token{{ family.id }}" class="font-mono p-1 rounded-lg bg-brown-200 dark:bg-brown-900 font-bold">{{ family.token }}</code></p>
+            <p class="mb-4 text-sm dark:text-brown-100">รหัสเข้ากลุ่ม: <code id="token{{ family.id }}" class="font-mono p-1 rounded-lg bg-brown-200 dark:bg-brown-900 font-bold">{{ family.token }}</code></p>
           </div>
 
           <div class="relative overflow-x-auto shadow-sm sm:rounded-lg border border-brown-200 dark:border-brown-900">
@@ -44,8 +44,8 @@
               <thead class="font-bold bg-brown-800 text-white">
                 <tr>
                   <th class="px-4 py-2 text-center">#</th>
-                  <th class="px-4 py-2">Member Name</th>
-                  <th class="px-4 py-2 text-center">Birth Date</th>
+                  <th class="px-4 py-2"> ชื่อสมาชิก</th>
+                  <th class="px-4 py-2 text-center">วันเกิด</th>
                 </tr>
               </thead>
               <tbody id="generateFamily_{{family.id}}">
@@ -58,10 +58,10 @@
           <div class="self-end mt-auto ">
             <div class="mt-4 flex space-x-3">
               <button class="bg-yellow-600 hover:bg-yellow-700 active:bg-yellow-800 text-white px-4 py-2 rounded-lg font-bold" data-family-id="{{ family.id }}" onclick="openEditModal('{{ family.id }}', '{{ family.name }}', '{{ family.users.all|safe }}')">
-                Edit
+                แก้ไข
               </button>
               <button class="bg-red-500 hover:bg-red-700 active:bg-red-900 text-white px-4 py-2 rounded-lg font-bold" onclick="confirmDelete('{{ family.id }}', '{{ family.name }}', '{{ csrf_token }}')">
-                Delete
+                ลบ
               </button>
             </div>
           </div>
@@ -69,7 +69,7 @@
         </div>
 
       {% empty %}
-        <p class="text-center text-gray-500">You are not part of any families yet.</p>
+        <p class="text-center text-gray-500">คุณยังไม่ได้ร่วมกลุ่ม ใด ๆ.</p>
       {% endfor %}
     </div>
   </div>
@@ -78,15 +78,15 @@
 <!-- Create Family Modal -->
 <div id="familyModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden z-10">
   <div id="familyModalContent" class="transition-all -translate-y-full opacity-0 duration-500 bg-white rounded-lg shadow-lg p-6 w-96">
-      <h2 class="text-lg text-brown-800 font-bold mb-4">Create Family</h2>
+      <h2 class="text-lg text-brown-800 font-bold mb-4">สร้างกลุ่ม</h2>
       <form id="eventForm" class="text-black" onsubmit="event.preventDefault(); createFamily(); this.reset();">
           {% csrf_token %}
           <div class="mb-4">
-              <label for="familyName" class="block text-gray-700">Family Name:</label>
+              <label for="familyName" class="block text-gray-700">ชื่อกลุ่ม:</label>
               <input type="text" id="familyName" name="familyName" required class="mt-1 block w-full border border-brown-700 rounded-md p-2 focus:outline-none focus:ring focus:ring-brown-500">
               
               <div class="mt-1 flex justify-start">
-                <label for="familyName" class="block text-gray-700 mr-2">Select Family Color:</label>
+                <label for="familyName" class="block text-gray-700 mr-2">เลือกสีกลุ่ม:</label>
                 <div class="rounded-full w-6 h-6 bg-brown-800" id="color-picker-container" >
                   <input type="color" id="colorInput">
                 </div>
@@ -94,8 +94,8 @@
               
             </div>
           <div class="flex justify-end">
-              <button type="button" onclick="closeModal()" class="bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded mr-2">Cancel</button>
-              <button type="submit" class="bg-brown-600 text-white font-bold py-2 px-4 rounded">Create</button>
+              <button type="button" onclick="closeModal()" class="bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded mr-2">ยกเลิก</button>
+              <button type="submit" class="bg-brown-600 text-white font-bold py-2 px-4 rounded">สร้าง</button>
           </div>
       </form>
   </div>
@@ -107,12 +107,12 @@
       <h2 class="text-lg text-brown-800 font-bold mb-4">Join Family</h2>
       <form id="joinForm" class="text-black" onsubmit="event.preventDefault(); joinFamily(); this.reset();">
           <div class="mb-4">
-              <label for="familyToken" class="block text-gray-700">Family Token:</label>
-              <input type="text" id="familyToken" class="mt-1 block w-full border border-brown-700 rounded-md p-2 focus:outline-none focus:ring focus:ring-brown-500" placeholder="Enter Family Token" required>
+              <label for="familyToken" class="block text-gray-700">รหัสเข้ากลุ่ม:</label>
+              <input type="text" id="familyToken" class="mt-1 block w-full border border-brown-700 rounded-md p-2 focus:outline-none focus:ring focus:ring-brown-500" placeholder="ใส่รหัสเข้ากลุ่ม" required>
           </div>
           <div class="flex justify-end">
-              <button onclick="closeJoinModal()" type="button" class="bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded mr-2">Cancel</button>
-              <button type="submit" class="bg-brown-600 text-white font-bold py-2 px-4 rounded">Join</button>
+              <button onclick="closeJoinModal()" type="button" class="bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded mr-2">ยกเลิก</button>
+              <button type="submit" class="bg-brown-600 text-white font-bold py-2 px-4 rounded">เข้ากลุ่ม</button>
           </div>
       </form>
     </div>
@@ -121,11 +121,11 @@
 <!-- Edit Family Modal -->
 <div id="editModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden z-10">
   <div id="editModalContent" class="transition-all -translate-y-full opacity-0 duration-500 bg-white rounded-lg shadow-lg p-6 w-full max-w-3xl">
-    <h2 class="text-lg text-brown-800 font-bold mb-4">Edit Family</h2>
+    <h2 class="text-lg text-brown-800 font-bold mb-4">ข้อมูลกลุ่ม</h2>
     <form id="editFamilyForm" class="flex flex-col gap-4 text-black" onsubmit="event.preventDefault();">
       {% csrf_token %}
       <div>
-        <label for="editFamilyName" class="block text-gray-700">Family Name</label>
+        <label for="editFamilyName" class="block text-gray-700">ชื่อกลุ่ม</label>
         <input type="text" id="editFamilyName" name="editFamilyName" required class="mt-1 block w-full border border-brown-700 rounded-md p-2 focus:outline-none focus:ring focus:ring-brown-500">
       </div>
       <div class="relative overflow-x-auto shadow-sm sm:rounded-lg border border-brown-200 dark:border-brown-900">
@@ -133,8 +133,8 @@
           <thead class="font-bold bg-brown-400 text-white">
             <tr>
               <th class="px-4 py-2">#</th>
-              <th class="px-4 py-2">Name</th>
-              <th class="px-4 py-2">Birth Date</th>
+              <th class="px-4 py-2">ชื่อ</th>
+              <th class="px-4 py-2">วันเกิด</th>
             </tr>
           </thead>
           <tbody id="editMembersTable">
@@ -146,8 +146,8 @@
       <!-- Action Buttons for Cancel and Save -->
       <div class="self-end mt-auto">
         <div class="mt-4 flex space-x-3">
-          <button type="button" onclick="closeEditModal()" id="closeModal" class="text-white bg-gray-500 px-4 py-2 rounded hover:bg-gray-600 active:bg-gray-800">Cancel</button>
-          <button type="submit" id="editSubmitEdit" class="bg-brown-600 hover:bg-brown-700 active:bg-brown-800 text-white px-4 py-2 rounded">Save</button>
+          <button type="button" onclick="closeEditModal()" id="closeModal" class="text-white bg-gray-500 px-4 py-2 rounded hover:bg-gray-600 active:bg-gray-800">ยกเลิก</button>
+          <button type="submit" id="editSubmitEdit" class="bg-brown-600 hover:bg-brown-700 active:bg-brown-800 text-white px-4 py-2 rounded">บันทึก</button>
         </div>
       </div>
 
@@ -283,9 +283,9 @@
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error('No events found')
+          throw new Error('หากิจกรรมไม่เจอ')
         }
-        show_alert(`Change color successfully!`);
+        show_alert(`เปลี่ยนสีสำเร็จ`);
         return response
       })
       .catch((error)=>{
@@ -305,9 +305,9 @@
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error('No events found')
+          throw new Error('หากิจกรรมไม่เจอ')
         }
-        show_alert(`Change family's name successfully!`);
+        show_alert(`เปลี่ยนชื่อกลุ่มสำเร็จ !`);
         getFamily()
         closeEditModal()
         return response
@@ -326,7 +326,7 @@
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error('No events found')
+          throw new Error('หากิจกรรมไม่เจอ')
         }
         return response.json()
       })
@@ -350,11 +350,11 @@
 
                 <div class="absolute right-0">
                   <button onclick="copyToken('token${data[i].id}')" class="text-sm text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 px-3 py-2 rounded-lg font-bold">
-                    Copy Token
+                    คัดลอกรหัส
                   </button>
                 </div>
               </div>
-              <p class="mb-4 text-sm dark:text-brown-100">Token: <code id="token${data[i].id}" class="font-mono p-1 rounded-lg bg-brown-200 dark:bg-brown-900 font-bold">${data[i].token}</code></p>
+              <p class="mb-4 text-sm dark:text-brown-100">รหัสเข้ากลุ่ม: <code id="token${data[i].id}" class="font-mono p-1 rounded-lg bg-brown-200 dark:bg-brown-900 font-bold">${data[i].token}</code></p>
             </div>
 
             <div class="relative overflow-x-auto shadow-sm sm:rounded-lg border border-brown-200 dark:border-brown-900">
@@ -362,8 +362,8 @@
                 <thead class="font-bold bg-brown-400 text-white">
                   <tr>
                     <th class="px-4 py-2 text-center">#</th>
-                    <th class="px-4 py-2">Member Name</th>
-                    <th class="px-4 py-2 text-center">Birth Date</th>
+                    <th class="px-4 py-2">ชื่อสมาชิกกลุ่ม</th>
+                    <th class="px-4 py-2 text-center">วันเกิด</th>
                   </tr>
                 </thead>
                 <tbody id="generateFamily_${data[i].id}">
@@ -376,10 +376,10 @@
             <div class="self-end mt-auto ">
               <div class="mt-4 flex space-x-3">
                 <button class="bg-yellow-600 hover:bg-yellow-700 active:bg-yellow-800 text-white px-4 py-2 rounded-lg font-bold" data-family-id="${data[i].id}" onclick="openEditModal('${data[i].id}', '${data[i].name}')">
-                  Edit
+                  แก้ไข
                 </button>
                 <button class="bg-red-500 hover:bg-red-700 active:bg-red-900 text-white px-4 py-2 rounded-lg font-bold" onclick="removeMember({{ user.id }}, ${data[i].id})">
-                  Leave
+                  ออกจากกลุ่ม
                 </button>
               </div>
             </div>
@@ -393,7 +393,7 @@
           if (data[i].display_users.length == 0){
             generateFamily.innerHTML += 
             `<tr>
-                <td class="px-4 py-2" colspan="3">No members found</td>
+                <td class="px-4 py-2" colspan="3">ไม่มีสมาชิกกลุ่ม ณ ตอนนี้</td>
             </tr>`
           }else{
             let j=0
@@ -443,7 +443,7 @@
     })
     .then(data => {
         // แสดงข้อความแจ้งเตือนการสร้างสำเร็จพร้อมชื่อของครอบครัว
-        show_alert(`Family "${familyName}" created successfully!`);
+        show_alert(`กลุ่ม "${familyName}" ได้สร้างเรียบร้อย!`);
         // สามารถรีเฟรชหน้าหรือเรียกข้อมูลใหม่ที่นี่
         document.getElementById('CountFamily').innerHTML = Number(document.getElementById('CountFamily').innerHTML) + 1
         closeModal()
@@ -451,7 +451,7 @@
     })
     .catch(error => {
         console.error('Error:', error);
-        show_error('Failed to create family.');
+        show_error('เกิดการผิดพลาดในการสร้างกลุ่ม.');
     });
 }
 
@@ -473,14 +473,14 @@ function joinFamily() {
     })
     .then(data => {
       // Show success alert for joining family
-      show_alert(`Join family successful`);
+      show_alert(`เข้ากลุ่มสำเร็จ`);
       closeJoinModal()
       document.getElementById('CountFamily').innerHTML = Number(document.getElementById('CountFamily').innerHTML) + 1
       setTimeout(()=>getFamily(), 300)
     })
     .catch(error => {
       console.error('Error:', error);
-      show_error('Failed to join family. Please check the token and try again.');
+      show_error('ไม่สามารถเข้าร่วมครอบครัวได้ กรุณาตรวจสอบโทเคนและลองอีกครั้ง.');
     });
   }
 
@@ -499,14 +499,14 @@ function joinFamily() {
         }
       })
       .then(data => {
-        show_alert('Member removed successfully!');
+        show_alert('ลบสมาชิกกลุ่มสำเร้จ!');
         closeEditModal()
         document.getElementById('CountFamily').innerHTML = Number(document.getElementById('CountFamily').innerHTML) - 1
         setTimeout(()=>getFamily(), 300)
       })
       .catch(error => {
         console.error('Error:', error);
-        show_error('Failed to remove member.');
+        show_error('เกิดการผิดพลาดในลบสมาชิกกลุ่ม.');
       });
     }
   }
@@ -515,13 +515,13 @@ function joinFamily() {
     const tokenElement = document.getElementById(tokenId);
     if (tokenElement) {
       navigator.clipboard.writeText(tokenElement.textContent).then(function() {
-        show_alert('Token copied: ' + tokenElement.textContent);
+        show_alert('คัดลอกรหัส: ' + tokenElement.textContent);
       }).catch(function(err) {
-        console.error('Error copying token: ', err);
-        show_error('Failed to copy token.');
+        console.error('คัดลอกไม่สำเร็จ: ', err);
+        show_error('คัดลอกรหัสไม่สำเร็จ.');
       });
     } else {
-      show_error('Token element not found');
+      show_error('ไม่มีรหัส');
     }
   }
 

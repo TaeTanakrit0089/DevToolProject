@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load custom_translations %}
 {% block title %}
   Dynamic Calendar
 {% endblock %}
@@ -11,20 +11,20 @@
       <div class="flex justify-between items-center mb-4">
         <h1 id="monthYear" class="text-2xl font-bold dark:text-brown-50">January 2022</h1>
         <div class="flex place-items-center gap-x-4 font-bold">
-          <button id="todayBtn" class="bg-brown-700 hover:bg-brown-800 active:bg-brown-900 px-3 py-2 rounded-lg text-white">Today</button>
+          <button id="todayBtn" class="bg-brown-700 hover:bg-brown-800 active:bg-brown-900 px-3 py-2 rounded-lg text-white">วันนี้</button>
         </div>
       </div>
 
       <!-- Calendar -->
       <div class="grid grid-cols-7 gap-2 text-center text-sm font-medium text-brown-800 dark:text-brown-100">
         <!-- วันในสัปดาห์ -->
-        <div>Sun</div>
-        <div>Mon</div>
-        <div>Tue</div>
-        <div>Wed</div>
-        <div>Thu</div>
-        <div>Fri</div>
-        <div>Sat</div>
+        <div>อาทิตย์</div>
+        <div>จันทร์</div>
+        <div>อังคาร</div>
+        <div>พุธ</div>
+        <div>พฤหัส</div>
+        <div>ศุกร์</div>
+        <div>เสาร์</div>
       </div>
 
       <!-- กล่องวันที่ของปฏิทิน -->
@@ -52,9 +52,9 @@
     <div id="eventDetails">
       <h2 class="text-xl font-bold mb-4 flex justify-between items-center">
         <div>
-          Events for<p id="selectedDate"></p>
+          กิจกรรม<p id="selectedDate"></p>
         </div>
-        <button id="addEventModalBtn" class="hidden sm:block bg-brown-800 text-white px-4 py-2 rounded-lg">Add Event</button>
+        <button id="addEventModalBtn" class="hidden sm:block bg-brown-800 text-white px-4 py-2 rounded-lg">เพิ่มกิจกรรม</button>
       </h2>
 
       <!-- ตารางแสดงข้อมูล Calendar -->
@@ -62,12 +62,11 @@
         <table class="w-full font-light text-lg text-left rtl:text-right">
           <thead class="text-base font-bold text-white bg-brown-400">
             <tr>
-              <th class="px-4 py-2 border-0">Time</th>
-              <th class="px-4 py-2 border-0">Event Name</th>
-              <th class="px-4 py-2 border-0">Description</th>
-              <th class="px-4 py-2 border-0">UserCreated</th>
-              <th class="px-4 py-2 border-0">Action</th>
-              <th class="px-4 py-2 border-0">Voice</th>
+              <th class="px-4 py-2 border-0">เวลา</th>
+              <th class="px-4 py-2 border-0">ชื่อ กิจกรรม</th>
+              <th class="px-4 py-2 border-0">รายระเอียด</th>
+              <th class="px-4 py-2 border-0">คนสร้าง</th>
+              <th class="px-4 py-2 border-0">การกระทำ</th>
             </tr>
           </thead>
           <tbody id="eventTableBody" class="">
@@ -76,7 +75,7 @@
         </table>
       </div>
 
-      <button id="addEventModalBtn2" class="block sm:hidden mt-2 bg-brown-800 text-white px-4 py-2 rounded">Add Event</button>
+      <button id="addEventModalBtn2" class="block sm:hidden mt-2 bg-brown-800 text-white px-4 py-2 rounded">เพิ่มกิจกรรม</button>
     </div>
   </div>
 
@@ -85,62 +84,70 @@
     <div class="w-full">
       <div id="eventModalContent" class="transition-all -translate-y-full opacity-0 duration-700 bg-white p-6 rounded-lg sm:mx-12 md:mx-48 lg:mx-56 xl:mx-96">
         <div class="text-xl font-bold mb-2 text-brown-700">
-          Add Event for<p id="selectedModalDate"></p>
+          เพิ่ม กิจกรรม<p id="selectedModalDate"></p>
         </div>
-        <form id="eventForm" class="text-black" onsubmit="event.preventDefault(); add_event(); this.reset();">
-          {% csrf_token %}
+          <form id="eventForm" class="text-black" onsubmit="event.preventDefault(); add_event(); this.reset();">
+              {% csrf_token %}
 
-          <input type="hidden" name="noti_date" id="notiDateInput" value="" />
+              <input type="hidden" name="noti_date" id="notiDateInput" value=""/>
 
-          {{ form.non_field_errors }}
-          <div class="mb-1">
-            <label for="{{ form.name.id_for_label }}" class="text-sm font-medium">{{ form.name.label }}</label>
-            {{ form.name }}
-            {% if form.name.errors %}
-              <div class="text-red-500 text-sm">{{ form.name.errors }}</div>
-            {% endif %}
-          </div>
-          <div class="mb-1">
-            <label for="{{ form.description.id_for_label }}" class="text-sm font-medium">{{ form.description.label }}</label>
-            {{ form.description }}
-            {% if form.description.errors %}
-              <div class="text-red-500 text-sm">{{ form.description.errors }}</div>
-            {% endif %}
-          </div>
+{#              {{ form.non_field_errors|translate_error }}#}
+              <div class="mb-1">
+                  <label for="{{ form.name.id_for_label }}" class="text-sm font-medium">ชื่อกิจกรรม</label>
+                  {{ form.name }}
+                  {% if form.name.errors %}
+                      <div class="text-red-500 text-sm">{{ form.name.errors|translate_error }}</div>
+                  {% endif %}
+              </div>
+              <div class="mb-1">
+                  <label for="{{ form.description.id_for_label }}" class="text-sm font-medium">รายระเอียด</label>
+                  {{ form.description }}
+                  {% if form.description.errors %}
+                      <div class="text-red-500 text-sm">{{ form.description.errors|translate_error }}</div>
+                  {% endif %}
+              </div>
 
-          <div class="flex flex-col sm:flex-row gap-x-3">
-            <div class="mb-1">
-              <label for="{{ form.noti_time.id_for_label }}" class="text-sm font-medium">{{ form.noti_time.label }}</label>
-              <br />
-              {{ form.noti_time }}
-              {% if form.noti_time.errors %}
-                <div class="text-red-500 text-sm">{{ form.noti_time.errors }}</div>
-              {% endif %}
-            </div>
-            <div class="mb-1">
-              <label for="{{ form.routine.id_for_label }}" class="text-sm font-medium">{{ form.routine.label }}</label>
-              <br />
-              {{ form.routine }}
-              {% if form.routine.errors %}
-                <div class="text-red-500 text-sm">{{ form.routine.errors }}</div>
-              {% endif %}
-            </div>
-          </div>
+              <div class="flex flex-col sm:flex-row gap-x-3">
+                  <div class="mb-1">
+                      <label for="{{ form.noti_time.id_for_label }}"
+                             class="text-sm font-medium">เวลาที่จะแจ้งเตอน</label>
+                      <br/>
+                      {{ form.noti_time }}
+                      {% if form.noti_time.errors %}
+                          <div class="text-red-500 text-sm">{{ form.noti_time.errors|translate_error }}</div>
+                      {% endif %}
+                  </div>
+                  <div class="mb-1">
+                      <label for="{{ form.routine.id_for_label }}" class="text-sm font-medium">การทำซ้ำ</label>
+                      <br/>
+                      {{ form.routine }}
+                      {% if form.routine.errors %}
+                          <div class="text-red-500 text-sm">{{ form.routine.errors|translate_error }}</div>
+                      {% endif %}
+                  </div>
+              </div>
 
-          <div class="mb-1">
-            <label for="{{ form.family.id_for_label }}" class="text-sm font-medium">{{ form.family.label }} (Optional)</label>
-            <p class="text-xs font-bold">{{ form.family.help_text }}</p>
-            {{ form.family }}
-            {% if form.family.errors %}
-              <div class="text-red-500 text-sm">{{ form.family.errors }}</div>
-            {% endif %}
-          </div>
+              <div class="mb-1">
+                  <label for="{{ form.family.id_for_label }}" class="text-sm font-medium">กลุ่ม
+                      (ไม่บังคับ)</label>
+                  <p class="text-xs font-bold">{{ form.family.help_text }}</p>
+                  {{ form.family }}
+                  {% if form.family.errors %}
+                      <div class="text-red-500 text-sm">{{ form.family.errors|translate_error }}</div>
+                  {% endif %}
+              </div>
 
-          <div class="flex justify-end space-x-4">
-            <button type="button" onclick="closeEventModal()" class="text-white bg-gray-500 px-4 py-2 rounded hover:bg-gray-600 active:bg-gray-800">Cancel</button>
-            <button type="submit" class="bg-brown-600 hover:bg-brown-700 active:bg-brown-800 text-white px-4 py-2 rounded">Save</button>
-          </div>
-        </form>
+              <div class="flex justify-end space-x-4">
+                  <button type="button" onclick="closeEventModal()"
+                          class="text-white bg-gray-500 px-4 py-2 rounded hover:bg-gray-600 active:bg-gray-800">ยกเลิก
+                  </button>
+                  <button type="submit"
+                          class="bg-brown-600 hover:bg-brown-700 active:bg-brown-800 text-white px-4 py-2 rounded">
+                      บันทึก
+                  </button>
+              </div>
+          </form>
+
       </div>
     </div>
   </div>
@@ -216,10 +223,10 @@
       const year = currentDate.getFullYear()
       const month = currentDate.getMonth()
       const response = await fetch(`{{ base_url }}/api/events/user/${year}/${month + 1}/count/`).then((response) => response.json())
-      const monthYearString = currentDate.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long'
-      })
+        const monthYearString = currentDate.toLocaleDateString('th-TH', {
+            year: 'numeric',
+            month: 'long'
+        });
       monthYearElement.innerText = monthYearString
       const firstDayOfMonth = new Date(year, month, 1).getDay()
       const lastDateOfMonth = new Date(year, month + 1, 0).getDate()
@@ -395,7 +402,7 @@
             const noEventRow = document.createElement('tr')
             noEventRow.classList.add('bg-white', 'border-b', 'dark:bg-brown-950', 'dark:border-b-brown-800')
             noEventRow.innerHTML = `
-                                                                          <td colspan="6" class="px-4 py-2 text-center">No events scheduled for this day</td>
+                                                                          <td colspan="5" class="px-4 py-2 text-center">No events scheduled for this day</td>
                                                                       `
             eventTableBody.appendChild(noEventRow)
           }
@@ -457,9 +464,9 @@
       })
         .then((response) => {
           if (!response.ok) {
-            throw new Error('Cannot add event to the past.')
+            throw new Error('ไม่สามารถเพิ่มกิจกรรมในอดีตได้')
           }
-          show_alert('Add event successful.')
+          show_alert('เพิ่มกิจกรรมสำเร็จ')
           closeEventModal()
           fetchAndDisplayEvents(document.getElementById('selectedDate').innerText)
         })
@@ -469,7 +476,7 @@
     }
 
     function confirmDelete(eventID) {
-      if (confirm('Are you sure you want to delete event?')) {
+      if (confirm('คุณแน่ใจหรือว่าต้องการลบกิจกรรมนี้?')) {
         // ส่งคำขอลบไปยังเซิร์ฟเวอร์
         fetch(`{{ base_url }}/api/events/${eventID}/`, {
           method: "DELETE", // ใช้ DELETE method
@@ -486,12 +493,12 @@
         })
         .then((data) => {
           // แสดงข้อความแจ้งเตือนการลบสำเร็จพร้อมชื่อของครอบครัว
-          show_alert('Delete event successful');
+          show_alert('ลบกิจกรรมสำเร็จ');
           setTimeout(()=>fetchAndDisplayEvents(document.getElementById('selectedDate').innerText), 300) // รีโหลดข้อมูล Family
         })
         .catch((error) => {
           console.error("Error:", error);
-          show_error('Failed to delete family.'); // แสดงข้อความหากเกิดข้อผิดพลาด
+          show_error('ลบกิจกรรมไม่สำเร็จ'); // แสดงข้อความหากเกิดข้อผิดพลาด
         });
       }
     }
