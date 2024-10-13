@@ -378,13 +378,14 @@
                 div2.append(div3)
                 row2.append(div2)
                 row.append(row2)
-              }else row.innerHTML +=
+              }else {row.innerHTML +=
                 `
                 <td class="px-4 py-2 text-center md:text-left">
                   ${event.display_user.first_name} 
                   ${event.display_user.last_name}
                 </td>
                 `
+              }
               row.innerHTML += `<td class="px-4 py-2"><button onclick="confirmDelete(${event.id})" class="bg-red-600 hover:bg-red-800 active:bg-red-900 text-white px-3 py-1 rounded">ลบ</button></td>`
               row.innerHTML += `<td class="px-4 py-2"><button onclick="speech('${event.id}')" id="speak-btn-${event.id}" class="py-1 rounded">
                 <svg version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
@@ -402,7 +403,7 @@
                 </g>
                 </svg></button>
                 <audio hidden id="audio-${event.id}" controls></audio></td>`
-              if (today.getTime() > currentDateEvent.getTime()) row.classList.add('opacity-30')
+              if (today.getTime() > currentDateEvent.getTime()) {row.classList.add('opacity-30')}
               eventTableBody.appendChild(row)
             })
           } else {
