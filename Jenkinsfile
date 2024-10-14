@@ -31,6 +31,7 @@ pipeline {
                         DB_HOST=${DB_HOST}
                         DB_PORT=${DB_PORT}
                         PRODUCTION=${PRODUCTION}
+                        GOOGLE_TTS_API_KEY=${GOOGLE_TTS_API_KEY}
                         EOF
                     '''
                     echo '.env file created.'
