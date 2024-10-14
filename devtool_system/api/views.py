@@ -1,39 +1,34 @@
-from django.shortcuts import render, get_object_or_404
-from .serializers import *
-from rest_framework.views import APIView
-from rest_framework.response import Response
+from random import randint
+from string import ascii_letters
+
+from django.db import transaction
+from django.db.models import Q, Count
+from django.shortcuts import get_object_or_404
 from rest_framework import status
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from remindme.models import *
-from django.core.exceptions import PermissionDenied
-from django.utils.decorators import method_decorator
-from django.db import transaction
+from .serializers import *
 
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-from rest_framework.permissions import IsAuthenticated
 
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
-
-from io import BytesIO
-
-from django.db.models import Q, Count
-
-from json import loads
-
-from string import ascii_letters
-from random import randint
 def random_string(length=0):
     text = ""
-    random_ = ascii_letters+"0123456789"
+    random_ = ascii_letters + "0123456789"
     for _ in range(length):
         text += random_[randint(0, 61)]
     return text
+
 
 def get_token_family():
     token = random_string(6)
     while Family.objects.filter(token=token).count():
         token = random_string(6)
     return token
+
 
 def check_family(pk, user):
     try:
@@ -42,6 +37,7 @@ def check_family(pk, user):
     except Family.DoesNotExist:
         return False
 
+
 def check_event(pk, user):
     try:
         event = Events.objects.get(pk=pk)
@@ -49,17 +45,18 @@ def check_event(pk, user):
     except Events.DoesNotExist:
         return False
 
+
 # Create your views here.
 class FamilyList(APIView):
     authentication_classes = [SessionAuthentication]
     permission_classes = [IsAuthenticated]
-    
+
     # Get ALL FAMILY
     def get(self, request):
         family = Family.objects.filter(users=request.user)
         serializer = FamilySerializer(family, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+
     # Initial Family / Create Family
     def post(self, request):
         # example request.data
@@ -75,10 +72,11 @@ class FamilyList(APIView):
             return Response(status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class FamilyAction(APIView):
     authentication_classes = [SessionAuthentication]
     permission_classes = [IsAuthenticated]
-    
+
     # Get one family
     def get(self, request, pk):
         if not check_family(pk, request.user):
@@ -87,7 +85,7 @@ class FamilyAction(APIView):
         family = get_object_or_404(Family, pk=pk)
         serializer = FamilySerializer(family)
         return Response(serializer.data)
-    
+
     # Update family's name
     def patch(self, request, pk):
         # example request.data
@@ -95,7 +93,7 @@ class FamilyAction(APIView):
         #     "name": "test Family2"
         # }
         if not check_family(pk, request.user):
-            return Response({'test':'TEST'}, status=status.HTTP_403_FORBIDDEN)
+            return Response({'test': 'TEST'}, status=status.HTTP_403_FORBIDDEN)
 
         request.data['token'] = get_token_family()
         family = get_object_or_404(Family, pk=pk)
@@ -104,7 +102,7 @@ class FamilyAction(APIView):
             serializer.save()
             return Response(status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     # Delete family's name
     def delete(self, request, pk):
         if not check_family(pk, request.user):
@@ -114,10 +112,11 @@ class FamilyAction(APIView):
         family.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 class JoinFamily(APIView):
     authentication_classes = [SessionAuthentication]
     permission_classes = [IsAuthenticated]
-    
+
     def post(self, request, token):
         try:
             family = Family.objects.get(token=token)
@@ -130,13 +129,13 @@ class JoinFamily(APIView):
 class EventList(APIView):
     authentication_classes = [SessionAuthentication]
     permission_classes = [IsAuthenticated]
-    
+
     # Get all events
     def get(self, request):
         event = Events.objects.filter(user=request.user)
         serializer = EventSerializer(event, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+
     # Create event
     def post(self, request):
         # example request.data
@@ -153,11 +152,12 @@ class EventList(APIView):
             serializer.save()
             return Response()
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
+
 class EventAction(APIView):
     authentication_classes = [SessionAuthentication]
     permission_classes = [IsAuthenticated]
-    
+
     # Get one event
     def get(self, request, pk):
         if not check_event(pk, request.user):
@@ -166,7 +166,7 @@ class EventAction(APIView):
         event = get_object_or_404(Events, pk=pk)
         serializer = EventSerializer(event)
         return Response(serializer.data)
-    
+
     # Update one event
     def patch(self, request, pk):
         # example request.data Optional
@@ -186,7 +186,7 @@ class EventAction(APIView):
             serializer.save()
             return Response(status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     # Delete one event
     def delete(self, request, pk):
         if not check_event(pk, request.user):
@@ -201,37 +201,46 @@ class EventAction(APIView):
 @authentication_classes([SessionAuthentication])
 @permission_classes([IsAuthenticated])
 def user_event_year(request, year):
-    event = Events.objects.filter(Q(user=request.user) | Q(family__in=request.user.family_set.all())).filter(noti_date__year=year)
+    event = Events.objects.filter(Q(user=request.user) | Q(family__in=request.user.family_set.all())).filter(
+        noti_date__year=year)
     serializer = EventSerializer(event, many=True)
     return Response(serializer.data)
+
 
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication])
 @permission_classes([IsAuthenticated])
 def user_event_month(request, year, month):
-    event = Events.objects.filter(Q(user=request.user) | Q(family__in=request.user.family_set.all())).filter(noti_date__year=year, noti_date__month=month)
+    event = Events.objects.filter(Q(user=request.user) | Q(family__in=request.user.family_set.all())).filter(
+        noti_date__year=year, noti_date__month=month)
     serializer = EventSerializer(event, many=True)
     return Response(serializer.data)
+
 
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication])
 @permission_classes([IsAuthenticated])
 def user_event_day(request, year, month, day):
-    event = Events.objects.filter(Q(user=request.user) | Q(family__in=request.user.family_set.all())).filter(noti_date__year=year, noti_date__month=month, noti_date__day=day)
+    event = Events.objects.filter(Q(user=request.user) | Q(family__in=request.user.family_set.all())).filter(
+        noti_date__year=year, noti_date__month=month, noti_date__day=day)
     serializer = EventSerializer(event, many=True)
     return Response(serializer.data)
+
 
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication])
 @permission_classes([IsAuthenticated])
 def user_event_month_count(request, year, month):
-    event = Events.objects.filter(Q(user=request.user) | Q(family__in=request.user.family_set.all())).filter(noti_date__year=year, noti_date__month=month).values("noti_date", "noti_date__year", "noti_date__month", "noti_date__day").annotate(count=Count("id"))
+    event = Events.objects.filter(Q(user=request.user) | Q(family__in=request.user.family_set.all())).filter(
+        noti_date__year=year, noti_date__month=month).values("noti_date", "noti_date__year", "noti_date__month",
+                                                             "noti_date__day").annotate(count=Count("id"))
     return Response(event)
+
 
 class MemberAction(APIView):
     authentication_classes = [SessionAuthentication]
     permission_classes = [IsAuthenticated]
-    
+
     def delete(self, request, userID, familyID):
         family = get_object_or_404(Family, pk=familyID)
         with transaction.atomic():

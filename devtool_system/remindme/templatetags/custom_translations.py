@@ -1,5 +1,4 @@
 from django import template
-from django.utils.translation import gettext as _
 
 register = template.Library()
 

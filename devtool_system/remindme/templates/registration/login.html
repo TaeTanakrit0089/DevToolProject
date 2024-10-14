@@ -1,51 +1,58 @@
 {% extends 'base.html' %}
 {% load custom_translations %}
 {% block title %}
-  Login
+    Login
 {% endblock %}
 {% comment %} {% block navbar %}
   {% include 'navbar.html' %}
 {% endblock %} {% endcomment %}
 {% block content %}
-  
-    <div class="h-screen">
-      <form class="m-3 dark:bg-black2 px-12 py-8 my-12 rounded-xl shadow-lg max-w-lg mx-auto border dark:border-gray2" action="" method="post" autocomplete="off">
-        <h1 class="text-4xl font-bold mb-8 text-center text-brown-950 dark:text-white">เข้าสู่ระบบ</h1>
-        {% csrf_token %}
-        <div class="flex flex-col gap-6">
-          <!-- Email(username) -->
-          <div class="flex flex-col">
-            <label for="{{ form.username.id_for_label }}" class="text-sm font-medium">ชื่อผู้ใช้</label>
-            <input class="text-brown-950 rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-brown-200 border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] py-2 px-3 transition" type=".text" name="username" id="{{ form.username.id_for_label }}" value="{{ form.username.value|default_if_none:'' }}" required placeholder="ชื่อผู้ใช้" />
-            <p class="text-red-500 text-sm mt-1">{% for error in form.username.errors %}
-                  {{ error|translate_error }}<br>
-              {% endfor %}
-            </p>
-          </div>
 
-          <!-- Password(password) -->
-          <div class="flex flex-col">
-            <label for="{{ form.password.id_for_label }}" class="text-sm font-medium">รหัสผ่าน</label>
-            <input class="text-brown-950 rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-brown-200 border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] py-2 px-3 transition" type="password" name="password" id="{{ form.password.id_for_label }}" required placeholder="กรุณากรอกรหัสผ่านอย่างน้อย 4 ตัวอักษร" />
-              <br>
-            <p class="text-red-500 text-sm mt-1">
-                {% for error in form.non_field_errors %}
-                    {{ error|translate_error }}<br>
-                {% endfor %}
-            </p>
-          </div>
-        </div>
-{#        {{ form.errors|cut:'__all__' | translate_error }}#}
-        <button class="w-full mt-6 bg-brown-500 hover:bg-brown-600 active:bg-brown-800 text-white font-semibold py-3 px-4 rounded-lg shadow-md transition-all duration-300">เข้าสู่ระบบ</button>
-      </form>
+    <div class="h-screen">
+        <form class="m-3 dark:bg-black2 px-12 py-8 my-12 rounded-xl shadow-lg max-w-lg mx-auto border dark:border-gray2"
+              action="" method="post" autocomplete="off">
+            <h1 class="text-4xl font-bold mb-8 text-center text-brown-950 dark:text-white">เข้าสู่ระบบ</h1>
+            {% csrf_token %}
+            <div class="flex flex-col gap-6">
+                <!-- Email(username) -->
+                <div class="flex flex-col">
+                    <label for="{{ form.username.id_for_label }}" class="text-sm font-medium">ชื่อผู้ใช้</label>
+                    <input class="text-brown-950 rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-brown-200 border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] py-2 px-3 transition"
+                           type=".text" name="username" id="{{ form.username.id_for_label }}"
+                           value="{{ form.username.value|default_if_none:'' }}" required placeholder="ชื่อผู้ใช้"/>
+                    <p class="text-red-500 text-sm mt-1">{% for error in form.username.errors %}
+                        {{ error|translate_error }}<br>
+                    {% endfor %}
+                    </p>
+                </div>
+
+                <!-- Password(password) -->
+                <div class="flex flex-col">
+                    <label for="{{ form.password.id_for_label }}" class="text-sm font-medium">รหัสผ่าน</label>
+                    <input class="text-brown-950 rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-brown-200 border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] py-2 px-3 transition"
+                           type="password" name="password" id="{{ form.password.id_for_label }}" required
+                           placeholder="กรุณากรอกรหัสผ่านอย่างน้อย 4 ตัวอักษร"/>
+                    <br>
+                    <p class="text-red-500 text-sm mt-1">
+                        {% for error in form.non_field_errors %}
+                            {{ error|translate_error }}<br>
+                        {% endfor %}
+                    </p>
+                </div>
+            </div>
+            {#        {{ form.errors|cut:'__all__' | translate_error }}#}
+            <button class="w-full mt-6 bg-brown-500 hover:bg-brown-600 active:bg-brown-800 text-white font-semibold py-3 px-4 rounded-lg shadow-md transition-all duration-300">
+                เข้าสู่ระบบ
+            </button>
+        </form>
     </div>
-  </div>
+    </div>
 {% endblock %}
 
 {% block script %}
-  {% if user.is_authenticated %}
-    <script>
-      window.location.href = "{% url 'home' %}"
-    </script>
-  {% endif %}
+    {% if user.is_authenticated %}
+        <script>
+            window.location.href = "{% url 'home' %}"
+        </script>
+    {% endif %}
 {% endblock %}

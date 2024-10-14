@@ -3,33 +3,33 @@
 {% block title %}RemindMe{% endblock %}
 
 {% block content %}
-  <div class="flex items-center justify-center">
-      {% if not user.is_authenticated %}
-          <div class="m-3 px-4 py-8 my-12 flex flex-col items-center">
-          <h1 class="text-4xl font-bold text-center mb-8">ยินดีต้อนรับสู่ RemindMe!</h1>
+    <div class="flex items-center justify-center">
+        {% if not user.is_authenticated %}
+            <div class="m-3 px-4 py-8 my-12 flex flex-col items-center">
+            <h1 class="text-4xl font-bold text-center mb-8">ยินดีต้อนรับสู่ RemindMe!</h1>
 
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div class="transition-transform hover:scale-110 bg-brown-50 border-brown-300 dark:bg-brown-950 dark:border-brown-800 border p-4 rounded-lg shadow-xl">
-                  <h2 class="text-3xl font-bold text-center">การทำงาน</h2>
-                  <p class="text-xl text-center mt-4 text-brown-800 dark:text-brown-100">
-                      แอปพลิเคชันที่เชื่อถือได้สำหรับการเตือนความจำและการจัดระเบียบส่วนบุคคลที่เหมาะกับผู้สูงอายุ</p>
-              </div>
-              <div class="transition-transform hover:scale-110 bg-brown-50 border-brown-300 dark:bg-brown-950 dark:border-brown-800 border p-4 rounded-lg shadow-xl">
-                  <h2 class="text-3xl font-bold text-center">การแจ้งเตือน</h2>
-                  <p class="text-xl text-center mt-4 text-brown-800 dark:text-brown-100">มีการสร้างการแจ้งตนเป็นกลุ่มๆ
-                      ได้เพื่อที่จะแชร์กิจกรรมต่างๆ</p>
-              </div>
-              <div class="transition-transform hover:scale-110 bg-brown-50 border-brown-300 dark:bg-brown-950 dark:border-brown-800 border p-4 rounded-lg shadow-xl">
-                  <h2 class="text-3xl font-bold text-center">ภาษาภายในเว็บไซต์</h2>
-                  <p class="text-xl text-center mt-4 text-brown-800 dark:text-brown-100">
-                      เป็นภาษาไทยง่ายต่อการใช้งานกับผู้สูงอายุ</p>
-              </div>
-              <br>
-              <br>
-              <br>
-              <br>
-          </div>
-      {% endif %}
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="transition-transform hover:scale-110 bg-brown-50 border-brown-300 dark:bg-brown-950 dark:border-brown-800 border p-4 rounded-lg shadow-xl">
+                    <h2 class="text-3xl font-bold text-center">การทำงาน</h2>
+                    <p class="text-xl text-center mt-4 text-brown-800 dark:text-brown-100">
+                        แอปพลิเคชันที่เชื่อถือได้สำหรับการเตือนความจำและการจัดระเบียบส่วนบุคคลที่เหมาะกับผู้สูงอายุ</p>
+                </div>
+                <div class="transition-transform hover:scale-110 bg-brown-50 border-brown-300 dark:bg-brown-950 dark:border-brown-800 border p-4 rounded-lg shadow-xl">
+                    <h2 class="text-3xl font-bold text-center">การแจ้งเตือน</h2>
+                    <p class="text-xl text-center mt-4 text-brown-800 dark:text-brown-100">มีการสร้างการแจ้งตนเป็นกลุ่มๆ
+                        ได้เพื่อที่จะแชร์กิจกรรมต่างๆ</p>
+                </div>
+                <div class="transition-transform hover:scale-110 bg-brown-50 border-brown-300 dark:bg-brown-950 dark:border-brown-800 border p-4 rounded-lg shadow-xl">
+                    <h2 class="text-3xl font-bold text-center">ภาษาภายในเว็บไซต์</h2>
+                    <p class="text-xl text-center mt-4 text-brown-800 dark:text-brown-100">
+                        เป็นภาษาไทยง่ายต่อการใช้งานกับผู้สูงอายุ</p>
+                </div>
+                <br>
+                <br>
+                <br>
+                <br>
+            </div>
+        {% endif %}
         {% if request.user.is_authenticated %}
             <div class="mt-12">
                 <h2 class="{% if age %}text-8xl{% else %}text-4xl{% endif %} font-bold text-center text-brown-800 dark:text-brown-100">
@@ -61,73 +61,73 @@
                     <g>
                       <path class="fill-[#824e4e] dark:fill-[#fff]"
                             d="M49.71,19.466l6.929-4c1.914-1.105,2.57-3.551,1.461-5.465c-1.102-1.914-3.547-2.57-5.46-1.465l-6.93,4 c-1.914,1.105-2.57,3.551-1.461,5.464C45.351,19.915,47.796,20.571,49.71,19.466z"/>
-                      <path class="fill-[#824e4e] dark:fill-[#fff]"
-                            d="M56.639,48.535l-6.929-3.999c-1.914-1.105-4.355-0.449-5.461,1.464c-1.105,1.914-0.453,4.359,1.461,5.465 l6.93,4c1.913,1.105,4.358,0.449,5.464-1.465S58.553,49.641,56.639,48.535z"/>
-                      <path class="fill-[#824e4e] dark:fill-[#fff]"
-                            d="M37.53,0.307c-1.492-0.625-3.211-0.277-4.359,0.867L18.343,16.001H4c-2.211,0-4,1.789-4,4v24 C0,46.211,1.789,48,4,48h14.343l14.828,14.828C33.937,63.594,34.96,64,35.999,64c0.516,0,1.035-0.098,1.531-0.305 c1.496-0.617,2.469-2.078,2.469-3.695V4.001C39.999,2.384,39.026,0.924,37.53,0.307z"/>
+                        <path class="fill-[#824e4e] dark:fill-[#fff]"
+                              d="M56.639,48.535l-6.929-3.999c-1.914-1.105-4.355-0.449-5.461,1.464c-1.105,1.914-0.453,4.359,1.461,5.465 l6.93,4c1.913,1.105,4.358,0.449,5.464-1.465S58.553,49.641,56.639,48.535z"/>
+                        <path class="fill-[#824e4e] dark:fill-[#fff]"
+                              d="M37.53,0.307c-1.492-0.625-3.211-0.277-4.359,0.867L18.343,16.001H4c-2.211,0-4,1.789-4,4v24 C0,46.211,1.789,48,4,48h14.343l14.828,14.828C33.937,63.594,34.96,64,35.999,64c0.516,0,1.035-0.098,1.531-0.305 c1.496-0.617,2.469-2.078,2.469-3.695V4.001C39.999,2.384,39.026,0.924,37.53,0.307z"/>
                   </g>
                 </svg>
-                              </button>
-                              <audio hidden id="audio-{{ event.id }}" controls></audio>
-                          </div>
-                      </div>
-                {% empty %}
-                    <div class="m-3 px-4 py-8 my-12 flex flex-col items-center col-span-3">
-                        <h1 class="text-4xl font-bold text-center mb-8">ยังไม่มีกิจกรรม ใดๆ ในวันนี้</h1>
-
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                            <div class="mb-8">
-                                <input type="hidden" value="hiddennnnn" class="mb-8">
-                                <br>
-                                <br>
-                                <br>
-                                <br>
+                                </button>
+                                <audio hidden id="audio-{{ event.id }}" controls></audio>
                             </div>
                         </div>
-                    </div>
-                {% endfor %}
-              </div>
-          </div>
-      {% endif %}
+                    {% empty %}
+                        <div class="m-3 px-4 py-8 my-12 flex flex-col items-center col-span-3">
+                            <h1 class="text-4xl font-bold text-center mb-8">ยังไม่มีกิจกรรม ใดๆ ในวันนี้</h1>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                <div class="mb-8">
+                                    <input type="hidden" value="hiddennnnn" class="mb-8">
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+        </div>
     </div>
-  </div>
 {% endblock %}
 
 {% block script %}
-<script>
-  function speech(id) {
-    const apiKey = "{{ google_tts_api_key }}";
-    const text = document.getElementById('event-name-' + id).innerText;
-  
-    const url = `https://texttospeech.googleapis.com/v1/text:synthesize?key=${apiKey}`;
-  
-    const data = {
-      input: {
-        text: text
-      },
-      voice: {
-        languageCode: 'th-TH', // Thai language code
-        ssmlGender: 'NEUTRAL'  // Choose between 'MALE', 'FEMALE', or 'NEUTRAL'
-      },
-      audioConfig: {
-        audioEncoding: 'MP3'  // You can also use 'OGG_OPUS' or 'LINEAR16'
-      }
-    };
-  
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(data => {
-      const audioContent = data.audioContent;
-      const audio = document.getElementById('audio-' + id);
-      audio.src = `data:audio/mp3;base64,${audioContent}`;
-      audio.play();
-    });
-  }
-  </script>
+    <script>
+        function speech(id) {
+            const apiKey = "{{ google_tts_api_key }}";
+            const text = document.getElementById('event-name-' + id).innerText;
+
+            const url = `https://texttospeech.googleapis.com/v1/text:synthesize?key=${apiKey}`;
+
+            const data = {
+                input: {
+                    text: text
+                },
+                voice: {
+                    languageCode: 'th-TH', // Thai language code
+                    ssmlGender: 'NEUTRAL'  // Choose between 'MALE', 'FEMALE', or 'NEUTRAL'
+                },
+                audioConfig: {
+                    audioEncoding: 'MP3'  // You can also use 'OGG_OPUS' or 'LINEAR16'
+                }
+            };
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const audioContent = data.audioContent;
+                    const audio = document.getElementById('audio-' + id);
+                    audio.src = `data:audio/mp3;base64,${audioContent}`;
+                    audio.play();
+                });
+        }
+    </script>
 {% endblock %}

@@ -1,12 +1,16 @@
 <li class="sm:hidden">
-  <a href="{% url 'calendar_page' %}" class="block py-2 pl-3 pr-6 md:pr-3 pr-auto rounded-lg transition-colors duration-300 md:hover:bg-transparent md:dark:hover:bg-transparent text-start hover:opacity-50">ปฏิทิน</a>
+    <a href="{% url 'calendar_page' %}"
+       class="block py-2 pl-3 pr-6 md:pr-3 pr-auto rounded-lg transition-colors duration-300 md:hover:bg-transparent md:dark:hover:bg-transparent text-start hover:opacity-50">ปฏิทิน</a>
 </li>
 <li class="sm:hidden">
-  <a href="{% url 'family' %}" class="block py-2 pl-3 pr-6 md:pr-3 pr-auto rounded-lg transition-colors duration-300 md:hover:bg-transparent md:dark:hover:bg-transparent text-start hover:opacity-50">กลุ่ม</a>
+    <a href="{% url 'family' %}"
+       class="block py-2 pl-3 pr-6 md:pr-3 pr-auto rounded-lg transition-colors duration-300 md:hover:bg-transparent md:dark:hover:bg-transparent text-start hover:opacity-50">กลุ่ม</a>
 </li>
 <li>
-  <form onclick="this.submit()" action="{% url 'logout' %}" method="post" class="m-0 transition-colors duration-300 cursor-pointer">
-    {% csrf_token %}
-    <p class="block py-2 pl-3 pr-6 md:pr-3 pr-auto rounded-lg transition-colors duration-300 md:hover:bg-transparent md:dark:hover:bg-transparent text-start hover:opacity-50">ออกจากระบบ</p>
-  </form>
+    <form onclick="this.submit()" action="{% url 'logout' %}" method="post"
+          class="m-0 transition-colors duration-300 cursor-pointer">
+        {% csrf_token %}
+        <p class="block py-2 pl-3 pr-6 md:pr-3 pr-auto rounded-lg transition-colors duration-300 md:hover:bg-transparent md:dark:hover:bg-transparent text-start hover:opacity-50">
+            ออกจากระบบ</p>
+    </form>
 </li>

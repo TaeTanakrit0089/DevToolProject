@@ -1,7 +1,7 @@
 require('dotenv').config();
 {% extends 'base.html' %}
 {% block content %}
-<h1>Text-to-Speech (Thai)</h1>
+    <h1>Text-to-Speech (Thai)</h1>
     <textarea class="text-black" id="text" rows="4" cols="50" placeholder="Enter text to speak in Thai"></textarea>
     <br>
     <button id="speak-btn">Speak</button>
@@ -9,44 +9,44 @@ require('dotenv').config();
 {% endblock %}
 
 {% block script %}
-  <script>
-    document.getElementById('speak-btn').addEventListener('click', function() {
-    const apiKey = "{{ google_tts_api_key }}";
-    console.log('Your API Key:', apiKey);
-    const text = document.getElementById('text').value;
-    
-    const url = `https://texttospeech.googleapis.com/v1/text:synthesize?key=${apiKey}`;
-    
-    const data = {
-        input: {
-            text: text
-        },
-        voice: {
-            languageCode: 'th-TH', // Thai language code
-            ssmlGender: 'NEUTRAL'  // Choose between 'MALE', 'FEMALE', or 'NEUTRAL'
-        },
-        audioConfig: {
-            audioEncoding: 'MP3'  // You can also use 'OGG_OPUS' or 'LINEAR16'
-        }
-    };
-    
-    fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(data => {
-        const audioContent = data.audioContent;
-        const audio = document.getElementById('audio');
-        audio.src = `data:audio/mp3;base64,${audioContent}`;
-        audio.play();
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-  });
-  </script>
+    <script>
+        document.getElementById('speak-btn').addEventListener('click', function () {
+            const apiKey = "{{ google_tts_api_key }}";
+            console.log('Your API Key:', apiKey);
+            const text = document.getElementById('text').value;
+
+            const url = `https://texttospeech.googleapis.com/v1/text:synthesize?key=${apiKey}`;
+
+            const data = {
+                input: {
+                    text: text
+                },
+                voice: {
+                    languageCode: 'th-TH', // Thai language code
+                    ssmlGender: 'NEUTRAL'  // Choose between 'MALE', 'FEMALE', or 'NEUTRAL'
+                },
+                audioConfig: {
+                    audioEncoding: 'MP3'  // You can also use 'OGG_OPUS' or 'LINEAR16'
+                }
+            };
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const audioContent = data.audioContent;
+                    const audio = document.getElementById('audio');
+                    audio.src = `data:audio/mp3;base64,${audioContent}`;
+                    audio.play();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    </script>
 {% endblock %}

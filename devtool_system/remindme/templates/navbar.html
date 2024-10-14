@@ -1,73 +1,79 @@
 {% load static %}
 <nav class="sticky left-0 right-0 z-30 border-b border-b-brown-50 navbar flex flex-row justify-between place-items-center py-4 px-3 font-medium shadow">
-  {% comment %} LOGO {% endcomment %}
-  <div class="flex flex-row">
+    {% comment %} LOGO {% endcomment %}
+    <div class="flex flex-row">
 
-    <a href="{% url 'home' %}" class="flex items-center space-x-3 rtl:space-x-reverse">
-      <img src="{% static 'images/family.png' %}" class="size-8 bg-white dark:bg-transparent" id="logo" />
-      <span class="self-center text-2xl font-semibold whitespace-nowrap">RemindMe</span>
-    </a>
-  </div>
+        <a href="{% url 'home' %}" class="flex items-center space-x-3 rtl:space-x-reverse">
+            <img src="{% static 'images/family.png' %}" class="size-8 bg-white dark:bg-transparent" id="logo"/>
+            <span class="self-center text-2xl font-semibold whitespace-nowrap">RemindMe</span>
+        </a>
+    </div>
 
-  {% comment %} NAVBAR {% endcomment %}
-  <div class="flex flex-wrap items-center justify-start md:justify-center gap-3 max-h-10">
-    {% if user.is_authenticated %}
-      <a href="{% url 'calendar_page' %}" class="hidden sm:block py-2 pl-3 pr-6 md:pr-3 pr-auto rounded-lg transition-colors duration-300 md:hover:bg-transparent md:dark:hover:bg-transparent text-start hover:opacity-50">ปฏิทิน</a>
-      <a href="{% url 'family' %}" class="hidden sm:block py-2 pl-3 pr-6 md:pr-3 pr-auto rounded-lg transition-colors duration-300 md:hover:bg-transparent md:dark:hover:bg-transparent text-start hover:opacity-50">กลุ่ม</a>
-    {% endif %}
-    <button id="navbar_btn" data-collapse-toggle="navbar-default" type="button" 
-      {% if user.is_authenticated %} class="m-0 inline-flex items-center p-1 w-10 h-10 justify-center text-sm rounded-full"
-      {% else %} class="ml-auto inline-flex items-center p-1 w-10 h-10 justify-center text-sm rounded-full focus:outline-none" {% endif %} 
-      aria-controls="navbar-default" aria-expanded="false">
-    {% if user.is_authenticated %}
-      <img class="rounded-full" src="{% static 'images/profile.jpg'%}" alt="">
-    {% else %}
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-96">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25" />
-      </svg>
-    {% endif %}
-      <div class="relative hidden w-full" id="navbar-default">
-
-        <div class="absolute right-0 mr-3 mt-7 min-w-48 flex flex-col border dark:border-gray2 rounded-lg bg-white dark:bg-black">
-          <ul class="border-b dark:border-b-gray2" id="link">
-            {% if not user.is_authenticated %}
-              {% include 'nav_item/guest.html' %}
-            {% else %}
-              {% include 'nav_item/customer.html' %}
-            {% endif %}
-          </ul>
+    {% comment %} NAVBAR {% endcomment %}
+    <div class="flex flex-wrap items-center justify-start md:justify-center gap-3 max-h-10">
         {% if user.is_authenticated %}
-        <ul class="py-2 px-3">
-          <li>
-            <p class="text-sm">{{ user.get_full_name|title|truncatechars:"12" }}</p>
-          </li>
-        </ul>
+            <a href="{% url 'calendar_page' %}"
+               class="hidden sm:block py-2 pl-3 pr-6 md:pr-3 pr-auto rounded-lg transition-colors duration-300 md:hover:bg-transparent md:dark:hover:bg-transparent text-start hover:opacity-50">ปฏิทิน</a>
+            <a href="{% url 'family' %}"
+               class="hidden sm:block py-2 pl-3 pr-6 md:pr-3 pr-auto rounded-lg transition-colors duration-300 md:hover:bg-transparent md:dark:hover:bg-transparent text-start hover:opacity-50">กลุ่ม</a>
         {% endif %}
+        <button id="navbar_btn" data-collapse-toggle="navbar-default" type="button"
+                {% if user.is_authenticated %}
+                class="m-0 inline-flex items-center p-1 w-10 h-10 justify-center text-sm rounded-full"
+                {% else %}
+                class="ml-auto inline-flex items-center p-1 w-10 h-10 justify-center text-sm rounded-full focus:outline-none" {% endif %}
+                aria-controls="navbar-default" aria-expanded="false">
+            {% if user.is_authenticated %}
+                <img class="rounded-full" src="{% static 'images/profile.jpg' %}" alt="">
+            {% else %}
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                     stroke="currentColor" class="size-96">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25"/>
+                </svg>
+            {% endif %}
+            <div class="relative hidden w-full" id="navbar-default">
 
-      </div>
-    </button>
-    
+                <div class="absolute right-0 mr-3 mt-7 min-w-48 flex flex-col border dark:border-gray2 rounded-lg bg-white dark:bg-black">
+                    <ul class="border-b dark:border-b-gray2" id="link">
+                        {% if not user.is_authenticated %}
+                            {% include 'nav_item/guest.html' %}
+                        {% else %}
+                            {% include 'nav_item/customer.html' %}
+                        {% endif %}
+                    </ul>
+                    {% if user.is_authenticated %}
+                        <ul class="py-2 px-3">
+                            <li>
+                                <p class="text-sm">{{ user.get_full_name|title|truncatechars:"12" }}</p>
+                            </li>
+                        </ul>
+                    {% endif %}
 
-  </div>
+                </div>
+        </button>
 
-  </div>
+
+    </div>
+
+    </div>
 </nav>
 
 <script>
-  // Toggle navbar
-  const navbar_btn = document.getElementById("navbar_btn")
-  const navbar_display = document.getElementById("navbar-default")
+    // Toggle navbar
+    const navbar_btn = document.getElementById("navbar_btn")
+    const navbar_display = document.getElementById("navbar-default")
 
-  navbar_btn.addEventListener("click", ()=>{
-    navbar_display.classList.toggle("hidden")
-  })
+    navbar_btn.addEventListener("click", () => {
+        navbar_display.classList.toggle("hidden")
+    })
 
-  // Close navbar if clicking outside
-  document.addEventListener("click", (event) => {
-    const isClickInside = navbar_display.contains(event.target) || navbar_btn.contains(event.target);
-    
-    if (!isClickInside && !navbar_display.classList.contains("hidden")) {
-      navbar_display.classList.add("hidden");
-    }
-  });
+    // Close navbar if clicking outside
+    document.addEventListener("click", (event) => {
+        const isClickInside = navbar_display.contains(event.target) || navbar_btn.contains(event.target);
+
+        if (!isClickInside && !navbar_display.classList.contains("hidden")) {
+            navbar_display.classList.add("hidden");
+        }
+    });
 </script>

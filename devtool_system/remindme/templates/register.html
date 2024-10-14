@@ -4,83 +4,99 @@
     Register
 {% endblock %}
 {% block navbar %}
-{% include 'navbar.html' %}
+    {% include 'navbar.html' %}
 {% endblock %}
 {% block content %}
-  <div class="h-screen">
-    <form class="m-3 dark:bg-black2 px-12 py-8 my-12 rounded-xl shadow-lg max-w-lg mx-auto border dark:border-gray2" method="post" autocomplete="off">
-      <h1 class="text-4xl font-bold mb-8 text-center">สร้างบัญชีใหม่</h1>
-      {% csrf_token %}
-      <div class="flex flex-col gap-6">
-        <!-- Username -->
-        <div class="flex flex-col">
-          <label for="{{ form.username.id_for_label }}" class="text-sm font-medium">ชื่อผู้ใช้</label>
-          <input class="text-brown-950 rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-brown-200 border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] py-2 px-3 transition" type="text" name="username" id="{{ form.username.id_for_label }}" value="{{ form.email.value|default_if_none:"" }}" required placeholder="จอร์นโด"/>
-          <p class="text-red-500 text-sm mt-1">
-              {% for error in form.username.errors %}
-                  {{ error|translate_error }}<br>
-              {% endfor %}
-          </p>
-        </div>
+    <div class="h-screen">
+        <form class="m-3 dark:bg-black2 px-12 py-8 my-12 rounded-xl shadow-lg max-w-lg mx-auto border dark:border-gray2"
+              method="post" autocomplete="off">
+            <h1 class="text-4xl font-bold mb-8 text-center">สร้างบัญชีใหม่</h1>
+            {% csrf_token %}
+            <div class="flex flex-col gap-6">
+                <!-- Username -->
+                <div class="flex flex-col">
+                    <label for="{{ form.username.id_for_label }}" class="text-sm font-medium">ชื่อผู้ใช้</label>
+                    <input class="text-brown-950 rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-brown-200 border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] py-2 px-3 transition"
+                           type="text" name="username" id="{{ form.username.id_for_label }}"
+                           value="{{ form.email.value|default_if_none:"" }}" required placeholder="จอร์นโด"/>
+                    <p class="text-red-500 text-sm mt-1">
+                        {% for error in form.username.errors %}
+                            {{ error|translate_error }}<br>
+                        {% endfor %}
+                    </p>
+                </div>
 
-        <!-- First Name -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <div class="flex flex-col">
-            <label for="{{ form.first_name.id_for_label }}" class="text-sm font-medium">ชื่อจริง</label>
-            <input class="text-brown-950 rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-brown-200 border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] py-2 px-3 transition" type="text" name="first_name" id="{{ form.first_name.id_for_label }}" value="{{ form.first_name.value|default_if_none:"" }}" required placeholder="จุนบอม" />
-            <p class="text-red-500 text-sm mt-1">
-                {% for error in form.first_name.errors %}
-                    {{ error|translate_error }}<br>
-                {% endfor %}
-            </p>
-          </div>
+                <!-- First Name -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="flex flex-col">
+                        <label for="{{ form.first_name.id_for_label }}" class="text-sm font-medium">ชื่อจริง</label>
+                        <input class="text-brown-950 rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-brown-200 border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] py-2 px-3 transition"
+                               type="text" name="first_name" id="{{ form.first_name.id_for_label }}"
+                               value="{{ form.first_name.value|default_if_none:"" }}" required placeholder="จุนบอม"/>
+                        <p class="text-red-500 text-sm mt-1">
+                            {% for error in form.first_name.errors %}
+                                {{ error|translate_error }}<br>
+                            {% endfor %}
+                        </p>
+                    </div>
 
-          <!-- Last Name -->
-          <div class="flex flex-col">
-            <label for="{{ form.last_name.id_for_label }}" class="text-sm font-medium">นามสกุล</label>
-            <input class="text-brown-950 rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-brown-200 border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] py-2 px-3 transition" type="text" name="last_name" id="{{ form.last_name.id_for_label }}" value="{{ form.last_name.value|default_if_none:"" }}" required placeholder="คิม" />
-            <p class="text-red-500 text-sm mt-1">
-                {% for error in form.last_name.errors %}
-                    {{ error|translate_error }}
-                {% endfor %}
-            </p>
-          </div>
-        </div>
+                    <!-- Last Name -->
+                    <div class="flex flex-col">
+                        <label for="{{ form.last_name.id_for_label }}" class="text-sm font-medium">นามสกุล</label>
+                        <input class="text-brown-950 rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-brown-200 border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] py-2 px-3 transition"
+                               type="text" name="last_name" id="{{ form.last_name.id_for_label }}"
+                               value="{{ form.last_name.value|default_if_none:"" }}" required placeholder="คิม"/>
+                        <p class="text-red-500 text-sm mt-1">
+                            {% for error in form.last_name.errors %}
+                                {{ error|translate_error }}
+                            {% endfor %}
+                        </p>
+                    </div>
+                </div>
 
-        <!-- DOB -->
-        <div class="flex flex-col">
-          <label for="{{ form.birth_date.id_for_label }}" class="text-sm font-medium">วันเกิด</label>
-          <input max="{{now|date:'Y-m-d'}}" class="text-brown-950 rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-brown-200 border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] py-2 px-3 transition" type="date" name="birth_date" id="{{ form.birth_date.id_for_label }}" required placeholder="" />
-          <p class="text-red-500 text-sm mt-1">
-              {% for error in form.birth_date.errors %}
-                {{ error | translate_error }}
-              {% endfor %}
-          </p>
-        </div>
+                <!-- DOB -->
+                <div class="flex flex-col">
+                    <label for="{{ form.birth_date.id_for_label }}" class="text-sm font-medium">วันเกิด</label>
+                    <input max="{{ now|date:'Y-m-d' }}"
+                           class="text-brown-950 rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-brown-200 border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] py-2 px-3 transition"
+                           type="date" name="birth_date" id="{{ form.birth_date.id_for_label }}" required
+                           placeholder=""/>
+                    <p class="text-red-500 text-sm mt-1">
+                        {% for error in form.birth_date.errors %}
+                            {{ error | translate_error }}
+                        {% endfor %}
+                    </p>
+                </div>
 
-        <!-- Password -->
-        <div class="flex flex-col">
-          <label for="{{ form.password1.id_for_label }}" class="text-sm font-medium">รหัสผ่าน</label>
-          <input class="text-brown-950 rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-brown-200 border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] py-2 px-3 transition" type="password" name="password1" id="{{ form.password1.id_for_label }}" required placeholder="กรุณากรอกรหัสผ่านอย่างน้อย 4 ตัวอักษร" />
-          <p class="text-red-500 text-sm mt-1">
-              {% for error in form.password1.errors %}
-                  {{ error | translate_error }}
-              {% endfor %}
-          </p>
-        </div>
+                <!-- Password -->
+                <div class="flex flex-col">
+                    <label for="{{ form.password1.id_for_label }}" class="text-sm font-medium">รหัสผ่าน</label>
+                    <input class="text-brown-950 rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-brown-200 border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] py-2 px-3 transition"
+                           type="password" name="password1" id="{{ form.password1.id_for_label }}" required
+                           placeholder="กรุณากรอกรหัสผ่านอย่างน้อย 4 ตัวอักษร"/>
+                    <p class="text-red-500 text-sm mt-1">
+                        {% for error in form.password1.errors %}
+                            {{ error | translate_error }}
+                        {% endfor %}
+                    </p>
+                </div>
 
-        <!-- Confirm Passwordt -->
-        <div class="flex flex-col">
-          <label for="{{ form.password2.id_for_label }}" class="text-sm font-medium">ยืนยันรหัสผ่าน</label>
-          <input class="text-brown-950 rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-brown-200 border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] py-2 px-3 transition" type="password" name="password2" id="{{ form.password2.id_for_label }}" required placeholder="กรอกรหัสผ่านอีกรอบเพื่อยืนยัน" />
-          <p class="text-red-500 text-sm mt-1">
-              {% for error in form.password2.errors %}
-                  {{ error | translate_error }}
-              {% endfor %}
-          </p>
-        </div>
-      </div>
-      <button class="w-full mt-6 bg-brown-500 hover:bg-brown-600 active:bg-brown-800 text-white font-semibold py-3 px-4 rounded-lg shadow-md transition-all duration-300">สร้างบัญชี</button>
-    </form>
-  </div>
+                <!-- Confirm Passwordt -->
+                <div class="flex flex-col">
+                    <label for="{{ form.password2.id_for_label }}" class="text-sm font-medium">ยืนยันรหัสผ่าน</label>
+                    <input class="text-brown-950 rounded-lg shadow-sm bg-[#f9fbfc] dark:bg-brown-200 border border-gray-300 dark:border-gray-600 focus:border-[#4c569b] py-2 px-3 transition"
+                           type="password" name="password2" id="{{ form.password2.id_for_label }}" required
+                           placeholder="กรอกรหัสผ่านอีกรอบเพื่อยืนยัน"/>
+                    <p class="text-red-500 text-sm mt-1">
+                        {% for error in form.password2.errors %}
+                            {{ error | translate_error }}
+                        {% endfor %}
+                    </p>
+                </div>
+            </div>
+            <button class="w-full mt-6 bg-brown-500 hover:bg-brown-600 active:bg-brown-800 text-white font-semibold py-3 px-4 rounded-lg shadow-md transition-all duration-300">
+                สร้างบัญชี
+            </button>
+        </form>
+    </div>
 {% endblock %}
