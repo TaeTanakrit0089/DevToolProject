@@ -17,6 +17,8 @@ services:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./ssl:/etc/nginx/ssl
       - ./devtool_system/staticfiles:/var/www/html/static/
+    depends_on:
+      - web
 
   web:
     build:
