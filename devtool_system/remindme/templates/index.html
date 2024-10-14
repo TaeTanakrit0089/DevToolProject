@@ -28,28 +28,9 @@
               <br>
           </div>
       {% endif %}
-
-    {#        {% if request.user.is_authenticated and age >= 0 %}#}
-    {#            <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8 mt-12">#}
-    {#                {% if age >= 60 %}#}
-    {#                    <div class="transition-transform hover:scale-110 bg-brown-50 border-brown-300 dark:bg-brown-950 dark:border-brown-800 border p-4 rounded-lg shadow-xl max-w-xs md:max-w-lg">#}
-    {#                        <h2 class="text-3xl font-bold text-center">ข้อมูลสำหรับผู้สูงอายุ</h2>#}
-    {#                        <p class="text-xl text-center mt-4 text-brown-800 dark:text-brown-100">คุณมีอายุ {{ age }}#}
-    {#                            ปีแล้ว นี่คือกิจกรรมสำหรับคุณ</p>#}
-    {#                    </div>#}
-    {#                {% else %}#}
-    {#                    <div class="transition-transform hover:scale-110 bg-brown-50 border-brown-300 dark:bg-brown-950 dark:border-brown-800 border p-4 rounded-lg shadow-xl max-w-xs md:max-w-lg">#}
-    {#                        <h2 class="text-3xl font-bold text-center">ข้อมูลสำหรับผู้ใช้งานทั่วไป</h2>#}
-    {#                        <p class="text-xl text-center mt-4 text-brown-800 dark:text-brown-100">คุณมีอายุ {{ age }}#}
-    {#                            ปีแล้ว นี่คือกิจกรรมสำหรับคุณ</p>#}
-    {#                    </div>#}
-    {#                {% endif %}#}
-    {#            </div>#}
-    {#        {% endif %}#}
-
         {% if request.user.is_authenticated %}
             <div class="mt-12">
-                <h2 class="{% if age %}text-8xl{% else %}text-2xl{% endif %} font-bold text-center text-brown-800 dark:text-brown-100">
+                <h2 class="{% if age %}text-8xl{% else %}text-4xl{% endif %} font-bold text-center text-brown-800 dark:text-brown-100">
                     กิจกรรมของวันนี้
                 </h2>
                 <br>
