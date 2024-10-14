@@ -2,7 +2,7 @@
   "type": "module",
   "scripts": {
     "start": "npx tailwindcss -i static/tailwind/input.css -o static/tailwind/output.css --watch",
-    "build": "npx tailwindcss -i static/tailwind/input.css -o static/tailwind/output.css -y && touch /app/.build_complete"
+    "build": "npx tailwindcss -i static/tailwind/input.css -o static/tailwind/output.css -y"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",
