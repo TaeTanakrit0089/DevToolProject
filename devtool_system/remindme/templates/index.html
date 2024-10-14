@@ -47,9 +47,9 @@
 {#            </div>#}
 {#        {% endif %}#}
 
-        {% if request.user.is_authenticated and age %}
+        {% if request.user.is_authenticated and age >= 60 %}
             <div class="mt-12">
-                <h2 class="{% if age %}text-6xl{% else %}text-4xl{% endif %} font-bold text-center text-brown-800 dark:text-brown-100">
+                <h2 class="{% if age %}text-8xl{% else %}text-2xl{% endif %} font-bold text-center text-brown-800 dark:text-brown-100">
                     กิจกรรมของวันนี้
                 </h2>
                 <br>
