@@ -4,6 +4,7 @@
 .idea
 .idea/*
 
+style.css
 output.css
 .build_complete
 
