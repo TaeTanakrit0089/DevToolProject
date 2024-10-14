@@ -70,6 +70,9 @@
 
       {% empty %}
         <p class="text-center text-gray-500">คุณยังไม่ได้ร่วมกลุ่ม ใด ๆ.</p>
+{#          <div class="m-3 px-4 py-8 my-12 flex flex-col items-center">#}
+{#              <input type="hidden">hiddennnnnnn#}
+{#          </div>#}
       {% endfor %}
     </div>
   </div>
@@ -154,6 +157,20 @@
     </form>
   </div>
 </div>
+    <div class="m-3 px-4 py-8 my-12 flex flex-col items-center ">
+        <h1 class="text-4xl font-bold text-center mb-8 text-white dark:text-black-2 "></h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="mb-8">
+                <input type="hidden" value="hiddennnnn" class="mb-8">
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
 

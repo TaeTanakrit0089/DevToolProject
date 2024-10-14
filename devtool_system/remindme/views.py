@@ -9,6 +9,7 @@ from .forms import *
 from django.utils.timezone import now, timedelta, localtime
 from dateutil.relativedelta import relativedelta
 from django.db.models import Q
+from datetime import date
 
 from os import environ
 
@@ -39,11 +40,36 @@ def update_events():
 
 class HomePage(View):
     def get(self, request):
-        return render(request, 'index.html')
+        today = date.today()
+        today_events = []
+        age = None
+
+        if request.user.is_authenticated:
+            user = Users.objects.get(id=request.user.id)
+            # ดึงกิจกรรมของวันนี้
+            today_events = Events.objects.filter(user=user, noti_date=today)
+            if user.birth_date:
+                age = today.year - user.birth_date.year - ((today.month, today.day) < (user.birth_date.month, user.birth_date.day))
+        if age is None:
+            age = 0
+        if age >= 60:
+            context = {
+                'today_events': today_events,
+                'age': True,
+                'google_tts_api_key': settings.GOOGLE_TTS_API_KEY,
+            }
+        else:
+            context = {
+                'today_events': today_events,
+                'age': True,
+                'google_tts_api_key': settings.GOOGLE_TTS_API_KEY,
+            }
+        return render(request, 'index.html', context)
+
     
 class RegisterView(View):
     def get(self, request):
-        if (request.user.is_authenticated):
+        if request.user.is_authenticated:
             return redirect("home")
         form = RegisterForm()
         return render(request, "register.html", {
