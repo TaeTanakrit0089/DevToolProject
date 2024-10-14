@@ -138,6 +138,7 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static/'
 ]
+STATIC_ROOT = BASE_DIR / 'staticfiles/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
@@ -153,7 +154,7 @@ AUTH_USER_MODEL = "remindme.Users"
 CSRF_TRUSTED_ORIGINS = [
     'https://34.87.135.25',
     'http://localhost',
-    # 'https://34.143.177.154'
+    'https://35.247.169.44'
 ]
 
 CSRF_COOKIE_SECURE = True
