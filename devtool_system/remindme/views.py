@@ -46,24 +46,18 @@ class HomePage(View):
 
         if request.user.is_authenticated:
             user = Users.objects.get(id=request.user.id)
-            # ดึงกิจกรรมของวันนี้
-            today_events = Events.objects.filter(user=user, noti_date=today)
+            today_events = Events.objects.filter(
+                Q(user=request.user) | Q(family__in=request.user.family_set.all())
+            ).filter(
+                noti_date=today
+            )
             if user.birth_date:
                 age = today.year - user.birth_date.year - ((today.month, today.day) < (user.birth_date.month, user.birth_date.day))
-        if age is None:
-            age = 0
-        if age >= 60:
-            context = {
-                'today_events': today_events,
-                'age': True,
-                'google_tts_api_key': settings.GOOGLE_TTS_API_KEY,
-            }
-        else:
-            context = {
-                'today_events': today_events,
-                'age': True,
-                'google_tts_api_key': settings.GOOGLE_TTS_API_KEY,
-            }
+        context = {
+            'today_events': today_events,
+            'age': age,
+            'google_tts_api_key': settings.GOOGLE_TTS_API_KEY,
+        }
         return render(request, 'index.html', context)
 
     
