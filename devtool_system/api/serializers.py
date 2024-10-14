@@ -36,7 +36,7 @@ class EventSerializer(serializers.ModelSerializer):
         }
     def validate(self, data):
         now_time = localtime(now())
-        if data['noti_date'] < now_time.date() or (data['noti_date'] <= now_time.date() and data['noti_time'] < now_time.time()):
+        if (data['noti_date'] < now_time.date() or (data['noti_date'] <= now_time.date() and data['noti_time'] < now_time.time())) and data['routine'] == 0:
             raise serializers.ValidationError("Cannot add event to the past.")
         return data
 
